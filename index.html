@@ -1,0 +1,1833 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LoanVault India — Loan Portals, Rates & Tools</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="manifest" href="data:application/manifest+json,{%22name%22:%22LoanVault%22,%22short_name%22:%22LoanVault%22,%22start_url%22:%22/%22,%22display%22:%22standalone%22,%22background_color%22:%22%230d0f14%22,%22theme_color%22:%22%23c9a84c%22}">
+<meta name="theme-color" content="#c9a84c">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<style>
+/* ═══════════════════════════════════════════════
+   DESIGN SYSTEM — Luxury Financial Dark Editorial
+   Font: Playfair Display (headlines) + Plus Jakarta Sans (body) + JetBrains Mono (numbers)
+   Palette: Deep navy + warm gold + off-white
+═══════════════════════════════════════════════ */
+:root {
+  --ink:    #0d0f14;
+  --ink2:   #141720;
+  --ink3:   #1c2030;
+  --ink4:   #252a3a;
+  --line:   #2a2f42;
+  --line2:  #343a50;
+  --gold:   #c9a84c;
+  --gold2:  #e8c96a;
+  --gold3:  #f5e4a8;
+  --cream:  #f0ead8;
+  --white:  #fafaf8;
+  --dim:    #6b7291;
+  --dim2:   #8c94b0;
+  --blue:   #4a7cdc;
+  --green:  #3ab87a;
+  --red:    #e05c5c;
+  --r: 12px;
+  --rs: 8px;
+}
+
+/* LIGHT MODE */
+body.light {
+  --ink: #fafaf8; --ink2: #f2ede0; --ink3: #e8e2d4; --ink4: #ddd7c8;
+  --line: #ccc7b8; --line2: #bbb5a4;
+  --cream: #1c2030; --white: #0d0f14;
+  --dim: #7a7260; --dim2: #5a5448;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+
+body {
+  background: var(--ink);
+  color: var(--cream);
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+  transition: background 0.3s, color 0.3s;
+}
+
+/* Grain texture overlay */
+body::before {
+  content:'';
+  position:fixed; inset:0; z-index:0; pointer-events:none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  opacity: 0.4;
+}
+
+/* Gold shimmer line at top */
+body::after {
+  content:'';
+  position:fixed; top:0; left:0; right:0; height:1px; z-index:999;
+  background: linear-gradient(90deg, transparent, var(--gold), var(--gold2), var(--gold), transparent);
+}
+
+/* ── NAVIGATION ── */
+nav {
+  position: sticky; top:0; z-index:200;
+  height: 64px;
+  background: rgba(13,15,20,0.92);
+  backdrop-filter: blur(32px) saturate(180%);
+  border-bottom: 1px solid var(--line);
+  display: flex; align-items:center; justify-content:space-between;
+  padding: 0 2rem;
+}
+body.light nav { background: rgba(250,250,248,0.92); }
+
+.nav-brand { display:flex; align-items:center; gap:12px; text-decoration:none; }
+.nav-logo {
+  width: 38px; height: 38px; border-radius: 10px;
+  background: linear-gradient(135deg, var(--gold), var(--gold2));
+  display:flex; align-items:center; justify-content:center;
+  font-size: 18px; font-weight:900;
+  color: var(--ink); font-family:'Playfair Display', serif;
+  box-shadow: 0 2px 12px rgba(201,168,76,0.3);
+  letter-spacing:-1px;
+}
+.nav-wordmark {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem; font-weight:700; letter-spacing:-0.5px;
+  color: var(--cream);
+}
+.nav-wordmark em { color: var(--gold); font-style:normal; }
+
+.nav-tabs { display:flex; gap:2px; }
+.nav-tab {
+  padding: 6px 14px; border-radius: var(--rs);
+  font-size: 0.8rem; font-weight:600;
+  color: var(--dim2); cursor:pointer;
+  border:none; background:transparent;
+  transition: all 0.2s; letter-spacing: 0.2px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+.nav-tab:hover { color:var(--cream); background:var(--ink3); }
+.nav-tab.active { color:var(--gold); background:rgba(201,168,76,0.1); }
+
+.nav-actions { display:flex; align-items:center; gap:8px; }
+.nav-ctrl {
+  background:var(--ink3); border:1px solid var(--line2);
+  border-radius: var(--rs); padding:6px 10px;
+  color:var(--dim2); cursor:pointer; font-size:13px;
+  font-family:'Plus Jakarta Sans',sans-serif; font-size:0.75rem;
+  transition:all 0.2s; outline:none;
+}
+.nav-ctrl:hover { border-color:var(--gold); color:var(--gold); }
+.nav-ctrl select { background:transparent; border:none; color:inherit; font:inherit; cursor:pointer; outline:none; }
+
+.nav-badge {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.62rem; letter-spacing:2px;
+  padding: 4px 10px; border-radius: 100px;
+  border: 1px solid rgba(201,168,76,0.3);
+  background: rgba(201,168,76,0.07);
+  color: var(--gold);
+}
+
+/* ── PAGE SYSTEM ── */
+.page { display:none; position:relative; z-index:1; }
+.page.active { display:block; }
+
+/* ═══════════════════════════════════════════════
+   PORTALS PAGE
+═══════════════════════════════════════════════ */
+
+/* HERO */
+.hero {
+  padding: 72px 2rem 52px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.hero-bg {
+  position:absolute; inset:0; z-index:0;
+  background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(201,168,76,0.07) 0%, transparent 70%);
+}
+.hero-inner { position:relative; z-index:1; }
+
+.hero-eyebrow {
+  display:inline-flex; align-items:center; gap:8px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem; letter-spacing: 3px; text-transform:uppercase;
+  color: var(--gold); border: 1px solid rgba(201,168,76,0.25);
+  background: rgba(201,168,76,0.06);
+  padding: 6px 18px; border-radius: 100px; margin-bottom:28px;
+}
+.hero-eyebrow span { width:6px; height:6px; border-radius:50%; background:var(--gold); animation:pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.3;} }
+
+.hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.2rem, 5.5vw, 4rem);
+  font-weight: 900; line-height: 1.1; letter-spacing:-2px;
+  margin-bottom: 20px;
+  color: var(--white);
+}
+.hero h1 .hl {
+  background: linear-gradient(135deg, var(--gold), var(--gold2), var(--gold3));
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.hero-sub {
+  color: var(--dim2); font-size: 1.05rem; line-height:1.75;
+  max-width: 520px; margin: 0 auto 44px;
+  font-weight: 400;
+}
+
+/* STAT STRIP */
+.hero-stats {
+  display: flex; justify-content:center; gap:0;
+  margin-bottom: 52px;
+  border: 1px solid var(--line2);
+  border-radius: var(--r);
+  background: var(--ink2);
+  max-width: 520px; margin: 0 auto 52px;
+  overflow:hidden;
+}
+.stat-item {
+  flex:1; padding: 18px 20px; text-align:center;
+  border-right: 1px solid var(--line2);
+}
+.stat-item:last-child { border-right:none; }
+.stat-n {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.8rem; font-weight:700;
+  color: var(--gold); display:block; line-height:1;
+}
+.stat-l { font-size: 0.7rem; color:var(--dim); margin-top:4px; letter-spacing:0.3px; }
+
+/* SEARCH + FILTERS */
+.controls-wrap { max-width: 1200px; margin: 0 auto; padding: 0 2rem 36px; }
+
+.search-bar {
+  position:relative; margin-bottom:20px;
+}
+.search-input {
+  width:100%; padding: 14px 18px 14px 52px;
+  background: var(--ink2); border: 1px solid var(--line2);
+  border-radius: var(--r); color: var(--cream);
+  font-family: 'Plus Jakarta Sans', sans-serif; font-size:0.95rem;
+  outline:none; transition: border-color 0.2s, box-shadow 0.2s;
+}
+.search-input:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(201,168,76,0.1);
+}
+.search-input::placeholder { color:var(--dim); }
+.search-icon {
+  position:absolute; left:18px; top:50%; transform:translateY(-50%);
+  color:var(--dim); font-size:16px; pointer-events:none;
+}
+
+.pill-row { display:flex; gap:7px; flex-wrap:wrap; margin-bottom:10px; }
+.pill-label {
+  font-family:'JetBrains Mono',monospace; font-size:0.62rem;
+  color:var(--dim); letter-spacing:1.5px; text-transform:uppercase;
+  width:100%; margin-bottom:4px;
+}
+.pill {
+  padding: 7px 16px; border-radius:100px;
+  border: 1px solid var(--line2); background:var(--ink2);
+  color:var(--dim2); font-size:0.78rem; font-weight:600;
+  cursor:pointer; transition:all 0.2s;
+  font-family:'Plus Jakarta Sans',sans-serif;
+}
+.pill:hover { border-color:var(--gold); color:var(--cream); }
+.pill.active {
+  background: linear-gradient(135deg,var(--gold),var(--gold2));
+  border-color:transparent; color:var(--ink);
+}
+
+/* DOC GUIDE STRIP */
+.doc-strip {
+  max-width: 1200px; margin: 0 auto 48px; padding: 0 2rem;
+}
+.doc-strip-inner {
+  display: grid; grid-template-columns: repeat(6, 1fr);
+  gap: 1px; background: var(--line);
+  border: 1px solid var(--line); border-radius: var(--r); overflow:hidden;
+}
+@media(max-width:900px){ .doc-strip-inner { grid-template-columns: repeat(3,1fr); } }
+@media(max-width:500px){ .doc-strip-inner { grid-template-columns: repeat(2,1fr); } }
+
+.doc-item {
+  background: var(--ink2); padding: 16px 14px;
+  display:flex; flex-direction:column; gap:6px;
+  transition: background 0.2s;
+}
+.doc-item:hover { background: var(--ink3); }
+.doc-icon { font-size:20px; }
+.doc-name { font-size:0.78rem; font-weight:700; color:var(--cream); }
+.doc-desc { font-size:0.67rem; color:var(--dim); line-height:1.4; }
+
+/* SECTION DIVIDER */
+.section-divider {
+  max-width:1200px; margin:0 auto 28px; padding: 0 2rem;
+  display:flex; align-items:center; gap:16px;
+}
+.section-divider::before, .section-divider::after {
+  content:''; flex:1; height:1px; background:var(--line2);
+}
+.section-label {
+  font-family:'JetBrains Mono',monospace; font-size:0.65rem;
+  color:var(--dim); letter-spacing:2px; text-transform:uppercase;
+  white-space:nowrap;
+}
+
+/* ── BANK GRID ── */
+.banks-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 16px;
+  max-width: 1200px; margin: 0 auto;
+  padding: 0 2rem 60px;
+}
+
+/* BANK CARD — the star of the show */
+.bank-card {
+  background: var(--ink2);
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  padding: 0;
+  cursor: pointer;
+  transition: transform 0.25s cubic-bezier(.22,1,.36,1),
+              border-color 0.2s, box-shadow 0.25s;
+  overflow: hidden;
+  position: relative;
+}
+.bank-card:hover {
+  transform: translateY(-5px);
+  border-color: rgba(201,168,76,0.4);
+  box-shadow:
+    0 12px 48px rgba(0,0,0,0.5),
+    0 0 0 1px rgba(201,168,76,0.15),
+    inset 0 1px 0 rgba(201,168,76,0.1);
+}
+
+/* Gold top accent line */
+.bank-card::before {
+  content:'';
+  position:absolute; top:0; left:0; right:0; height:2px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  opacity:0; transition: opacity 0.2s;
+}
+.bank-card:hover::before { opacity:1; }
+
+/* Logo area — tall banner at top */
+.card-logo-area {
+  height: 80px;
+  display:flex; align-items:center; justify-content:center;
+  position:relative; overflow:hidden;
+}
+.card-logo-area::after {
+  content:'';
+  position:absolute; bottom:0; left:0; right:0; height:30px;
+  background: linear-gradient(transparent, var(--ink2));
+}
+.bank-real-logo {
+  width: 120px; height: 48px; object-fit:contain;
+  filter: brightness(1) saturate(0.9);
+  transition: filter 0.2s;
+}
+.bank-card:hover .bank-real-logo { filter: brightness(1.1) saturate(1); }
+
+/* Fallback logo — colored text block */
+.bank-fallback-logo {
+  width: 80px; height: 48px; border-radius: 10px;
+  display:flex; align-items:center; justify-content:center;
+  font-family:'JetBrains Mono',monospace;
+  font-weight:700; font-size:15px; letter-spacing:-0.5px; color:#fff;
+}
+
+/* Card body */
+.card-body { padding: 16px 18px 14px; }
+.card-header { display:flex; align-items:flex-start; justify-content:space-between; gap:8px; margin-bottom:10px; }
+.card-name { font-size:0.9rem; font-weight:700; line-height:1.3; color:var(--cream); }
+.card-short { font-size:0.7rem; color:var(--dim); margin-top:2px; }
+
+.type-badge {
+  font-family:'JetBrains Mono',monospace; font-size:0.58rem;
+  padding:3px 7px; border-radius:4px; font-weight:600;
+  letter-spacing:0.3px; flex-shrink:0; white-space:nowrap;
+}
+.tb-govt  { background:rgba(58,184,122,0.12); color:var(--green); border:1px solid rgba(58,184,122,0.2); }
+.tb-pvt   { background:rgba(74,124,220,0.12); color:var(--blue);  border:1px solid rgba(74,124,220,0.2); }
+.tb-nbfc  { background:rgba(201,168,76,0.12);  color:var(--gold);  border:1px solid rgba(201,168,76,0.2); }
+.tb-hfc   { background:rgba(180,100,200,0.12); color:#c46ed8;      border:1px solid rgba(180,100,200,0.2);}
+
+.doc-chips { display:flex; gap:4px; flex-wrap:wrap; margin-bottom:12px; }
+.chip {
+  font-size:0.62rem; padding:2px 7px;
+  background:rgba(255,255,255,0.04); border:1px solid var(--line);
+  border-radius:4px; color:var(--dim2); white-space:nowrap;
+}
+
+.card-footer {
+  display:flex; align-items:center; justify-content:space-between;
+  padding-top:10px; border-top:1px solid var(--line);
+}
+.card-cta {
+  font-size:0.75rem; font-weight:700; color:var(--gold);
+  display:flex; align-items:center; gap:5px; letter-spacing:0.3px;
+}
+.cta-arrow { display:inline-block; transition:transform 0.2s; }
+.bank-card:hover .cta-arrow { transform:translateX(4px); }
+.live-dot {
+  width:7px; height:7px; border-radius:50%;
+  background:var(--green);
+  box-shadow:0 0 8px rgba(58,184,122,0.6);
+}
+
+/* ── SUGGEST SECTION ── */
+.suggest-section {
+  max-width:600px; margin:0 auto 80px; padding:0 2rem; text-align:center;
+}
+.suggest-card {
+  background:var(--ink2); border:1px solid var(--line2);
+  border-radius:var(--r); padding:32px 28px;
+}
+.suggest-card h2 {
+  font-family:'Playfair Display',serif; font-size:1.3rem; font-weight:700;
+  margin-bottom:8px;
+}
+.suggest-card p { font-size:0.84rem; color:var(--dim2); margin-bottom:24px; line-height:1.6; }
+.sform { display:flex; flex-direction:column; gap:10px; }
+.sform input, .sform select {
+  background:var(--ink3); border:1px solid var(--line2);
+  border-radius:var(--rs); padding:11px 14px;
+  color:var(--cream); font-family:'Plus Jakarta Sans',sans-serif; font-size:0.85rem;
+  outline:none; transition:border-color 0.2s;
+}
+.sform input:focus,.sform select:focus { border-color:var(--gold); }
+.sform input::placeholder { color:var(--dim); }
+.sform select option { background:var(--ink3); }
+.gold-btn {
+  background:linear-gradient(135deg,var(--gold),var(--gold2));
+  border:none; border-radius:var(--rs); padding:13px;
+  color:var(--ink); font-family:'Plus Jakarta Sans',sans-serif;
+  font-size:0.88rem; font-weight:700; cursor:pointer; transition:opacity 0.2s;
+  letter-spacing:0.3px;
+}
+.gold-btn:hover { opacity:0.88; }
+.ssuccess {
+  display:none; color:var(--green); font-size:0.85rem;
+  padding:12px; background:rgba(58,184,122,0.07);
+  border-radius:var(--rs); border:1px solid rgba(58,184,122,0.2);
+}
+
+/* ── MODAL ── */
+.modal-overlay {
+  position:fixed; inset:0; z-index:600;
+  background:rgba(0,0,0,0.8); backdrop-filter:blur(12px);
+  display:none; align-items:center; justify-content:center; padding:1rem;
+}
+.modal-overlay.open { display:flex; }
+.modal {
+  background:var(--ink2); border:1px solid var(--line2);
+  border-radius:18px; padding:32px; max-width:540px; width:100%;
+  max-height:88vh; overflow-y:auto; position:relative;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.7);
+}
+.modal-close {
+  position:absolute; top:18px; right:18px;
+  background:var(--ink3); border:1px solid var(--line2);
+  color:var(--dim2); border-radius:8px; width:32px; height:32px;
+  display:flex; align-items:center; justify-content:center;
+  cursor:pointer; font-size:14px; transition:all 0.2s;
+}
+.modal-close:hover { border-color:var(--gold); color:var(--gold); }
+.modal-header { display:flex; align-items:center; gap:18px; margin-bottom:24px; }
+.modal-bank-logo-wrap {
+  width:60px; height:60px; border-radius:12px;
+  display:flex; align-items:center; justify-content:center;
+  overflow:hidden; flex-shrink:0;
+}
+.modal-bank-logo-wrap img { width:100%; height:100%; object-fit:contain; padding:6px; }
+.modal-bank-fallback {
+  width:60px; height:60px; border-radius:12px;
+  display:flex; align-items:center; justify-content:center;
+  font-family:'JetBrains Mono',monospace; font-weight:700; font-size:13px; color:#fff;
+  flex-shrink:0;
+}
+.modal-title { font-family:'Playfair Display',serif; font-size:1.2rem; font-weight:700; }
+.modal-sub { font-size:0.76rem; color:var(--dim2); margin-top:5px; }
+
+.modal-section { margin-bottom:20px; }
+.modal-section-title {
+  font-family:'JetBrains Mono',monospace; font-size:0.65rem; font-weight:600;
+  color:var(--gold); text-transform:uppercase; letter-spacing:1.5px;
+  margin-bottom:12px;
+}
+.doc-tag-list { display:flex; gap:7px; flex-wrap:wrap; }
+.doc-tag {
+  padding:5px 12px; border-radius:6px; font-size:0.76rem; font-weight:600;
+  background:var(--ink3); border:1px solid var(--line2); color:var(--cream);
+}
+
+.step-list { display:flex; flex-direction:column; gap:10px; }
+.step {
+  display:flex; align-items:flex-start; gap:12px;
+}
+.step-n {
+  width:24px; height:24px; border-radius:50%; flex-shrink:0;
+  background:linear-gradient(135deg,var(--gold),var(--gold2));
+  color:var(--ink); font-size:0.7rem; font-weight:800;
+  display:flex; align-items:center; justify-content:center; margin-top:1px;
+  font-family:'JetBrains Mono',monospace;
+}
+.step-t { font-size:0.82rem; color:var(--dim2); line-height:1.6; }
+.step-t strong { color:var(--cream); }
+
+.modal-cta-btn {
+  display:flex; align-items:center; justify-content:center; gap:10px;
+  background:linear-gradient(135deg,var(--gold),var(--gold2));
+  color:var(--ink); border-radius:10px; padding:14px 24px;
+  text-decoration:none; font-weight:700; font-size:0.9rem;
+  transition:opacity 0.2s; margin-top:8px;
+}
+.modal-cta-btn:hover { opacity:0.88; }
+
+/* ═══════════════════════════════════════════════
+   INTEREST RATES PAGE
+═══════════════════════════════════════════════ */
+.rates-page { max-width:1200px; margin:0 auto; padding:52px 2rem 80px; }
+.page-header { margin-bottom:40px; }
+.page-eyebrow {
+  font-family:'JetBrains Mono',monospace; font-size:0.65rem;
+  color:var(--gold); letter-spacing:2px; text-transform:uppercase; margin-bottom:10px;
+}
+.page-h1 {
+  font-family:'Playfair Display',serif;
+  font-size:clamp(1.8rem,3.5vw,2.8rem); font-weight:900;
+  letter-spacing:-1px; line-height:1.1; margin-bottom:10px;
+}
+.page-sub { color:var(--dim2); font-size:0.93rem; line-height:1.7; max-width:600px; }
+
+.rate-disclaimer {
+  display:inline-flex; align-items:center; gap:8px;
+  font-size:0.72rem; color:var(--gold2);
+  background:rgba(201,168,76,0.07); border:1px solid rgba(201,168,76,0.2);
+  padding:7px 14px; border-radius:8px; margin-top:14px;
+}
+
+.rate-tabs { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:28px; }
+.rtab {
+  padding:8px 18px; border:1px solid var(--line2); background:var(--ink2);
+  color:var(--dim2); border-radius:100px; font-size:0.8rem; font-weight:600;
+  cursor:pointer; transition:all 0.2s; font-family:'Plus Jakarta Sans',sans-serif;
+}
+.rtab:hover { border-color:var(--gold); color:var(--cream); }
+.rtab.active {
+  background:linear-gradient(135deg,var(--gold),var(--gold2));
+  border-color:transparent; color:var(--ink);
+}
+
+.rate-table-card {
+  background:var(--ink2); border:1px solid var(--line2);
+  border-radius:var(--r); overflow:hidden;
+}
+.rate-table-card-head {
+  padding:18px 22px; border-bottom:1px solid var(--line2);
+  display:flex; align-items:center; justify-content:space-between;
+}
+.rate-table-card-head h2 { font-size:0.95rem; font-weight:700; }
+.updated-chip {
+  font-family:'JetBrains Mono',monospace; font-size:0.62rem;
+  color:var(--dim); background:var(--ink3); border:1px solid var(--line);
+  padding:3px 10px; border-radius:5px;
+}
+
+.rtable { width:100%; border-collapse:collapse; }
+.rtable th {
+  padding:12px 20px; text-align:left;
+  font-family:'JetBrains Mono',monospace; font-size:0.65rem;
+  font-weight:600; color:var(--dim); text-transform:uppercase; letter-spacing:0.7px;
+  background:var(--ink3); border-bottom:1px solid var(--line2);
+}
+.rtable td { padding:14px 20px; border-bottom:1px solid var(--line); font-size:0.84rem; }
+.rtable tr:last-child td { border-bottom:none; }
+.rtable tr:hover td { background:rgba(255,255,255,0.015); }
+
+.bank-cell { display:flex; align-items:center; gap:12px; }
+.mini-logo-img {
+  width:36px; height:36px; border-radius:8px; object-fit:contain;
+  background:var(--ink3); padding:4px; flex-shrink:0;
+}
+.mini-logo-fallback {
+  width:36px; height:36px; border-radius:8px; flex-shrink:0;
+  display:flex; align-items:center; justify-content:center;
+  font-family:'JetBrains Mono',monospace; font-size:8px; color:#fff; font-weight:700;
+}
+.bank-cn { font-weight:700; font-size:0.86rem; }
+.bank-ct { font-size:0.7rem; color:var(--dim); }
+
+.rate-val { font-family:'JetBrains Mono',monospace; font-weight:600; }
+.rv-green { color:var(--green); }
+.rv-red { color:var(--red); }
+
+.rate-tag { font-size:0.67rem; padding:3px 8px; border-radius:5px; font-weight:700; }
+.rt-low  { background:rgba(58,184,122,0.1); color:var(--green); border:1px solid rgba(58,184,122,0.2); }
+.rt-mid  { background:rgba(201,168,76,0.1); color:var(--gold);  border:1px solid rgba(201,168,76,0.2); }
+.rt-high { background:rgba(224,92,92,0.1);  color:var(--red);   border:1px solid rgba(224,92,92,0.2); }
+
+.rate-note {
+  padding:14px 22px; background:var(--ink3); border-top:1px solid var(--line2);
+  font-size:0.78rem; color:var(--dim2); line-height:1.7;
+}
+.rate-note strong { color:var(--cream); }
+
+/* ═══════════════════════════════════════════════
+   EMI CALCULATOR PAGE
+═══════════════════════════════════════════════ */
+.emi-page { max-width:1100px; margin:0 auto; padding:52px 2rem 80px; }
+.emi-layout { display:grid; grid-template-columns:1fr 1fr; gap:24px; align-items:start; }
+@media(max-width:760px){ .emi-layout { grid-template-columns:1fr; } }
+
+.panel {
+  background:var(--ink2); border:1px solid var(--line2);
+  border-radius:var(--r); padding:28px;
+}
+.panel-title {
+  font-family:'Playfair Display',serif; font-size:1.05rem; font-weight:700;
+  margin-bottom:24px; display:flex; align-items:center; gap:10px;
+}
+
+.field-label {
+  font-size:0.72rem; color:var(--dim2); font-weight:600;
+  margin-bottom:7px; display:flex; justify-content:space-between; align-items:center;
+  font-family:'JetBrains Mono',monospace; letter-spacing:0.3px;
+}
+.field-value {
+  font-family:'JetBrains Mono',monospace; font-size:0.82rem;
+  color:var(--gold); font-weight:700;
+}
+.range-wrap { margin-bottom:22px; }
+input[type=range] {
+  width:100%; -webkit-appearance:none; height:3px;
+  border-radius:2px; background:var(--line2); outline:none; cursor:pointer;
+}
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance:none; width:18px; height:18px; border-radius:50%;
+  background:linear-gradient(135deg,var(--gold),var(--gold2)); cursor:pointer;
+  box-shadow:0 0 10px rgba(201,168,76,0.4);
+}
+
+.preset-label {
+  font-family:'JetBrains Mono',monospace; font-size:0.62rem; color:var(--dim);
+  letter-spacing:1.5px; text-transform:uppercase; margin-bottom:8px;
+}
+.preset-btns { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:20px; }
+.preset-btn {
+  padding:6px 12px; border:1px solid var(--line2); background:var(--ink3);
+  color:var(--dim2); border-radius:6px; font-size:0.72rem;
+  cursor:pointer; transition:all 0.2s; font-family:'Plus Jakarta Sans',sans-serif;
+}
+.preset-btn:hover { border-color:var(--gold); color:var(--gold); }
+
+.bank-picker {
+  width:100%; background:var(--ink3); border:1px solid var(--line2);
+  border-radius:var(--rs); padding:10px 14px;
+  color:var(--cream); font-family:'Plus Jakarta Sans',sans-serif; font-size:0.83rem;
+  outline:none; cursor:pointer; transition:border-color 0.2s;
+}
+.bank-picker:focus { border-color:var(--gold); }
+.bank-picker option, .bank-picker optgroup { background:var(--ink3); }
+
+/* EMI Result */
+.emi-result-box {
+  background:linear-gradient(135deg,rgba(201,168,76,0.06),rgba(201,168,76,0.02));
+  border:1px solid rgba(201,168,76,0.2); border-radius:var(--r);
+  padding:22px; margin-bottom:0;
+}
+.emi-main { text-align:center; margin-bottom:18px; }
+.emi-amount {
+  font-family:'Playfair Display',serif; font-size:2.8rem; font-weight:900;
+  background:linear-gradient(135deg,var(--gold),var(--gold2));
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  letter-spacing:-1px; line-height:1;
+}
+.emi-lbl { font-size:0.75rem; color:var(--dim2); margin-top:6px; letter-spacing:1px; text-transform:uppercase; font-family:'JetBrains Mono',monospace; }
+
+.donut-wrap { display:flex; justify-content:center; margin:16px 0; }
+.donut-svg { width:130px; height:130px; }
+.donut-bg { fill:none; stroke:var(--line2); stroke-width:18; }
+.donut-p { fill:none; stroke:var(--blue); stroke-width:18; stroke-linecap:round; transition:stroke-dasharray 0.5s ease; }
+.donut-i { fill:none; stroke:var(--red); stroke-width:18; stroke-linecap:round; transition:stroke-dasharray 0.5s ease; }
+.donut-txt { font-family:'JetBrains Mono',monospace; fill:var(--cream); text-anchor:middle; dominant-baseline:middle; }
+
+.result-rows { display:flex; flex-direction:column; gap:0; }
+.result-row {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:9px 0; border-bottom:1px solid rgba(255,255,255,0.05);
+}
+.result-row:last-child { border-bottom:none; }
+.rk { font-size:0.78rem; color:var(--dim2); }
+.rv { font-family:'JetBrains Mono',monospace; font-size:0.78rem; font-weight:600; }
+.rv.g { color:var(--green); } .rv.r { color:var(--red); } .rv.o { color:var(--gold); }
+
+.schedule-toggle {
+  display:flex; align-items:center; gap:8px; cursor:pointer;
+  font-size:0.78rem; color:var(--gold); font-weight:700;
+  margin-top:16px; user-select:none;
+}
+.sched-table { display:none; margin-top:12px; overflow-x:auto; }
+.sched-table.open { display:block; }
+.sched-table table { width:100%; border-collapse:collapse; font-size:0.75rem; }
+.sched-table th {
+  padding:8px 10px; text-align:left; color:var(--dim);
+  font-size:0.65rem; text-transform:uppercase; letter-spacing:0.5px;
+  border-bottom:1px solid var(--line2); font-family:'JetBrains Mono',monospace;
+}
+.sched-table td { padding:7px 10px; border-bottom:1px solid var(--line); color:var(--dim2); }
+.sched-table td:first-child { color:var(--cream); font-weight:600; }
+.sched-table tr:hover td { background:rgba(255,255,255,0.02); }
+
+/* ═══════════════════════════════════════════════
+   ELIGIBILITY PAGE
+═══════════════════════════════════════════════ */
+.elig-page { max-width:780px; margin:0 auto; padding:52px 2rem 80px; }
+.elig-form-card {
+  background:var(--ink2); border:1px solid var(--line2);
+  border-radius:var(--r); padding:32px;
+}
+.elig-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px; }
+@media(max-width:560px){ .elig-grid { grid-template-columns:1fr; } }
+.elig-field label {
+  display:block; font-family:'JetBrains Mono',monospace;
+  font-size:0.63rem; color:var(--dim2); font-weight:600;
+  margin-bottom:6px; text-transform:uppercase; letter-spacing:0.7px;
+}
+.elig-field input, .elig-field select {
+  width:100%; background:var(--ink3); border:1px solid var(--line2);
+  border-radius:var(--rs); padding:11px 14px;
+  color:var(--cream); font-family:'Plus Jakarta Sans',sans-serif; font-size:0.85rem;
+  outline:none; transition:border-color 0.2s;
+}
+.elig-field input:focus,.elig-field select:focus { border-color:var(--gold); }
+.elig-field input::placeholder { color:var(--dim); }
+.elig-field select option { background:var(--ink3); }
+
+.elig-results { margin-top:28px; display:none; }
+.elig-results.show { display:block; }
+.elig-summary-box {
+  background:linear-gradient(135deg,rgba(201,168,76,0.07),rgba(201,168,76,0.02));
+  border:1px solid rgba(201,168,76,0.2); border-radius:var(--r);
+  padding:24px; margin-bottom:20px; text-align:center;
+}
+.elig-max {
+  font-family:'Playfair Display',serif; font-size:2.2rem; font-weight:900;
+  background:linear-gradient(135deg,var(--gold),var(--gold2));
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+}
+.elig-max-lbl { font-size:0.72rem; color:var(--dim2); margin-top:5px; font-family:'JetBrains Mono',monospace; letter-spacing:1px; text-transform:uppercase; }
+.elig-note-text { font-size:0.78rem; color:var(--dim2); margin-top:8px; }
+
+.elig-bank-rows { display:flex; flex-direction:column; gap:10px; }
+.elig-bank-row {
+  background:var(--ink2); border:1px solid var(--line2);
+  border-radius:10px; padding:14px 16px;
+  display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;
+}
+.elig-bank-left { display:flex; align-items:center; gap:12px; }
+.elig-bank-name { font-weight:700; font-size:0.86rem; }
+.elig-bank-note { font-size:0.7rem; color:var(--dim2); margin-top:2px; }
+.elig-rate { font-family:'JetBrains Mono',monospace; font-size:0.82rem; font-weight:700; color:var(--gold); }
+.elig-badge { font-size:0.7rem; padding:4px 10px; border-radius:6px; font-weight:700; }
+.eb-likely   { background:rgba(58,184,122,0.1);  color:var(--green); border:1px solid rgba(58,184,122,0.2); }
+.eb-possible { background:rgba(201,168,76,0.1);  color:var(--gold);  border:1px solid rgba(201,168,76,0.2); }
+.eb-hard     { background:rgba(224,92,92,0.1);   color:var(--red);   border:1px solid rgba(224,92,92,0.2); }
+
+/* ═══════════════════════════════════════════════
+   COMPARE PAGE
+═══════════════════════════════════════════════ */
+.compare-page { max-width:1100px; margin:0 auto; padding:52px 2rem 80px; }
+.compare-selectors { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:24px; align-items:center; }
+.cmp-sel {
+  background:var(--ink2); border:1px solid var(--line2); border-radius:var(--rs);
+  padding:10px 14px; color:var(--cream); font-family:'Plus Jakarta Sans',sans-serif;
+  font-size:0.84rem; outline:none; min-width:200px; cursor:pointer; transition:border-color 0.2s;
+}
+.cmp-sel:focus { border-color:var(--gold); }
+.cmp-sel option { background:var(--ink3); }
+.cmp-output-wrap { background:var(--ink2); border:1px solid var(--line2); border-radius:var(--r); overflow:hidden; }
+.cmp-table { width:100%; border-collapse:collapse; }
+.cmp-table th {
+  padding:14px 18px; font-family:'JetBrains Mono',monospace; font-size:0.65rem;
+  font-weight:600; color:var(--dim); text-transform:uppercase; letter-spacing:0.7px;
+  background:var(--ink3); border-bottom:1px solid var(--line2); text-align:left;
+}
+.cmp-table th.bc { text-align:center; min-width:150px; }
+.cmp-table td { padding:14px 18px; border-bottom:1px solid var(--line); font-size:0.84rem; color:var(--dim2); vertical-align:middle; }
+.cmp-table td.rl { font-weight:700; color:var(--cream); font-size:0.8rem; }
+.cmp-table td.vc { text-align:center; }
+.cmp-table tr:last-child td { border-bottom:none; }
+.cmp-table tr:hover td { background:rgba(255,255,255,0.015); }
+.best { color:var(--green); font-weight:800; }
+.cmp-bank-head { display:flex; flex-direction:column; align-items:center; gap:7px; padding:4px 0; }
+.cmp-logo-img { width:44px; height:44px; border-radius:9px; object-fit:contain; background:var(--ink3); padding:4px; }
+.cmp-logo-fb { width:44px; height:44px; border-radius:9px; display:flex; align-items:center; justify-content:center; font-family:'JetBrains Mono',monospace; font-size:9px; color:#fff; font-weight:700; }
+.cmp-bank-n { font-size:0.8rem; font-weight:700; }
+
+/* ═══════════════════════════════════════════════
+   SHARE PAGE
+═══════════════════════════════════════════════ */
+.share-page { max-width:720px; margin:0 auto; padding:52px 2rem 80px; }
+.share-card {
+  background:var(--ink2); border:1px solid var(--line2);
+  border-radius:var(--r); padding:26px; margin-bottom:20px;
+}
+.share-card-title {
+  font-family:'Playfair Display',serif; font-size:1rem; font-weight:700;
+  margin-bottom:18px; display:flex; align-items:center; gap:8px;
+}
+.share-sel {
+  width:100%; background:var(--ink3); border:1px solid var(--line2);
+  border-radius:var(--rs); padding:10px 14px;
+  color:var(--cream); font-family:'Plus Jakarta Sans',sans-serif; font-size:0.84rem;
+  outline:none; margin-bottom:12px; cursor:pointer;
+}
+.share-sel option { background:var(--ink3); }
+.share-inputs { display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; margin-bottom:12px; }
+.share-input {
+  background:var(--ink3); border:1px solid var(--line2); border-radius:var(--rs);
+  padding:10px 12px; color:var(--cream); font-family:'Plus Jakarta Sans',sans-serif; font-size:0.83rem;
+  outline:none; width:100%;
+}
+.share-input:focus { border-color:var(--gold); }
+.share-preview {
+  background:var(--ink3); border:1px solid var(--line2); border-radius:var(--rs);
+  padding:16px; font-family:'JetBrains Mono',monospace; font-size:0.75rem;
+  color:var(--dim2); line-height:1.8; white-space:pre-wrap; min-height:110px;
+  margin-bottom:12px;
+}
+.share-btns { display:flex; gap:8px; flex-wrap:wrap; }
+.wa-btn {
+  display:flex; align-items:center; gap:7px;
+  background:#25d366; border:none; border-radius:var(--rs);
+  padding:10px 18px; color:#fff; text-decoration:none;
+  font-family:'Plus Jakarta Sans',sans-serif; font-size:0.82rem; font-weight:700;
+  cursor:pointer; transition:opacity 0.2s;
+}
+.wa-btn:hover { opacity:0.88; }
+.copy-btn {
+  background:var(--ink3); border:1px solid var(--line2); border-radius:var(--rs);
+  padding:10px 18px; color:var(--dim2); font-family:'Plus Jakarta Sans',sans-serif;
+  font-size:0.82rem; font-weight:700; cursor:pointer; transition:all 0.2s;
+}
+.copy-btn:hover { border-color:var(--gold); color:var(--gold); }
+
+/* ── FOOTER ── */
+footer {
+  position:relative; z-index:1;
+  border-top:1px solid var(--line);
+  padding:28px 2rem;
+  text-align:center; color:var(--dim); font-size:0.75rem; line-height:2;
+}
+footer a { color:var(--gold); text-decoration:none; }
+.footer-wordmark {
+  font-family:'Playfair Display',serif; font-size:1rem; font-weight:700;
+  color:var(--cream); margin-bottom:6px;
+}
+.footer-wordmark em { color:var(--gold); font-style:normal; }
+
+/* ── PWA BANNER ── */
+.pwa-banner {
+  position:fixed; bottom:20px; left:50%; transform:translateX(-50%);
+  z-index:400; background:var(--ink3); border:1px solid rgba(201,168,76,0.3);
+  border-radius:14px; padding:14px 20px;
+  display:none; align-items:center; gap:14px;
+  box-shadow:0 8px 40px rgba(0,0,0,0.5); max-width:380px; width:90%;
+}
+.pwa-banner.show { display:flex; }
+.pwa-text strong { display:block; font-size:0.84rem; color:var(--cream); }
+.pwa-text span { font-size:0.76rem; color:var(--dim2); }
+.pwa-install { background:linear-gradient(135deg,var(--gold),var(--gold2)); border:none; border-radius:8px; padding:8px 16px; color:var(--ink); font-weight:700; font-size:0.8rem; cursor:pointer; }
+.pwa-x { background:none; border:none; color:var(--dim); cursor:pointer; font-size:18px; padding:0 4px; flex-shrink:0; }
+
+/* ── EMPTY STATE ── */
+.empty-state {
+  grid-column:1/-1; text-align:center; padding:80px 0; color:var(--dim);
+}
+.empty-state a { color:var(--gold); text-decoration:none; }
+
+/* ── RESPONSIVE ── */
+@media(max-width:640px){
+  nav { padding:0 1rem; }
+  .nav-badge { display:none; }
+  .nav-tab span { display:none; }
+  .banks-grid { grid-template-columns:repeat(auto-fill,minmax(165px,1fr)); gap:10px; }
+  .hero { padding:48px 1rem 36px; }
+  .hero h1 { letter-spacing:-1px; }
+  .doc-strip-inner { grid-template-columns:repeat(2,1fr); }
+  .rate-tabs { gap:5px; }
+  .rtab { padding:6px 12px; font-size:0.74rem; }
+  .rtable th,.rtable td { padding:10px 12px; font-size:0.78rem; }
+}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(16px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+.bank-card { animation: fadeUp 0.4s ease both; }
+</style>
+</head>
+<body>
+<div style="position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse 900px 600px at 20% 0%,rgba(201,168,76,0.04) 0%,transparent 70%),radial-gradient(ellipse 700px 500px at 80% 100%,rgba(74,124,220,0.04) 0%,transparent 70%);"></div>
+
+<!-- ═══ NAV ═══ -->
+<nav>
+  <a class="nav-brand" href="#" onclick="showPage('portals');return false;">
+    <div class="nav-logo">LV</div>
+    <span class="nav-wordmark">Loan<em>Vault</em></span>
+  </a>
+  <div class="nav-tabs">
+    <button class="nav-tab active" id="tab-portals"     onclick="showPage('portals')">🏦 <span>Portals</span></button>
+    <button class="nav-tab"        id="tab-rates"       onclick="showPage('rates')">📊 <span>Rates</span></button>
+    <button class="nav-tab"        id="tab-emi"         onclick="showPage('emi')">🧮 <span>EMI</span></button>
+    <button class="nav-tab"        id="tab-eligibility" onclick="showPage('eligibility')">✅ <span>Eligibility</span></button>
+    <button class="nav-tab"        id="tab-compare"     onclick="showPage('compare')">⚖️ <span>Compare</span></button>
+    <button class="nav-tab"        id="tab-whatsapp"    onclick="showPage('whatsapp')">📤 <span>Share</span></button>
+  </div>
+  <div class="nav-actions">
+    <button class="nav-ctrl" onclick="toggleTheme()" id="themeBtn" title="Toggle theme">🌙</button>
+    <div class="nav-ctrl">
+      <select id="langSel" onchange="setLang(this.value)">
+        <option value="en">🇮🇳 EN</option>
+        <option value="hi">हिंदी</option>
+        <option value="gu">ગુજ</option>
+        <option value="mr">मराठी</option>
+        <option value="ta">தமிழ்</option>
+      </select>
+    </div>
+    <span class="nav-badge">INDIA · 2026</span>
+  </div>
+</nav>
+
+<!-- ═══ PAGE: PORTALS ═══ -->
+<div class="page active" id="page-portals">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-inner">
+      <div class="hero-eyebrow"><span></span> All Loan Portals · One Place</div>
+      <h1 id="heroH1">Download Your <span class="hl">Loan Documents</span><br>Without the Hunt</h1>
+      <p class="hero-sub" id="heroP">Click any lender card to go directly to their official login portal. Get sanction letters, repayment schedules, statements, NOC or interest certificates in minutes.</p>
+      <div class="hero-stats">
+        <div class="stat-item">
+          <span class="stat-n">32+</span>
+          <span class="stat-l" id="sl0">Verified Portals</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-n">6</span>
+          <span class="stat-l" id="sl1">Document Types</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-n">100%</span>
+          <span class="stat-l" id="sl2">Free to Use</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEARCH + FILTERS -->
+  <div class="controls-wrap">
+    <div class="search-bar">
+      <span class="search-icon">🔍</span>
+      <input class="search-input" type="text" id="searchInput" placeholder="Search by bank name…" oninput="applyFilters()">
+    </div>
+    <div class="pill-row">
+      <div class="pill-label">Category</div>
+      <button class="pill active" onclick="setCat('all',this)">All Lenders</button>
+      <button class="pill" onclick="setCat('govt',this)">Public Sector</button>
+      <button class="pill" onclick="setCat('pvt',this)">Private Banks</button>
+      <button class="pill" onclick="setCat('nbfc',this)">NBFC</button>
+      <button class="pill" onclick="setCat('hfc',this)">Housing Finance</button>
+    </div>
+    <div class="pill-row">
+      <div class="pill-label">Loan Type</div>
+      <button class="pill active" onclick="setLoan('all',this)">All</button>
+      <button class="pill" onclick="setLoan('home',this)">🏠 Home</button>
+      <button class="pill" onclick="setLoan('car',this)">🚗 Car</button>
+      <button class="pill" onclick="setLoan('personal',this)">💼 Personal</button>
+      <button class="pill" onclick="setLoan('education',this)">🎓 Education</button>
+      <button class="pill" onclick="setLoan('business',this)">🏭 Business</button>
+    </div>
+  </div>
+
+  <!-- DOC TYPE STRIP -->
+  <div class="doc-strip">
+    <div class="doc-strip-inner">
+      <div class="doc-item"><div class="doc-icon">📄</div><div class="doc-name">Sanction Letter</div><div class="doc-desc">Loan approval with terms</div></div>
+      <div class="doc-item"><div class="doc-icon">📅</div><div class="doc-name">Repayment Schedule</div><div class="doc-desc">EMI breakup monthly</div></div>
+      <div class="doc-item"><div class="doc-icon">📊</div><div class="doc-name">Loan Statement</div><div class="doc-desc">Full transaction history</div></div>
+      <div class="doc-item"><div class="doc-icon">👋</div><div class="doc-name">Welcome Letter</div><div class="doc-desc">Disbursement details</div></div>
+      <div class="doc-item"><div class="doc-icon">✅</div><div class="doc-name">NOC / Closure</div><div class="doc-desc">No Objection Certificate</div></div>
+      <div class="doc-item"><div class="doc-icon">🧾</div><div class="doc-name">Interest Cert.</div><div class="doc-desc">IT return 24B filing</div></div>
+    </div>
+  </div>
+
+  <div class="section-divider"><span class="section-label">Select your lender</span></div>
+
+  <div class="banks-grid" id="banksGrid"></div>
+
+  <!-- SUGGEST -->
+  <div class="suggest-section" id="suggestSection">
+    <div class="suggest-card">
+      <h2>Don't see your bank?</h2>
+      <p>We're continuously adding lenders. Submit your suggestion and we'll add it with verified login links and document guides.</p>
+      <div class="sform">
+        <input type="text" id="sBank" placeholder="Bank / NBFC / Lender name *">
+        <select id="sType">
+          <option value="">Category (optional)</option>
+          <option>Public Sector Bank</option>
+          <option>Private Bank</option>
+          <option>NBFC</option>
+          <option>Housing Finance Company</option>
+        </select>
+        <input type="text" id="sUrl" placeholder="Portal URL if you know it (optional)">
+        <button class="gold-btn" onclick="submitSuggestion()">Submit Suggestion →</button>
+        <div class="ssuccess" id="suggestSuccess">✅ Thanks! We'll review and add this lender shortly.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ PAGE: RATES ═══ -->
+<div class="page" id="page-rates">
+  <div class="rates-page">
+    <div class="page-header">
+      <div class="page-eyebrow">Interest Rates · March 2026</div>
+      <h1 class="page-h1" id="ratesH1">Current Loan <span class="hl">Interest Rates</span></h1>
+      <p class="page-sub">Indicative rates across 9 loan categories. Verify with your bank before applying. Rates change with RBI repo rate decisions.</p>
+      <div class="rate-disclaimer">⚠️ Indicative only — final rate depends on your CIBIL score, income and bank policy</div>
+    </div>
+    <div class="rate-tabs">
+      <button class="rtab active" onclick="setRateTab('home',this)">🏠 Home Loan</button>
+      <button class="rtab" onclick="setRateTab('car',this)">🚗 Car Loan</button>
+      <button class="rtab" onclick="setRateTab('personal',this)">💼 Personal</button>
+      <button class="rtab" onclick="setRateTab('education',this)">🎓 Education</button>
+      <button class="rtab" onclick="setRateTab('commercial',this)">🏢 Commercial</button>
+      <button class="rtab" onclick="setRateTab('business',this)">🏭 Business</button>
+      <button class="rtab" onclick="setRateTab('lap',this)">🔑 LAP</button>
+      <button class="rtab" onclick="setRateTab('wc',this)">⚙️ Working Capital</button>
+      <button class="rtab" onclick="setRateTab('usedcar',this)">🚙 Used Car</button>
+    </div>
+    <div id="rateTableContainer"></div>
+  </div>
+</div>
+
+<!-- ═══ PAGE: EMI ═══ -->
+<div class="page" id="page-emi">
+  <div class="emi-page">
+    <div class="page-header">
+      <div class="page-eyebrow">Calculate</div>
+      <h1 class="page-h1" id="emiH1">EMI <span class="hl">Calculator</span></h1>
+      <p class="page-sub">Calculate monthly EMI, total interest and full amortisation schedule. Use a bank's rate directly from the dropdown.</p>
+    </div>
+    <div class="emi-layout">
+      <!-- INPUTS -->
+      <div class="panel">
+        <div class="panel-title">⚙️ Loan Parameters</div>
+        <div class="field-label">Loan Amount <span class="field-value" id="lbl-amount">₹10,00,000</span></div>
+        <div class="range-wrap"><input type="range" id="r-amount" min="100000" max="10000000" step="50000" value="1000000" oninput="calcEMI()"></div>
+        <div class="field-label">Interest Rate (p.a.) <span class="field-value" id="lbl-rate">8.50%</span></div>
+        <div class="range-wrap"><input type="range" id="r-rate" min="5" max="24" step="0.25" value="8.5" oninput="calcEMI()"></div>
+        <div class="field-label">Tenure <span class="field-value" id="lbl-tenure">20 Years</span></div>
+        <div class="range-wrap"><input type="range" id="r-tenure" min="1" max="30" step="1" value="20" oninput="calcEMI()"></div>
+        <div class="preset-label">Quick Presets</div>
+        <div class="preset-btns">
+          <button class="preset-btn" onclick="setPreset(500000,8.5,5)">🚗 Car ₹5L/5yr</button>
+          <button class="preset-btn" onclick="setPreset(3000000,8.5,20)">🏠 Home ₹30L/20yr</button>
+          <button class="preset-btn" onclick="setPreset(500000,12,3)">💼 Personal ₹5L/3yr</button>
+        </div>
+        <div class="preset-label" style="margin-top:4px;">Use a Bank's Rate</div>
+        <select class="bank-picker" id="bankRatePicker" onchange="applyBankRate()">
+          <option value="">— Pick bank &amp; loan type —</option>
+          <optgroup label="🏠 Home Loan">
+            <option value="8.25">SBI Home Loan (8.25%)</option>
+            <option value="7.90">HDFC Bank Home Loan (7.90%)</option>
+            <option value="8.75">ICICI Bank Home Loan (8.75%)</option>
+            <option value="8.75">Axis Bank Home Loan (8.75%)</option>
+            <option value="7.45">Bank of Baroda Home Loan (7.45%)</option>
+            <option value="7.45">PNB Home Loan (7.45%)</option>
+            <option value="8.50">Kotak Home Loan (8.50%)</option>
+            <option value="8.10">Union Bank Home Loan (8.10%)</option>
+            <option value="8.50">LIC Housing Finance (8.50%)</option>
+            <option value="8.50">PNB Housing Finance (8.50%)</option>
+          </optgroup>
+          <optgroup label="🚗 Car Loan">
+            <option value="8.75">SBI Car Loan (8.75%)</option>
+            <option value="9.40">HDFC Bank Car Loan (9.40%)</option>
+            <option value="8.50">ICICI Bank Car Loan (8.50%)</option>
+            <option value="9.00">Axis Bank Car Loan (9.00%)</option>
+            <option value="8.70">Bank of Baroda Car Loan (8.70%)</option>
+            <option value="8.90">Kotak Car Loan (8.90%)</option>
+          </optgroup>
+          <optgroup label="💼 Personal Loan">
+            <option value="10.50">SBI Personal Loan (10.50%)</option>
+            <option value="10.75">HDFC Personal Loan (10.75%)</option>
+            <option value="10.85">ICICI Personal Loan (10.85%)</option>
+            <option value="10.49">Axis Personal Loan (10.49%)</option>
+            <option value="11.00">Bajaj Finserv Personal (11.00%)</option>
+            <option value="10.99">Kotak Personal Loan (10.99%)</option>
+          </optgroup>
+          <optgroup label="🎓 Education Loan">
+            <option value="8.15">SBI Education Loan (8.15%)</option>
+            <option value="9.55">HDFC Credila (9.55%)</option>
+            <option value="9.50">Axis Bank Education (9.50%)</option>
+            <option value="9.00">Bank of Baroda Education (9.00%)</option>
+          </optgroup>
+        </select>
+      </div>
+      <!-- RESULTS -->
+      <div>
+        <div class="panel" style="margin-bottom:16px;">
+          <div class="panel-title">📋 EMI Breakdown</div>
+          <div class="emi-result-box">
+            <div class="emi-main">
+              <div class="emi-amount" id="emiResult">₹8,678</div>
+              <div class="emi-lbl">Monthly EMI</div>
+            </div>
+            <div class="donut-wrap">
+              <svg class="donut-svg" viewBox="0 0 130 130">
+                <circle class="donut-bg" cx="65" cy="65" r="45"/>
+                <circle class="donut-p" id="donut-p" cx="65" cy="65" r="45" stroke-dasharray="0 283" stroke-dashoffset="70.75" transform="rotate(-90 65 65)"/>
+                <circle class="donut-i" id="donut-i" cx="65" cy="65" r="45" stroke-dasharray="0 283" transform="rotate(-90 65 65)"/>
+                <text class="donut-txt" x="65" y="61" id="donut-pct" style="font-size:16px;font-weight:700;">—</text>
+                <text class="donut-txt" x="65" y="76" style="font-size:10px;fill:var(--dim);">interest</text>
+              </svg>
+            </div>
+            <div class="result-rows" id="emiDetails"></div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-title">📅 Amortisation Schedule</div>
+          <div class="schedule-toggle" onclick="toggleSchedule()">
+            <span id="scheduleToggleTxt">▶ Show Year-wise Breakdown</span>
+          </div>
+          <div class="sched-table" id="scheduleTable">
+            <table>
+              <thead><tr><th>Year</th><th>Principal</th><th>Interest</th><th>Balance</th></tr></thead>
+              <tbody id="scheduleBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ PAGE: ELIGIBILITY ═══ -->
+<div class="page" id="page-eligibility">
+  <div class="elig-page">
+    <div class="page-header">
+      <div class="page-eyebrow">Check Eligibility</div>
+      <h1 class="page-h1" id="eligH1">Loan <span class="hl">Eligibility Checker</span></h1>
+      <p class="page-sub">Enter your details to see your estimated maximum loan amount, the rate you'd get, and which banks you likely qualify at. No data is stored.</p>
+    </div>
+    <div class="elig-form-card">
+      <div class="elig-grid">
+        <div class="elig-field"><label>Monthly Income (Net) ₹</label><input type="number" id="e-income" placeholder="e.g. 80000" min="10000"></div>
+        <div class="elig-field"><label>Existing Monthly EMIs ₹</label><input type="number" id="e-emi" placeholder="0 if none" min="0" value="0"></div>
+      </div>
+      <div class="elig-grid">
+        <div class="elig-field"><label>CIBIL / Credit Score</label>
+          <select id="e-cibil">
+            <option value="">Select score range</option>
+            <option value="750">750 and above (Excellent)</option>
+            <option value="700">700 – 749 (Good)</option>
+            <option value="650">650 – 699 (Average)</option>
+            <option value="600">Below 650 (Poor)</option>
+          </select>
+        </div>
+        <div class="elig-field"><label>Employment Type</label>
+          <select id="e-emp">
+            <option value="">Select type</option>
+            <option value="salaried">Salaried (Private / Govt)</option>
+            <option value="self">Self-Employed / Business</option>
+            <option value="nri">NRI</option>
+            <option value="pension">Pensioner</option>
+          </select>
+        </div>
+      </div>
+      <div class="elig-grid">
+        <div class="elig-field"><label>Loan Type</label>
+          <select id="e-loantype">
+            <option value="home">Home Loan</option>
+            <option value="car">Car Loan</option>
+            <option value="personal">Personal Loan</option>
+            <option value="education">Education Loan</option>
+            <option value="lap">Loan Against Property</option>
+            <option value="business">Business Loan</option>
+          </select>
+        </div>
+        <div class="elig-field"><label>Preferred Tenure (Years)</label>
+          <select id="e-tenure">
+            <option value="5">5 Years</option><option value="10">10 Years</option>
+            <option value="15">15 Years</option><option value="20" selected>20 Years</option>
+            <option value="25">25 Years</option><option value="30">30 Years</option>
+          </select>
+        </div>
+      </div>
+      <button class="gold-btn" id="eligBtn" onclick="checkEligibility()">Check My Eligibility →</button>
+    </div>
+
+    <div class="elig-results" id="eligResults">
+      <div class="elig-summary-box">
+        <div class="elig-max" id="eligMaxLoan">—</div>
+        <div class="elig-max-lbl">Estimated Maximum Loan Amount</div>
+        <div class="elig-note-text" id="eligNote">Based on 50% FOIR rule</div>
+      </div>
+      <div style="font-size:0.8rem;color:var(--dim2);margin-bottom:14px;font-weight:600;" id="eligSubtitle"></div>
+      <div class="elig-bank-rows" id="eligBankList"></div>
+      <div style="margin-top:16px;padding:14px;background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.15);border-radius:10px;font-size:0.77rem;color:var(--dim2);line-height:1.7;">
+        ⚠️ <strong style="color:var(--cream)">Disclaimer:</strong> Indicative estimates only. Actual eligibility depends on employer, property, existing liabilities and bank policy. Apply directly to your chosen bank for accurate assessment.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ PAGE: COMPARE ═══ -->
+<div class="page" id="page-compare">
+  <div class="compare-page">
+    <div class="page-header">
+      <div class="page-eyebrow">Side by Side</div>
+      <h1 class="page-h1" id="compareH1">Compare <span class="hl">Banks</span></h1>
+      <p class="page-sub">Select up to 3 banks and a loan type to compare rates, LTV, tenure, processing fees and prepayment charges.</p>
+    </div>
+    <div class="compare-selectors">
+      <select class="cmp-sel" id="cmp-loan" onchange="renderCompare()">
+        <option value="home">🏠 Home Loan</option>
+        <option value="car">🚗 Car Loan</option>
+        <option value="personal">💼 Personal Loan</option>
+        <option value="lap">🔑 Loan Against Property</option>
+        <option value="business">🏭 Business Loan</option>
+        <option value="usedcar">🚙 Used Car Loan</option>
+      </select>
+      <select class="cmp-sel" id="cmp-b1" onchange="renderCompare()"><option value="">— Bank 1 —</option></select>
+      <select class="cmp-sel" id="cmp-b2" onchange="renderCompare()"><option value="">— Bank 2 —</option></select>
+      <select class="cmp-sel" id="cmp-b3" onchange="renderCompare()"><option value="">— Bank 3 —</option></select>
+    </div>
+    <div id="compareOutput"></div>
+  </div>
+</div>
+
+<!-- ═══ PAGE: SHARE ═══ -->
+<div class="page" id="page-whatsapp">
+  <div class="share-page">
+    <div class="page-header">
+      <div class="page-eyebrow">Share</div>
+      <h1 class="page-h1" id="shareH1">Share &amp; <span class="hl">WhatsApp</span></h1>
+      <p class="page-sub">Generate a shareable summary of rates or your EMI calculation to send to family, a CA, or anyone helping with your loan decision.</p>
+    </div>
+
+    <div class="share-card">
+      <div class="share-card-title">📊 Share Rate Comparison</div>
+      <select class="share-sel" id="sh-loantype" onchange="genRateMsg()">
+        <option value="home">🏠 Home Loan Rates</option>
+        <option value="car">🚗 Car Loan Rates</option>
+        <option value="personal">💼 Personal Loan Rates</option>
+        <option value="lap">🔑 Loan Against Property</option>
+        <option value="business">🏭 Business Loan</option>
+        <option value="usedcar">🚙 Used Car Loan</option>
+      </select>
+      <div class="share-preview" id="rateSharePreview"></div>
+      <div class="share-btns">
+        <a class="wa-btn" id="waRateBtn" href="#" target="_blank">💬 Share on WhatsApp</a>
+        <button class="copy-btn" onclick="copyText('rateSharePreview')">📋 Copy</button>
+      </div>
+    </div>
+
+    <div class="share-card">
+      <div class="share-card-title">🧮 Share EMI Calculation</div>
+      <div class="share-inputs">
+        <input class="share-input" type="number" id="sh-amt" placeholder="Loan Amount ₹" oninput="genEmiMsg()" value="1000000">
+        <input class="share-input" type="number" id="sh-rate" placeholder="Rate % p.a." oninput="genEmiMsg()" value="8.5" step="0.25">
+        <input class="share-input" type="number" id="sh-yr" placeholder="Years" oninput="genEmiMsg()" value="20">
+      </div>
+      <div class="share-preview" id="emiSharePreview"></div>
+      <div class="share-btns">
+        <a class="wa-btn" id="waEmiBtn" href="#" target="_blank">💬 Share on WhatsApp</a>
+        <button class="copy-btn" onclick="copyText('emiSharePreview')">📋 Copy</button>
+      </div>
+    </div>
+
+    <div class="share-card">
+      <div class="share-card-title">🌐 Share LoanVault</div>
+      <p style="font-size:0.82rem;color:var(--dim2);margin-bottom:14px;line-height:1.6;">Share this tool with friends and family who are planning to take a loan.</p>
+      <div class="share-btns">
+        <a class="wa-btn" href="https://wa.me/?text=Check%20out%20LoanVault%20-%20All%20Indian%20bank%20loan%20portals%2C%20EMI%20calculator%20and%20interest%20rates%20in%20one%20place!" target="_blank">💬 Share LoanVault</a>
+        <button class="copy-btn" onclick="navigator.clipboard.writeText('LoanVault - All Indian bank loan portals, EMI calculator & interest rates in one place!').then(()=>alert('Copied!'))">📋 Copy</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModalDirect()">✕</button>
+    <div id="modalContent"></div>
+  </div>
+</div>
+
+<!-- PWA BANNER -->
+<div class="pwa-banner" id="pwaBanner">
+  <span style="font-size:28px;">🏦</span>
+  <div class="pwa-text"><strong>Add LoanVault to Home Screen</strong><span>Access portals &amp; rates offline</span></div>
+  <button class="pwa-install" onclick="installPWA()">Install</button>
+  <button class="pwa-x" onclick="document.getElementById('pwaBanner').classList.remove('show')">✕</button>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-wordmark">Loan<em>Vault</em> India</div>
+  Independent directory — we do not store credentials or personal data. Rates are indicative; verify with your bank.<br>
+  <a href="#" onclick="document.getElementById('suggestSection').scrollIntoView({behavior:'smooth'});showPage('portals');return false">Suggest a Bank</a> ·
+  <a href="#">Report Broken Link</a> · Built for India 🇮🇳 · Updated March 2026
+</footer>
+
+<script>
+// ── BANK LOGOS via Clearbit CDN (real company logos) ──
+// Format: https://logo.clearbit.com/domain.com
+// Fallback: colored text block
+const LOGOS = {
+  SBI:    {img:'https://logo.clearbit.com/sbi.co.in',         bg:'#1a3565'},
+  BOB:    {img:'https://logo.clearbit.com/bankofbaroda.in',   bg:'#f47920'},
+  PNB:    {img:'https://logo.clearbit.com/pnbindia.in',       bg:'#e31e2d'},
+  CB:     {img:'https://logo.clearbit.com/canarabank.com',    bg:'#f7941d'},
+  UBI:    {img:'https://logo.clearbit.com/unionbankofindia.co.in', bg:'#003399'},
+  BOI:    {img:'https://logo.clearbit.com/bankofindia.co.in', bg:'#1e3c8c'},
+  CBI:    {img:'https://logo.clearbit.com/centralbankofindia.co.in', bg:'#dc1f26'},
+  IB:     {img:'https://logo.clearbit.com/indianbank.in',     bg:'#003366'},
+  UCO:    {img:'https://logo.clearbit.com/ucobankbankingservices.com', bg:'#003f7d'},
+  HDFC:   {img:'https://logo.clearbit.com/hdfcbank.com',      bg:'#003580'},
+  ICICI:  {img:'https://logo.clearbit.com/icicibank.com',     bg:'#f26522'},
+  AXIS:   {img:'https://logo.clearbit.com/axisbank.com',      bg:'#97144d'},
+  Kotak:  {img:'https://logo.clearbit.com/kotak.com',         bg:'#ee3131'},
+  IIB:    {img:'https://logo.clearbit.com/indusind.com',      bg:'#0070c0'},
+  YES:    {img:'https://logo.clearbit.com/yesbank.in',        bg:'#0c508b'},
+  IDFC:   {img:'https://logo.clearbit.com/idfcfirstbank.com', bg:'#512d8a'},
+  FED:    {img:'https://logo.clearbit.com/federalbank.co.in', bg:'#003d8f'},
+  SIB:    {img:'https://logo.clearbit.com/southindianbank.com', bg:'#7a3b2e'},
+  BFL:    {img:'https://logo.clearbit.com/bajajfinserv.in',   bg:'#006db7'},
+  TATA:   {img:'https://logo.clearbit.com/tatacapital.com',   bg:'#003366'},
+  MMFL:   {img:'https://logo.clearbit.com/mahindrafinance.com', bg:'#e31e24'},
+  LTF:    {img:'https://logo.clearbit.com/ltfs.com',          bg:'#b71c1c'},
+  MFL:    {img:'https://logo.clearbit.com/muthootfinance.com', bg:'#8c6d00'},
+  SFL:    {img:'https://logo.clearbit.com/shriramfinance.in', bg:'#003a78'},
+  HDB:    {img:'https://logo.clearbit.com/hdbfs.com',         bg:'#5a00b0'},
+  LICHFL: {img:'https://logo.clearbit.com/lichousing.com',    bg:'#006a4e'},
+  PNBHF:  {img:'https://logo.clearbit.com/pnbhousing.com',    bg:'#6d1a80'},
+  SCL:    {img:'https://logo.clearbit.com/sammaancapital.in', bg:'#c0392b'},
+  AAVAS:  {img:'https://logo.clearbit.com/aavas.in',          bg:'#1a5276'},
+};
+
+function bankLogoEl(key, size=54, radius=12) {
+  const l = LOGOS[key];
+  if (!l) return `<div style="width:${size}px;height:${size}px;border-radius:${radius}px;background:#252a3a;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:11px;color:#888;font-weight:700;">${key}</div>`;
+  return `<div style="width:${size}px;height:${size}px;border-radius:${radius}px;background:${l.bg};display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0;">
+    <img src="${l.img}" alt="${key}" width="${size-10}" height="${size-10}" style="object-fit:contain;"
+      onerror="this.parentElement.innerHTML='<span style=\\'font-family:JetBrains Mono,monospace;font-weight:700;font-size:11px;color:#fff;\\'>${key}</span>'">
+  </div>`;
+}
+
+// ═══════════════════════════════════════════════
+// BANK DATA
+// ═══════════════════════════════════════════════
+const banks=[
+  {name:"State Bank of India",short:"SBI",logoKey:"SBI",type:"govt",url:"https://retail.sbi.bank.in/retail/login.htm",loans:["home","car","personal","education","business"],docs:["Statement","Schedule","Sanction","NOC","Int. Cert."],steps:[{t:"Open Portal",d:"Visit <strong>retail.sbi.bank.in</strong> and click <strong>Continue to Login</strong>."},{t:"Enter Credentials",d:"Type your <strong>Username</strong>, <strong>Password</strong> and CAPTCHA."},{t:"Go to Loans",d:"From dashboard click <strong>e-Services → Loan Account</strong>."},{t:"Download Statement",d:"Click loan account → <strong>Loan Account Statement</strong> → set date range → <strong>Download PDF</strong>."},{t:"Repayment Schedule",d:"Under loan account click <strong>Repayment Schedule</strong> to view and save."},{t:"Interest Certificate",d:"Go to <strong>Accounts → Interest Certificate</strong>, pick financial year, download for IT-24B."}]},
+  {name:"Bank of Baroda",short:"BOB",logoKey:"BOB",type:"govt",url:"https://feba.bobibanking.com/corp/AuthenticationController?FORMSGROUP_ID__=AuthenticationFG&__START_TRAN_FLAG__=Y&FG_BUTTONS__=LOAD&ACTION.LOAD=Y&AuthenticationFG.LOGIN_FLAG=1&BANK_ID=012",loans:["home","car","personal","education","business"],docs:["Statement","Schedule","NOC"],steps:[{t:"Login",d:"Go to <strong>feba.bobibanking.com</strong> and log in with User ID and Password."},{t:"Navigate to Loans",d:"Click <strong>Loans</strong> in the top menu, select your loan account."},{t:"Statement",d:"Click <strong>Account Statement</strong>, set date range, download PDF."},{t:"Repayment Schedule",d:"Click <strong>View Repayment Schedule</strong> and export as PDF."}]},
+  {name:"Punjab National Bank",short:"PNB",logoKey:"PNB",type:"govt",url:"https://ibanking.pnb.bank.in/",loans:["home","car","personal","education","business"],docs:["Statement","Schedule","Sanction"],steps:[{t:"Login",d:"Visit <strong>ibanking.pnb.bank.in</strong> and log in."},{t:"Loan Accounts",d:"Go to <strong>Account Summary → Loan Accounts</strong>."},{t:"Statement",d:"Click loan account → <strong>Account Statement</strong> and download."},{t:"EMI Schedule",d:"Click <strong>EMI Schedule</strong> to view and download."}]},
+  {name:"Canara Bank",short:"CB",logoKey:"CB",type:"govt",url:"https://online.canarabank.bank.in/",loans:["home","car","personal","education","business"],docs:["Statement","Schedule"],steps:[{t:"Login",d:"Visit <strong>online.canarabank.bank.in</strong> and enter User ID, Password and CAPTCHA."},{t:"Loan Account",d:"Select your <strong>Loan Account</strong> from the list."},{t:"Download",d:"Click <strong>Account Activity</strong> for statement. For schedule go to <strong>Loan Schedules</strong>."}]},
+  {name:"Union Bank of India",short:"UBI",logoKey:"UBI",type:"govt",url:"https://www.unionbankonline.bank.in/",loans:["home","car","personal","education","business"],docs:["Statement","Schedule","NOC"],steps:[{t:"Login",d:"Visit <strong>unionbankonline.bank.in</strong> and log in."},{t:"Loan Account",d:"Navigate to <strong>Accounts → Loan Account</strong>."},{t:"Documents",d:"Select loan account → <strong>Statement / Schedule</strong> → download PDF."}]},
+  {name:"Bank of India",short:"BOI",logoKey:"BOI",type:"govt",url:"https://uaibconnect.bankofindia.bank.in/omnineo",loans:["home","car","personal","education"],docs:["Statement","Schedule"],steps:[{t:"Login (Omni Neo)",d:"Visit <strong>uaibconnect.bankofindia.bank.in/omnineo</strong> — BOI's new platform."},{t:"Enter credentials",d:"Select <strong>Retail</strong> login. Enter User ID, Password and CAPTCHA."},{t:"Loan Account",d:"Click <strong>Accounts → Loan Accounts</strong>."},{t:"Download",d:"Choose loan and click <strong>Account Statement</strong> or <strong>Repayment Schedule</strong>."}]},
+  {name:"Central Bank of India",short:"CBI",logoKey:"CBI",type:"govt",url:"https://www.centralbank.net.in/",loans:["home","car","personal","education"],docs:["Statement","Schedule"],steps:[{t:"Login",d:"Visit <strong>centralbank.net.in</strong> and click <strong>Personal Internet Banking</strong>."},{t:"Credentials",d:"Enter CIF (User ID) and OTP."},{t:"Statement",d:"Select loan account → <strong>Account Statement</strong> → set date range."}]},
+  {name:"Indian Bank",short:"IB",logoKey:"IB",type:"govt",url:"https://netbanking.indianbank.bank.in/",loans:["home","car","personal","education"],docs:["Statement","Schedule"],steps:[{t:"Login",d:"Go to <strong>netbanking.indianbank.bank.in</strong> and log in."},{t:"Loan Section",d:"Click <strong>Accounts → Loan Account</strong>."},{t:"Download",d:"Choose loan account → Account Statement or Repayment Schedule."}]},
+  {name:"UCO Bank",short:"UCO",logoKey:"UCO",type:"govt",url:"https://www.ucoebanking.in/",loans:["home","car","personal"],docs:["Statement","Schedule","Int. Cert."],steps:[{t:"Login",d:"Visit <strong>ucoebanking.in</strong> → Retail Login."},{t:"Loan Account",d:"Go to <strong>Accounts → Loan Account Details</strong>."},{t:"Download",d:"Select <strong>Account Statement</strong> or <strong>Loan Interest Certificate</strong>."}]},
+  {name:"HDFC Bank",short:"HDFC",logoKey:"HDFC",type:"pvt",url:"https://netbanking.hdfcbank.com/netbanking/",loans:["home","car","personal","education","business"],docs:["Statement","Schedule","Sanction","NOC","Welcome","Int. Cert."],steps:[{t:"Login",d:"Go to <strong>netbanking.hdfcbank.com</strong> and enter Customer ID and Password."},{t:"Go to Loans",d:"Click <strong>Loans</strong> in the top menu. Select your loan account."},{t:"Statement",d:"Click <strong>Loan Account Statement</strong> → set date range → <strong>Download PDF</strong>."},{t:"Schedule",d:"Under loan section click <strong>Amortisation Schedule</strong> and download."},{t:"Interest Certificate",d:"Go to <strong>Loans → Interest Certificate</strong>, select FY, download for IT-24B."},{t:"NOC",d:"After closure go to <strong>Service Requests → NOC for Loan</strong>."}]},
+  {name:"ICICI Bank",short:"ICICI",logoKey:"ICICI",type:"pvt",url:"https://retailnetbanking.icici.bank.in/",loans:["home","car","personal","education","business"],docs:["Statement","Schedule","Sanction","NOC","Int. Cert."],steps:[{t:"Login",d:"Visit <strong>retailnetbanking.icici.bank.in</strong> and enter User ID and Password."},{t:"Loan Accounts",d:"From home screen click <strong>Loan Accounts</strong>."},{t:"Statement",d:"Click <strong>Account Statement</strong>, select date range, download PDF."},{t:"Schedule",d:"Click <strong>Loan Repayment / Amortization Schedule</strong> to download."},{t:"Interest Certificate",d:"Click <strong>Provisional Interest Certificate</strong> for the FY needed."}]},
+  {name:"Axis Bank",short:"AXIS",logoKey:"AXIS",type:"pvt",url:"https://omni.axisbank.co.in/axisretailbanking/",loans:["home","car","personal","education","business"],docs:["Statement","Schedule","NOC","Int. Cert."],steps:[{t:"Login",d:"Go to <strong>omni.axisbank.co.in/axisretailbanking</strong> and log in."},{t:"Loans Section",d:"Click <strong>Loans</strong> from the main menu."},{t:"Download",d:"Click <strong>Account Statement</strong> or <strong>Repayment Schedule</strong>."},{t:"Interest Certificate",d:"Go to <strong>Loans → Interest Certificate</strong>, select year."}]},
+  {name:"Kotak Mahindra Bank",short:"Kotak",logoKey:"Kotak",type:"pvt",url:"https://netbanking.kotak.bank.in/knb2/",loans:["home","car","personal","business"],docs:["Statement","Schedule","NOC","Int. Cert."],steps:[{t:"Login",d:"Visit <strong>netbanking.kotak.bank.in</strong>, enter CRN/Username and password."},{t:"Loans",d:"Click <strong>Loans</strong> from the navigation menu."},{t:"Documents",d:"Use <strong>Account Statement</strong> or <strong>Amortisation Schedule</strong>."}]},
+  {name:"IndusInd Bank",short:"IIB",logoKey:"IIB",type:"pvt",url:"https://www.indusind.bank.in/in/en/personal/login.html",loans:["home","car","personal","business"],docs:["Statement","Schedule","Sanction"],steps:[{t:"Login",d:"Visit <strong>indusind.bank.in</strong> → Login → IndusNet."},{t:"Loan Section",d:"Navigate to <strong>Accounts → Loan Accounts</strong>."},{t:"Download",d:"Select loan → Account Statement or Repayment Schedule."}]},
+  {name:"Yes Bank",short:"YES",logoKey:"YES",type:"pvt",url:"https://netbanking.yesbank.co.in/netbanking/",loans:["home","car","personal","business"],docs:["Statement","Schedule","Int. Cert."],steps:[{t:"Login",d:"Go to <strong>netbanking.yesbank.co.in/netbanking</strong>."},{t:"Navigate",d:"Click <strong>Accounts → Loan Accounts</strong>."},{t:"Download",d:"Select loan account → Account Statement or Schedule."}]},
+  {name:"IDFC FIRST Bank",short:"IDFC",logoKey:"IDFC",type:"pvt",url:"https://my.idfcfirstbank.com/login",loans:["home","car","personal","business"],docs:["Statement","Schedule","NOC","Int. Cert."],steps:[{t:"Login",d:"Visit <strong>my.idfcfirstbank.com</strong> and log in."},{t:"Navigate",d:"Click <strong>Loans</strong> from the menu."},{t:"Documents",d:"Select <strong>Statement</strong> or <strong>Repayment Schedule</strong>."}]},
+  {name:"Federal Bank",short:"FED",logoKey:"FED",type:"pvt",url:"https://www.fednetbank.com/",loans:["home","car","personal"],docs:["Statement","Schedule","Int. Cert."],steps:[{t:"Login",d:"Visit <strong>fednetbank.com</strong> → Continue to Login → Personal Banking."},{t:"Credentials",d:"Enter User ID, Login Password and CAPTCHA."},{t:"Download",d:"Accounts → Loan Accounts → Statement or Repayment Schedule."}]},
+  {name:"South Indian Bank",short:"SIB",logoKey:"SIB",type:"pvt",url:"https://www.southindianbank.com/content/netbanking/home.aspx",loans:["home","car","personal"],docs:["Statement","Schedule"],steps:[{t:"Login",d:"Visit <strong>southindianbank.com</strong> → Net Banking Login."},{t:"Loan Section",d:"Click <strong>Accounts → Loan Account</strong>."},{t:"Download",d:"Choose loan account → Account Statement or Repayment Schedule."}]},
+  {name:"Bajaj Finserv",short:"BFL",logoKey:"BFL",type:"nbfc",url:"https://www.bajajfinserv.in/myaccountlogin/",loans:["home","car","personal","business"],docs:["Statement","Schedule","Sanction","NOC","Welcome","Int. Cert."],steps:[{t:"Login",d:"Visit <strong>bajajfinserv.in/myaccountlogin</strong> — enter registered mobile."},{t:"OTP",d:"Enter OTP and Date of Birth."},{t:"Loans",d:"Click <strong>Loan Account</strong> from the dashboard."},{t:"Statement",d:"Click <strong>Download Statement</strong>."},{t:"Schedule",d:"Click <strong>View Repayment Schedule</strong>."},{t:"NOC",d:"After closure → <strong>Service Requests → NOC</strong>."},{t:"Sanction Letter",d:"Under loan details → <strong>Documents → Sanction Letter</strong>."}]},
+  {name:"Tata Capital",short:"TATA",logoKey:"TATA",type:"nbfc",url:"https://www.tatacapital.com/customer-portal.html",loans:["home","car","personal","business"],docs:["Statement","Schedule","Sanction","NOC"],steps:[{t:"Login",d:"Visit <strong>tatacapital.com/customer-portal</strong> — log in with mobile/email and OTP."},{t:"Documents",d:"Select loan account → download Statement, Amortisation Schedule or NOC."}]},
+  {name:"Mahindra Finance",short:"MMFL",logoKey:"MMFL",type:"nbfc",url:"https://www.myaccountdata.com/en/mahindrafinance/Home",loans:["car","personal","business"],docs:["Statement","Schedule","NOC"],steps:[{t:"Login",d:"Visit <strong>myaccountdata.com/en/mahindrafinance</strong>."},{t:"Sign In",d:"Enter account number and registered mobile OTP."},{t:"Documents",d:"Download Statement, Schedule or request NOC."}]},
+  {name:"L&T Finance",short:"LTF",logoKey:"LTF",type:"nbfc",url:"https://selfhelp.ltfs.com/ServicingApp/login?ID=22",loans:["home","car","personal","business"],docs:["Statement","Schedule","NOC"],steps:[{t:"Login",d:"Visit <strong>selfhelp.ltfs.com</strong> — log in with Loan A/C No. and OTP."},{t:"Statement",d:"Click <strong>Account Statement</strong> — PDF password: <em>DDMMYYYY + last 4 digits mobile</em>."},{t:"Schedule",d:"Click <strong>Repayment Schedule</strong> to view and download."}]},
+  {name:"Muthoot Finance",short:"MFL",logoKey:"MFL",type:"nbfc",url:"https://www.muthootfinance.com/user/login",loans:["personal","home"],docs:["Statement","Schedule","NOC"],steps:[{t:"Login",d:"Visit <strong>muthootfinance.com/user/login</strong>."},{t:"Account",d:"View loan account summary."},{t:"Documents",d:"Download Account Statement or request NOC."}]},
+  {name:"Shriram Finance",short:"SFL",logoKey:"SFL",type:"nbfc",url:"https://www.shriramfinance.in/customer-portal",loans:["car","personal","business"],docs:["Statement","Schedule","NOC"],steps:[{t:"Login",d:"Visit <strong>shriramfinance.in/customer-portal</strong> — log in with mobile."},{t:"Documents",d:"Download Account Statement, Repayment Schedule or apply for NOC."}]},
+  {name:"HDB Financial",short:"HDB",logoKey:"HDB",type:"nbfc",url:"https://customerportalweb.hdbfs.com/",loans:["personal","car","business"],docs:["Statement","Schedule","Sanction"],steps:[{t:"Login",d:"Visit <strong>customerportalweb.hdbfs.com</strong> — enter mobile and OTP."},{t:"Documents",d:"Click loan account → download Statement or Repayment Schedule."}]},
+  {name:"LIC Housing Finance",short:"LICHFL",logoKey:"LICHFL",type:"hfc",url:"https://customer.lichousing.com/",loans:["home"],docs:["Statement","Schedule","Int. Cert.","NOC"],steps:[{t:"Register/Login",d:"Visit <strong>customer.lichousing.com</strong>. First-time: click <strong>Register Here</strong> — enter Loan A/C No. and DOB."},{t:"Dashboard",d:"Loan summary shown with next 12 months EMI schedule."},{t:"Interest Certificate",d:"Click <strong>Repayment Certificate</strong> for IT returns."},{t:"Statement",d:"Click <strong>Loan Statement</strong> tab."},{t:"NOC",d:"After full repayment → <strong>Service Requests → NOC</strong>."}]},
+  {name:"PNB Housing Finance",short:"PNBHF",logoKey:"PNBHF",type:"hfc",url:"https://customerservice.pnbhousing.com/myportal/pnbhfllogin",loans:["home"],docs:["Statement","Schedule","Int. Cert.","NOC"],steps:[{t:"Login",d:"Visit <strong>customerservice.pnbhousing.com/myportal/pnbhfllogin</strong> — mobile + OTP."},{t:"Loan Account",d:"Select home loan from dashboard."},{t:"Documents",d:"Click Statement / Schedule / Interest Certificate."},{t:"NOC",d:"Post closure → Service Requests → NOC."}]},
+  {name:"Sammaan Capital",short:"SCL",logoKey:"SCL",type:"hfc",url:"https://login.indiabullshomeloans.com/edisha/",loans:["home"],docs:["Statement","Schedule","NOC"],steps:[{t:"Note",d:"Indiabulls Housing Finance rebranded as <strong>Sammaan Capital Ltd.</strong>"},{t:"Login",d:"Visit <strong>login.indiabullshomeloans.com/edisha</strong> — loan account + OTP."},{t:"Documents",d:"Go to <strong>My Documents</strong>."},{t:"NOC",d:"Request from <strong>Service Requests</strong> after closure."}]},
+  {name:"Aavas Financiers",short:"AAVAS",logoKey:"AAVAS",type:"hfc",url:"https://www.aavas.in/contact-us",loans:["home"],docs:["Statement","Schedule","Int. Cert."],steps:[{t:"Web Login",d:"Visit <strong>aavas.in</strong> — last 6 digits of loan number + OTP."},{t:"Use App",d:"<strong>Aavas Customer App</strong> (Android/iOS) offers full access."},{t:"Documents",d:"Download Statement, Repayment Schedule or Interest Certificate."}]},
+];
+
+// RATES DATA (from previous version — unchanged)
+const ratesData={home:[{name:"State Bank of India",short:"SBI",logoKey:"SBI",type:"govt",min:"8.25%",max:"9.65%",note:"Floating, EBLR-linked. Women borrowers get 0.05% concession. Best for salaried with 750+ CIBIL.",badge:"rt-low"},{name:"Bank of Baroda",short:"BOB",logoKey:"BOB",type:"govt",min:"7.45%",max:"9.95%",note:"Repo-linked. Lowest in PSU segment for good profiles.",badge:"rt-low"},{name:"Punjab National Bank",short:"PNB",logoKey:"PNB",type:"govt",min:"7.45%",max:"9.75%",note:"PNB Max Saver and Pride schemes. RLLR-linked.",badge:"rt-low"},{name:"Canara Bank",short:"CB",logoKey:"CB",type:"govt",min:"8.10%",max:"10.30%",note:"Canara Home Loan. Floating rate linked to repo.",badge:"rt-low"},{name:"Union Bank",short:"UBI",logoKey:"UBI",type:"govt",min:"8.10%",max:"10.50%",note:"Union Home scheme. EBLR-linked.",badge:"rt-low"},{name:"HDFC Bank",short:"HDFC",logoKey:"HDFC",type:"pvt",min:"7.90%",max:"9.40%",note:"Benchmark-linked floating. Popular for salaried and premium properties.",badge:"rt-low"},{name:"ICICI Bank",short:"ICICI",logoKey:"ICICI",type:"pvt",min:"8.75%",max:"9.85%",note:"Repo-linked. Credit-score-based pricing.",badge:"rt-mid"},{name:"Axis Bank",short:"AXIS",logoKey:"AXIS",type:"pvt",min:"8.75%",max:"9.65%",note:"RLLR-linked. Rate reset quarterly.",badge:"rt-mid"},{name:"Kotak Mahindra",short:"Kotak",logoKey:"Kotak",type:"pvt",min:"8.50%",max:"9.50%",note:"Risk-based pricing. Competitive for 750+ CIBIL.",badge:"rt-mid"},{name:"LIC HFL",short:"LICHFL",logoKey:"LICHFL",type:"hfc",min:"8.50%",max:"10.75%",note:"PLR-linked. Popular for affordable housing.",badge:"rt-mid"},{name:"PNB Housing",short:"PNBHF",logoKey:"PNBHF",type:"hfc",min:"8.50%",max:"11.50%",note:"Fixed and floating options.",badge:"rt-mid"},{name:"Bajaj HFL",short:"BFL",logoKey:"BFL",type:"nbfc",min:"8.25%",max:"14.00%",note:"Wide range. Good for self-employed.",badge:"rt-mid"}],car:[{name:"State Bank of India",short:"SBI",logoKey:"SBI",type:"govt",min:"8.75%",max:"14.75%",note:"Rate depends on income, CIBIL, vehicle type.",badge:"rt-low"},{name:"Bank of Baroda",short:"BOB",logoKey:"BOB",type:"govt",min:"8.70%",max:"12.95%",note:"BOB Combo Car Loan. Repo-linked.",badge:"rt-low"},{name:"HDFC Bank",short:"HDFC",logoKey:"HDFC",type:"pvt",min:"9.40%",max:"13.90%",note:"Fixed rate. Pre-approved customers get lowest.",badge:"rt-mid"},{name:"ICICI Bank",short:"ICICI",logoKey:"ICICI",type:"pvt",min:"8.50%",max:"13.50%",note:"Fixed rate. Min 8.50% for new cars.",badge:"rt-low"},{name:"Axis Bank",short:"AXIS",logoKey:"AXIS",type:"pvt",min:"9.00%",max:"13.40%",note:"Risk-based fixed rate.",badge:"rt-mid"},{name:"Kotak Mahindra",short:"Kotak",logoKey:"Kotak",type:"pvt",min:"8.90%",max:"13.50%",note:"Competitive for new vehicles.",badge:"rt-mid"},{name:"IndusInd Bank",short:"IIB",logoKey:"IIB",type:"pvt",min:"9.50%",max:"14.50%",note:"Flexible step-up and balloon EMI schemes.",badge:"rt-mid"},{name:"Mahindra Finance",short:"MMFL",logoKey:"MMFL",type:"nbfc",min:"11.00%",max:"18.00%",note:"Rural and semi-urban buyers. CVs and tractors.",badge:"rt-high"},{name:"Shriram Finance",short:"SFL",logoKey:"SFL",type:"nbfc",min:"11.50%",max:"19.00%",note:"Primarily used commercial vehicles.",badge:"rt-high"}],personal:[{name:"State Bank of India",short:"SBI",logoKey:"SBI",type:"govt",min:"10.50%",max:"13.00%",note:"Xpress Credit and Pension Loan.",badge:"rt-mid"},{name:"Punjab National Bank",short:"PNB",logoKey:"PNB",type:"govt",min:"10.40%",max:"14.50%",note:"Govt employees get 0.25%–0.75% concession.",badge:"rt-mid"},{name:"Canara Bank",short:"CB",logoKey:"CB",type:"govt",min:"10.95%",max:"14.00%",note:"Canara Personal Loan.",badge:"rt-mid"},{name:"HDFC Bank",short:"HDFC",logoKey:"HDFC",type:"pvt",min:"10.75%",max:"14.00%",note:"Fast approval, fully digital.",badge:"rt-mid"},{name:"ICICI Bank",short:"ICICI",logoKey:"ICICI",type:"pvt",min:"10.85%",max:"16.25%",note:"Instant disbursal for pre-approved.",badge:"rt-mid"},{name:"Axis Bank",short:"AXIS",logoKey:"AXIS",type:"pvt",min:"10.49%",max:"15.00%",note:"Competitive rates. Flexible tenures.",badge:"rt-mid"},{name:"Kotak Mahindra",short:"Kotak",logoKey:"Kotak",type:"pvt",min:"10.99%",max:"16.00%",note:"Instant for pre-approved customers.",badge:"rt-mid"},{name:"IDFC FIRST",short:"IDFC",logoKey:"IDFC",type:"pvt",min:"10.49%",max:"15.00%",note:"No prepayment charges.",badge:"rt-mid"},{name:"Bajaj Finserv",short:"BFL",logoKey:"BFL",type:"nbfc",min:"11.00%",max:"17.00%",note:"Instant disbursal. Flexi Loan option.",badge:"rt-mid"},{name:"Tata Capital",short:"TATA",logoKey:"TATA",type:"nbfc",min:"10.99%",max:"18.00%",note:"Quick processing. Self-employed eligible.",badge:"rt-mid"},{name:"HDB Financial",short:"HDB",logoKey:"HDB",type:"nbfc",min:"13.00%",max:"26.00%",note:"Wider profile acceptance.",badge:"rt-high"}],education:[{name:"State Bank of India",short:"SBI",logoKey:"SBI",type:"govt",min:"8.15%",max:"11.15%",note:"SBI Scholar Loan for IITs/IIMs at 8.15%.",badge:"rt-low"},{name:"Bank of Baroda",short:"BOB",logoKey:"BOB",type:"govt",min:"9.00%",max:"12.00%",note:"Special rates for premier institutions.",badge:"rt-mid"},{name:"Punjab National Bank",short:"PNB",logoKey:"PNB",type:"govt",min:"9.25%",max:"13.25%",note:"PNB Saraswati Scheme. Moratorium during study.",badge:"rt-mid"},{name:"Canara Bank",short:"CB",logoKey:"CB",type:"govt",min:"9.40%",max:"12.00%",note:"Vidya Turant Scheme.",badge:"rt-mid"},{name:"HDFC Credila",short:"HDFC",logoKey:"HDFC",type:"pvt",min:"9.55%",max:"13.00%",note:"India's first dedicated education loan company.",badge:"rt-mid"},{name:"Axis Bank",short:"AXIS",logoKey:"AXIS",type:"pvt",min:"9.50%",max:"14.75%",note:"Axis Bank Vidya Loan. Co-applicant required.",badge:"rt-mid"},{name:"IDFC FIRST",short:"IDFC",logoKey:"IDFC",type:"pvt",min:"9.75%",max:"14.00%",note:"Covers tuition, accommodation and living.",badge:"rt-mid"},{name:"Union Bank",short:"UBI",logoKey:"UBI",type:"govt",min:"8.30%",max:"11.20%",note:"Full moratorium during course period.",badge:"rt-low"}],commercial:[{name:"State Bank of India",short:"SBI",logoKey:"SBI",type:"govt",min:"9.35%",max:"11.80%",note:"MCLR-linked. Owner-occupied gets lowest rate. LTV 65%.",badge:"rt-low"},{name:"Bank of Baroda",short:"BOB",logoKey:"BOB",type:"govt",min:"8.90%",max:"12.50%",note:"Repo-linked. Warehouse and industrial slightly higher.",badge:"rt-low"},{name:"Punjab National Bank",short:"PNB",logoKey:"PNB",type:"govt",min:"9.00%",max:"12.00%",note:"RLLR-linked. Good for self-occupied offices.",badge:"rt-low"},{name:"Canara Bank",short:"CB",logoKey:"CB",type:"govt",min:"9.10%",max:"12.50%",note:"For shops, offices and warehouses. LTV 60%.",badge:"rt-low"},{name:"HDFC Bank",short:"HDFC",logoKey:"HDFC",type:"pvt",min:"9.50%",max:"13.30%",note:"Fixed rate 11.80–13.30%. Floating: Repo+3–4.5%. LTV 60%.",badge:"rt-mid"},{name:"ICICI Bank",short:"ICICI",logoKey:"ICICI",type:"pvt",min:"9.60%",max:"13.50%",note:"Industrial properties up to 10-yr tenure. LTV 50%.",badge:"rt-mid"},{name:"Axis Bank",short:"AXIS",logoKey:"AXIS",type:"pvt",min:"9.75%",max:"13.00%",note:"Longer tenure options. Self-occupied gets better rate.",badge:"rt-mid"},{name:"Kotak Mahindra",short:"Kotak",logoKey:"Kotak",type:"pvt",min:"10.00%",max:"13.50%",note:"Good for industrial sheds and office blocks.",badge:"rt-mid"},{name:"Bajaj Finserv",short:"BFL",logoKey:"BFL",type:"nbfc",min:"9.00%",max:"14.00%",note:"Fast processing. LTV up to 65%.",badge:"rt-mid"},{name:"Tata Capital",short:"TATA",logoKey:"TATA",type:"nbfc",min:"10.00%",max:"15.00%",note:"SME friendly. Quick sanction for clear-title.",badge:"rt-mid"},{name:"L&T Finance",short:"LTF",logoKey:"LTF",type:"nbfc",min:"10.50%",max:"16.00%",note:"Factory sheds, warehouses, industrial estates.",badge:"rt-high"}],business:[{name:"State Bank of India",short:"SBI",logoKey:"SBI",type:"govt",min:"10.00%",max:"14.00%",note:"SME Smart Score Loan. Collateral-free up to ₹50L.",badge:"rt-low"},{name:"Punjab National Bank",short:"PNB",logoKey:"PNB",type:"govt",min:"10.30%",max:"15.00%",note:"MSME. Lower rates for GST-registered. Mudra available.",badge:"rt-low"},{name:"Canara Bank",short:"CB",logoKey:"CB",type:"govt",min:"10.50%",max:"14.50%",note:"Collateral-free up to ₹10L under CGTMSE.",badge:"rt-low"},{name:"Bank of Baroda",short:"BOB",logoKey:"BOB",type:"govt",min:"10.00%",max:"14.00%",note:"Baroda Laghu Udyami Credit Card and term loan.",badge:"rt-low"},{name:"HDFC Bank",short:"HDFC",logoKey:"HDFC",type:"pvt",min:"10.75%",max:"22.50%",note:"Up to ₹75L. Fixed. Fast digital approval.",badge:"rt-mid"},{name:"ICICI Bank",short:"ICICI",logoKey:"ICICI",type:"pvt",min:"13.25%",max:"19.25%",note:"Up to ₹50L. Instant for pre-approved.",badge:"rt-mid"},{name:"Axis Bank",short:"AXIS",logoKey:"AXIS",type:"pvt",min:"15.00%",max:"19.25%",note:"Up to ₹75L. Collateral-free.",badge:"rt-high"},{name:"Kotak Mahindra",short:"Kotak",logoKey:"Kotak",type:"pvt",min:"11.00%",max:"17.00%",note:"OD facility also available.",badge:"rt-mid"},{name:"IDFC FIRST",short:"IDFC",logoKey:"IDFC",type:"pvt",min:"10.50%",max:"16.00%",note:"No prepayment charges. Up to ₹50L.",badge:"rt-mid"},{name:"Bajaj Finserv",short:"BFL",logoKey:"BFL",type:"nbfc",min:"14.00%",max:"23.00%",note:"Flexi Term Loan. CIBIL 685+ required.",badge:"rt-high"},{name:"Tata Capital",short:"TATA",logoKey:"TATA",type:"nbfc",min:"10.99%",max:"18.00%",note:"OD facility. Self-employed eligible.",badge:"rt-mid"},{name:"HDB Financial",short:"HDB",logoKey:"HDB",type:"nbfc",min:"13.00%",max:"26.00%",note:"Thin-credit MSMEs welcome.",badge:"rt-high"}],lap:[{name:"State Bank of India",short:"SBI",logoKey:"SBI",type:"govt",min:"10.10%",max:"11.65%",note:"MCLR-linked. LTV 65%. Max ₹7.5Cr. 15yr tenure.",badge:"rt-low"},{name:"Bank of Baroda",short:"BOB",logoKey:"BOB",type:"govt",min:"9.40%",max:"12.50%",note:"Repo-linked. Low processing fee.",badge:"rt-low"},{name:"Punjab National Bank",short:"PNB",logoKey:"PNB",type:"govt",min:"9.50%",max:"12.25%",note:"Both residential and commercial accepted.",badge:"rt-low"},{name:"Canara Bank",short:"CB",logoKey:"CB",type:"govt",min:"9.45%",max:"12.00%",note:"PLR-linked. Stable rates.",badge:"rt-low"},{name:"HDFC Bank",short:"HDFC",logoKey:"HDFC",type:"pvt",min:"9.50%",max:"11.00%",note:"Floating: Repo+3–4.5%. Fixed: 11.80–13.30%. LTV 65%.",badge:"rt-mid"},{name:"ICICI Bank",short:"ICICI",logoKey:"ICICI",type:"pvt",min:"10.60%",max:"12.25%",note:"OD option where 90% is OD. Doctors get special rates.",badge:"rt-mid"},{name:"Axis Bank",short:"AXIS",logoKey:"AXIS",type:"pvt",min:"9.75%",max:"12.00%",note:"Longer tenure. Risk-based pricing.",badge:"rt-mid"},{name:"Kotak Mahindra",short:"Kotak",logoKey:"Kotak",type:"pvt",min:"9.50%",max:"12.50%",note:"Best rates for self-occupied residential.",badge:"rt-mid"},{name:"IDFC FIRST",short:"IDFC",logoKey:"IDFC",type:"pvt",min:"9.50%",max:"13.50%",note:"No prepayment charges. Up to ₹10Cr.",badge:"rt-mid"},{name:"Bajaj Finserv",short:"BFL",logoKey:"BFL",type:"nbfc",min:"9.00%",max:"14.00%",note:"LTV up to 65% residential.",badge:"rt-mid"},{name:"Tata Capital",short:"TATA",logoKey:"TATA",type:"nbfc",min:"10.00%",max:"15.00%",note:"SME and self-employed friendly.",badge:"rt-mid"},{name:"L&T Finance",short:"LTF",logoKey:"LTF",type:"nbfc",min:"10.50%",max:"16.00%",note:"Industrial property pledge. LTV 50–55%.",badge:"rt-high"},{name:"PNB Housing",short:"PNBHF",logoKey:"PNBHF",type:"hfc",min:"9.00%",max:"13.50%",note:"Residential and commercial. Up to ₹5Cr.",badge:"rt-mid"},{name:"LIC HFL",short:"LICHFL",logoKey:"LICHFL",type:"hfc",min:"9.00%",max:"12.50%",note:"PLR-linked. Competitive for residential.",badge:"rt-low"}],wc:[{name:"State Bank of India",short:"SBI",logoKey:"SBI",type:"govt",min:"9.70%",max:"13.50%",note:"CC/OD linked to MCLR. CGTMSE: collateral-free up to ₹5Cr.",badge:"rt-low"},{name:"Bank of Baroda",short:"BOB",logoKey:"BOB",type:"govt",min:"9.50%",max:"13.00%",note:"GST-linked WC loans at competitive rates for traders.",badge:"rt-low"},{name:"Punjab National Bank",short:"PNB",logoKey:"PNB",type:"govt",min:"9.70%",max:"13.00%",note:"MSME Credit Cards and Cash Flow-based lending.",badge:"rt-low"},{name:"Canara Bank",short:"CB",logoKey:"CB",type:"govt",min:"9.80%",max:"13.25%",note:"CC against stocks and book debts.",badge:"rt-low"},{name:"Union Bank",short:"UBI",logoKey:"UBI",type:"govt",min:"9.75%",max:"13.00%",note:"EBLR-linked. Export finance and bill discounting.",badge:"rt-low"},{name:"HDFC Bank",short:"HDFC",logoKey:"HDFC",type:"pvt",min:"10.75%",max:"18.00%",note:"Fund-based (CC, OD, WCDL) and non-fund-based.",badge:"rt-mid"},{name:"ICICI Bank",short:"ICICI",logoKey:"ICICI",type:"pvt",min:"10.50%",max:"17.00%",note:"GST-linked lending. CC and OD.",badge:"rt-mid"},{name:"Axis Bank",short:"AXIS",logoKey:"AXIS",type:"pvt",min:"10.75%",max:"17.50%",note:"Export/import financing, bill discounting, BGs.",badge:"rt-mid"},{name:"Kotak Mahindra",short:"Kotak",logoKey:"Kotak",type:"pvt",min:"11.00%",max:"17.00%",note:"CC/OD against property or current assets.",badge:"rt-mid"},{name:"IDFC FIRST",short:"IDFC",logoKey:"IDFC",type:"pvt",min:"10.50%",max:"16.50%",note:"CC, OD and WCDL facilities.",badge:"rt-mid"},{name:"Bajaj Finserv",short:"BFL",logoKey:"BFL",type:"nbfc",min:"14.00%",max:"24.00%",note:"Flexi Loan — interest only on used amount.",badge:"rt-high"},{name:"Tata Capital",short:"TATA",logoKey:"TATA",type:"nbfc",min:"12.00%",max:"20.00%",note:"OD and term WC. MSMEs welcome.",badge:"rt-high"}],usedcar:[{name:"State Bank of India",short:"SBI",logoKey:"SBI",type:"govt",min:"11.25%",max:"15.00%",note:"Cars ≤5 yrs old. 70% of valuation. Refinance available.",badge:"rt-mid"},{name:"Bank of Baroda",short:"BOB",logoKey:"BOB",type:"govt",min:"11.00%",max:"15.50%",note:"Cars up to 7 yrs old. Pre-owned CVs covered.",badge:"rt-mid"},{name:"Punjab National Bank",short:"PNB",logoKey:"PNB",type:"govt",min:"11.25%",max:"15.00%",note:"Up to 80% of assessed value. Refinance available.",badge:"rt-mid"},{name:"HDFC Bank",short:"HDFC",logoKey:"HDFC",type:"pvt",min:"12.00%",max:"17.50%",note:"Fixed rate. Up to 80%. Cars up to 8 yrs old.",badge:"rt-mid"},{name:"ICICI Bank",short:"ICICI",logoKey:"ICICI",type:"pvt",min:"11.25%",max:"17.00%",note:"Top-up available for existing car loan customers.",badge:"rt-mid"},{name:"Axis Bank",short:"AXIS",logoKey:"AXIS",type:"pvt",min:"12.00%",max:"17.50%",note:"Up to 80%. Cars up to 7 yrs.",badge:"rt-mid"},{name:"Kotak Mahindra",short:"Kotak",logoKey:"Kotak",type:"pvt",min:"12.50%",max:"17.00%",note:"Cars up to 7 yrs old.",badge:"rt-mid"},{name:"IndusInd Bank",short:"IIB",logoKey:"IIB",type:"pvt",min:"12.00%",max:"18.00%",note:"Pre-owned vehicle specialist.",badge:"rt-mid"},{name:"IDFC FIRST",short:"IDFC",logoKey:"IDFC",type:"pvt",min:"11.50%",max:"17.00%",note:"Digital application. Fast disbursal.",badge:"rt-mid"},{name:"Mahindra Finance",short:"MMFL",logoKey:"MMFL",type:"nbfc",min:"13.00%",max:"21.00%",note:"Rural segment. CVs, tractors and used cars.",badge:"rt-high"},{name:"Shriram Finance",short:"SFL",logoKey:"SFL",type:"nbfc",min:"12.00%",max:"22.00%",note:"India's largest used CV and car financier.",badge:"rt-high"},{name:"HDB Financial",short:"HDB",logoKey:"HDB",type:"nbfc",min:"13.00%",max:"24.00%",note:"Wider eligibility. Car refinance and top-up.",badge:"rt-high"}]};
+
+// ═══════════════════════════════════════════════
+// PAGE NAVIGATION
+// ═══════════════════════════════════════════════
+function showPage(p){
+  document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(x=>x.classList.remove('active'));
+  document.getElementById('page-'+p).classList.add('active');
+  document.getElementById('tab-'+p).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+// ═══════════════════════════════════════════════
+// PORTALS — RENDER CARDS
+// ═══════════════════════════════════════════════
+let currentCat='all', currentLoan='all';
+
+function getCatInfo(t){
+  const m={govt:['tb-govt','Public'],pvt:['tb-pvt','Private'],nbfc:['tb-nbfc','NBFC'],hfc:['tb-hfc','Housing']};
+  return m[t]||['tb-pvt','Other'];
+}
+
+function renderCards(list){
+  const g=document.getElementById('banksGrid');
+  if(!list.length){
+    g.innerHTML=`<div class="empty-state">No lenders found. <a href="#" onclick="document.getElementById('suggestSection').scrollIntoView({behavior:'smooth'});return false">Suggest one →</a></div>`;
+    return;
+  }
+  g.innerHTML=list.map((b,idx)=>{
+    const[bc,bl]=getCatInfo(b.type);
+    const chips=b.docs.map(d=>`<span class="chip">${d}</span>`).join('');
+    const logoHtml=bankLogoEl(b.logoKey,54,12);
+    return `<div class="bank-card" style="animation-delay:${(idx%8)*0.05}s" onclick="openModal(${banks.indexOf(b)})">
+      <div class="card-logo-area" style="background:${(LOGOS[b.logoKey]||{bg:'#252a3a'}).bg};">
+        <img class="bank-real-logo" src="${(LOGOS[b.logoKey]||{}).img||''}" alt="${b.name}"
+          onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="bank-fallback-logo" style="display:none;background:${(LOGOS[b.logoKey]||{bg:'#252a3a'}).bg}">${b.short}</div>
+      </div>
+      <div class="card-body">
+        <div class="card-header">
+          <div>
+            <div class="card-name">${b.name}</div>
+            <div class="card-short">${b.short}</div>
+          </div>
+          <span class="type-badge ${bc}">${bl}</span>
+        </div>
+        <div class="doc-chips">${chips}</div>
+        <div class="card-footer">
+          <span class="card-cta">Login Portal <span class="cta-arrow">→</span></span>
+          <span class="live-dot" title="Portal Active"></span>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function applyFilters(){
+  const q=document.getElementById('searchInput').value.toLowerCase().trim();
+  renderCards(banks.filter(b=>
+    (currentCat==='all'||b.type===currentCat)&&
+    (currentLoan==='all'||b.loans.includes(currentLoan))&&
+    (!q||b.name.toLowerCase().includes(q)||b.short.toLowerCase().includes(q))
+  ));
+}
+function setCat(c,el){currentCat=c;document.querySelectorAll('.pill').forEach(b=>b.classList.remove('active'));
+  // reactivate loan pills
+  document.querySelectorAll('.pill-row:last-child .pill.active').forEach(b=>b.classList.add('active'));
+  el.classList.add('active');applyFilters();}
+function setLoan(l,el){currentLoan=l;document.querySelectorAll('.pill-row:last-child .pill').forEach(b=>b.classList.remove('active'));el.classList.add('active');applyFilters();}
+
+// Reset pill active states properly
+function setCat(c,el){
+  currentCat=c;
+  document.querySelectorAll('.pill-row:first-of-type .pill').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  applyFilters();
+}
+function setLoan(l,el){
+  currentLoan=l;
+  document.querySelectorAll('.pill-row:last-of-type .pill').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  applyFilters();
+}
+
+// MODAL
+function openModal(idx){
+  const b=banks[idx];
+  const[bc,bl]=getCatInfo(b.type);
+  const lg=LOGOS[b.logoKey]||{bg:'#252a3a'};
+  const logoHtml=`<div class="modal-bank-logo-wrap" style="background:${lg.bg}">
+    <img src="${lg.img||''}" alt="${b.name}" style="width:100%;height:100%;object-fit:contain;padding:6px;"
+      onerror="this.parentElement.innerHTML='<div class=\\"modal-bank-fallback\\" style=\\"background:${lg.bg}\\">${b.short}</div>'">
+  </div>`;
+  const steps=b.steps.map((s,i)=>`<div class="step"><div class="step-n">${i+1}</div><div class="step-t"><strong>${s.t}:</strong> ${s.d}</div></div>`).join('');
+  document.getElementById('modalContent').innerHTML=`
+    <div class="modal-header">
+      ${logoHtml}
+      <div>
+        <div class="modal-title">${b.name}</div>
+        <div class="modal-sub"><span class="type-badge ${bc}">${bl}</span> &nbsp;Loan Account Portal</div>
+      </div>
+    </div>
+    <div class="modal-section">
+      <div class="modal-section-title">Available Documents</div>
+      <div class="doc-tag-list">${b.docs.map(d=>`<span class="doc-tag">${d}</span>`).join('')}</div>
+    </div>
+    <div class="modal-section">
+      <div class="modal-section-title">Step-by-Step Guide</div>
+      <div class="step-list">${steps}</div>
+    </div>
+    <a class="modal-cta-btn" href="${b.url}" target="_blank" rel="noopener">🔐 Open ${b.short} Login Portal →</a>`;
+  document.getElementById('modalOverlay').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeModal(e){if(e.target===document.getElementById('modalOverlay'))closeModalDirect();}
+function closeModalDirect(){document.getElementById('modalOverlay').classList.remove('open');document.body.style.overflow='';}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModalDirect();});
+
+function submitSuggestion(){
+  if(!document.getElementById('sBank').value.trim()){document.getElementById('sBank').focus();return;}
+  document.getElementById('suggestSuccess').style.display='block';
+  ['sBank','sUrl'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('sType').value='';
+  setTimeout(()=>{document.getElementById('suggestSuccess').style.display='none';},5000);
+}
+
+// ═══════════════════════════════════════════════
+// RATES TABLE
+// ═══════════════════════════════════════════════
+let currentRateTab='home';
+function setRateTab(t,el){
+  currentRateTab=t;
+  document.querySelectorAll('.rtab').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  renderRates();
+}
+const loanTypeLabel={home:'Home Loan',car:'Car Loan',personal:'Personal Loan',education:'Education Loan',commercial:'Commercial & Industrial',business:'Business Loan',lap:'Loan Against Property',wc:'Working Capital',usedcar:'Used Car & Refinance'};
+const catLabel={govt:'Public Sector',pvt:'Private Bank',nbfc:'NBFC',hfc:'Housing Finance'};
+const rateNotes={
+  home:'Floating & repo-linked. RBI Repo: <strong>5.25%</strong> (Feb 2026). Women: 0.05% concession at PSU banks. 750+ CIBIL gets best rate.',
+  car:'Fixed rates. PSU banks offer the lowest. Private banks faster for pre-approved. Floating repo-linked options also available.',
+  personal:'Unsecured — higher than secured loans. 750+ CIBIL essential. PSU banks best for salaried & pension holders.',
+  education:'Moratorium standard during study + 6–12 months. No collateral up to ₹7.5L. Subsidised rates for IIT/IIM.',
+  commercial:'Commercial property: 0.5–1% higher than residential. Max LTV 50–65%. Industrial capped at 40% LTV.',
+  business:'Unsecured → higher rates. CIBIL 685+ for NBFCs, 750+ for banks. MSME/Udyam-registered get better rates.',
+  lap:'Secured → cheaper than personal loans. Residential property: lowest rate. Prepayment mostly free for individuals.',
+  wc:'Rate based on turnover, GST filings and credit history. CC/OD revolving — interest only on utilised amount.',
+  usedcar:'Used car rates: 2–4% higher than new. Car age matters — over 5–7 yrs attracts higher rate.',
+};
+function renderRates(){
+  const data=ratesData[currentRateTab];
+  const rows=data.map(r=>{
+    const lg=LOGOS[r.logoKey]||{bg:'#252a3a'};
+    const logoHtml=`<div class="mini-logo-fallback" style="background:${lg.bg}">
+      <img src="${lg.img||''}" width="28" height="28" style="object-fit:contain;"
+        onerror="this.parentElement.innerHTML='<span style=\\'font-family:JetBrains Mono,monospace;font-size:8px;color:#fff;font-weight:700;\\'>${r.short}</span>'">
+    </div>`;
+    const tagClass=r.badge||'rt-mid';
+    const tagLabel=tagClass==='rt-low'?'Competitive':tagClass==='rt-mid'?'Moderate':'Higher';
+    return `<tr>
+      <td><div class="bank-cell">${logoHtml}<div><div class="bank-cn">${r.name}</div><div class="bank-ct">${catLabel[r.type]||''}</div></div></div></td>
+      <td><span class="rate-val rv-green">${r.min}</span></td>
+      <td><span class="rate-val rv-red">${r.max}</span></td>
+      <td><span class="rate-tag ${tagClass}">${tagLabel}</span></td>
+    </tr>`;
+  }).join('');
+  document.getElementById('rateTableContainer').innerHTML=`
+    <div class="rate-table-card">
+      <div class="rate-table-card-head">
+        <h2>${loanTypeLabel[currentRateTab]} — Interest Rates</h2>
+        <span class="updated-chip">Updated Mar 2026</span>
+      </div>
+      <div style="overflow-x:auto">
+        <table class="rtable">
+          <thead><tr><th>Bank / Lender</th><th>Starting Rate</th><th>Up To</th><th>Category</th></tr></thead>
+          <tbody>${rows}</tbody>
+        </table>
+      </div>
+      <div class="rate-note"><strong>Key:</strong> ${rateNotes[currentRateTab]||''} Always compare the <strong>total cost</strong> including processing fees.</div>
+    </div>`;
+}
+
+// ═══════════════════════════════════════════════
+// EMI CALCULATOR
+// ═══════════════════════════════════════════════
+function fmt(n){return'₹'+Math.round(n).toLocaleString('en-IN');}
+function fmtCr(n){if(n>=10000000)return'₹'+(n/10000000).toFixed(2)+' Cr';if(n>=100000)return'₹'+(n/100000).toFixed(1)+' L';return fmt(n);}
+
+function calcEMI(){
+  const P=+document.getElementById('r-amount').value;
+  const rAnn=+document.getElementById('r-rate').value;
+  const tYr=+document.getElementById('r-tenure').value;
+  const r=rAnn/(12*100), n=tYr*12;
+  const emi=P*(r*Math.pow(1+r,n))/(Math.pow(1+r,n)-1);
+  const total=emi*n, interest=total-P;
+  const intPct=Math.round((interest/total)*100);
+  const prinPct=100-intPct;
+
+  document.getElementById('lbl-amount').textContent=fmtCr(P);
+  document.getElementById('lbl-rate').textContent=rAnn+'%';
+  document.getElementById('lbl-tenure').textContent=tYr+(tYr===1?' Year':' Years');
+  document.getElementById('emiResult').textContent=fmt(emi);
+
+  const circ=2*Math.PI*45;
+  const pd=(prinPct/100)*circ, id=(intPct/100)*circ;
+  document.getElementById('donut-p').setAttribute('stroke-dasharray',pd+' '+(circ-pd));
+  document.getElementById('donut-i').setAttribute('stroke-dasharray',id+' '+(circ-id));
+  document.getElementById('donut-i').setAttribute('stroke-dashoffset',-(pd));
+  document.getElementById('donut-pct').textContent=intPct+'%';
+
+  document.getElementById('emiDetails').innerHTML=`
+    <div class="result-row"><span class="rk">Loan Amount</span><span class="rv g">${fmt(P)}</span></div>
+    <div class="result-row"><span class="rk">Total Interest</span><span class="rv r">${fmt(interest)}</span></div>
+    <div class="result-row"><span class="rk">Total Payment</span><span class="rv o">${fmt(total)}</span></div>
+    <div class="result-row"><span class="rk">Tenure</span><span class="rv">${tYr} yrs / ${n} EMIs</span></div>
+    <div class="result-row"><span class="rk">Interest Ratio</span><span class="rv">${intPct}% of total</span></div>`;
+
+  buildSchedule(P,r,n,emi);
+}
+function buildSchedule(P,r,n,emi){
+  let bal=P; const rows=[];
+  for(let yr=1;yr*12<=n;yr++){
+    let py=0,iy=0;
+    for(let m=0;m<12&&(yr-1)*12+m<n;m++){
+      const im=bal*r,pm=emi-im; iy+=im;py+=pm;bal-=pm;
+    }
+    rows.push(`<tr><td>${yr}</td><td style="color:var(--green)">${fmt(py)}</td><td style="color:var(--red)">${fmt(iy)}</td><td style="color:var(--gold)">${fmt(Math.max(0,bal))}</td></tr>`);
+  }
+  document.getElementById('scheduleBody').innerHTML=rows.join('');
+}
+let schedOpen=false;
+function toggleSchedule(){
+  schedOpen=!schedOpen;
+  document.getElementById('scheduleTable').classList.toggle('open',schedOpen);
+  document.getElementById('scheduleToggleTxt').textContent=(schedOpen?'▼ Hide':'▶ Show')+' Year-wise Breakdown';
+}
+function setPreset(amt,rate,yr){
+  document.getElementById('r-amount').value=amt;
+  document.getElementById('r-rate').value=rate;
+  document.getElementById('r-tenure').value=yr;
+  calcEMI();
+}
+function applyBankRate(){
+  const v=document.getElementById('bankRatePicker').value;
+  if(v){document.getElementById('r-rate').value=v;calcEMI();}
+}
+
+// ═══════════════════════════════════════════════
+// THEME TOGGLE
+// ═══════════════════════════════════════════════
+function toggleTheme(){
+  const isLight=document.body.classList.toggle('light');
+  document.getElementById('themeBtn').textContent=isLight?'☀️':'🌙';
+  localStorage.setItem('lv-theme',isLight?'light':'dark');
+}
+if(localStorage.getItem('lv-theme')==='light'){document.body.classList.add('light');document.getElementById('themeBtn').textContent='☀️';}
+
+// ═══════════════════════════════════════════════
+// LANGUAGE
+// ═══════════════════════════════════════════════
+const langStrings={
+  en:{hero_h1:'Download Your <span class="hl">Loan Documents</span><br>Without the Hunt',hero_p:'Click any lender card to go directly to their official login portal. Get sanction letters, repayment schedules, statements, NOC or interest certificates in minutes.',search_ph:'Search by bank name…',emi_title:'EMI <span class="hl">Calculator</span>',rates_title:'Current Loan <span class="hl">Interest Rates</span>',elig_title:'Loan <span class="hl">Eligibility Checker</span>',compare_title:'Compare <span class="hl">Banks</span>',share_title:'Share &amp; <span class="hl">WhatsApp</span>',btn_check:'Check My Eligibility →',stat_labels:['Verified Portals','Document Types','Free to Use']},
+  hi:{hero_h1:'अपने <span class="hl">लोन दस्तावेज़</span><br>बिना खोजे डाउनलोड करें',hero_p:'किसी भी बैंक कार्ड पर क्लिक करें और सीधे उनके ऑफिशियल लॉगिन पोर्टल पर जाएं।',search_ph:'बैंक का नाम खोजें…',emi_title:'EMI <span class="hl">कैलकुलेटर</span>',rates_title:'वर्तमान <span class="hl">ब्याज दरें</span>',elig_title:'लोन <span class="hl">पात्रता जाँच</span>',compare_title:'बैंकों की <span class="hl">तुलना</span>',share_title:'<span class="hl">WhatsApp</span> पर शेयर करें',btn_check:'पात्रता जाँचें →',stat_labels:['सत्यापित पोर्टल','दस्तावेज़ प्रकार','निशुल्क']},
+  gu:{hero_h1:'તમારા <span class="hl">લોન દસ્તાવેજો</span><br>સરળ ડાઉનલોડ',hero_p:'કોઈ પણ બેંક કાર્ડ ક્લિક કરો — સીધા ઓફિશિયલ પોર્ટલ પર.',search_ph:'બેંક શોધો…',emi_title:'EMI <span class="hl">કેલ્ક્યુલેટર</span>',rates_title:'<span class="hl">વ્યાજ દર</span>',elig_title:'<span class="hl">પાત્રતા</span> તપાસ',compare_title:'બેંક <span class="hl">સરખામણી</span>',share_title:'<span class="hl">WhatsApp</span> શેર',btn_check:'પાત્રતા તપાસો →',stat_labels:['ચકાસેલ પોર્ટલ','દસ્તાવેજ','નિઃશુલ્ક']},
+  mr:{hero_h1:'तुमचे <span class="hl">लोन दस्तऐवज</span><br>सहज डाउनलोड',hero_p:'कोणत्याही बँक कार्डवर क्लिक करा आणि थेट लॉगिन पोर्टलवर जा.',search_ph:'बँक शोधा…',emi_title:'EMI <span class="hl">कॅल्क्युलेटर</span>',rates_title:'<span class="hl">व्याज दर</span>',elig_title:'<span class="hl">पात्रता</span> तपासणी',compare_title:'बँक <span class="hl">तुलना</span>',share_title:'<span class="hl">WhatsApp</span> शेअर',btn_check:'पात्रता तपासा →',stat_labels:['सत्यापित पोर्टल','दस्तऐवज','विनामूल्य']},
+  ta:{hero_h1:'உங்கள் <span class="hl">கடன் ஆவணங்களை</span><br>எளிதாக பதிவிறக்கவும்',hero_p:'வங்கி அட்டையில் கிளிக் செய்து நேரடியாக போர்டலுக்கு செல்லுங்கள்.',search_ph:'வங்கி தேடுங்கள்…',emi_title:'EMI <span class="hl">கணக்கீடு</span>',rates_title:'<span class="hl">வட்டி விகிதங்கள்</span>',elig_title:'<span class="hl">தகுதி</span> சரிபார்ப்பு',compare_title:'வங்கி <span class="hl">ஒப்பீடு</span>',share_title:'<span class="hl">WhatsApp</span> பகிர்',btn_check:'தகுதி சரிபார்க்கவும் →',stat_labels:['போர்டல்கள்','ஆவண வகைகள்','இலவசம்']},
+};
+let curLang='en';
+function setLang(l){
+  curLang=l;
+  const s=langStrings[l]||langStrings.en;
+  const g=id=>document.getElementById(id);
+  if(g('heroH1'))  g('heroH1').innerHTML=s.hero_h1;
+  if(g('heroP'))   g('heroP').textContent=s.hero_p;
+  if(g('searchInput')) g('searchInput').placeholder=s.search_ph;
+  if(g('ratesH1'))  g('ratesH1').innerHTML=s.rates_title;
+  if(g('emiH1'))    g('emiH1').innerHTML=s.emi_title;
+  if(g('eligH1'))   g('eligH1').innerHTML=s.elig_title;
+  if(g('compareH1'))g('compareH1').innerHTML=s.compare_title;
+  if(g('shareH1'))  g('shareH1').innerHTML=s.share_title;
+  if(g('eligBtn'))  g('eligBtn').textContent=s.btn_check;
+  const statIds=['sl0','sl1','sl2'];
+  (s.stat_labels||[]).forEach((lbl,i)=>{const el=g(statIds[i]);if(el)el.textContent=lbl;});
+}
+
+// ═══════════════════════════════════════════════
+// ELIGIBILITY
+// ═══════════════════════════════════════════════
+const eligRates={home:{salaried:{750:7.90,700:8.50,650:9.25,600:10.50},self:{750:8.50,700:9.25,650:10.50,600:12.00},nri:{750:8.25,700:9.00,650:10.00,600:11.50},pension:{750:8.25,700:8.75,650:9.50,600:11.00}},car:{salaried:{750:8.50,700:9.00,650:10.50,600:12.00},self:{750:9.00,700:10.00,650:11.50,600:14.00},nri:{750:9.00,700:10.00,650:11.50,600:null},pension:{750:9.00,700:10.00,650:11.00,600:13.00}},personal:{salaried:{750:10.49,700:11.50,650:13.50,600:15.00},self:{750:11.00,700:12.50,650:15.00,600:18.00},nri:{750:11.00,700:13.00,650:null,600:null},pension:{750:10.50,700:11.00,650:12.50,600:14.00}},education:{salaried:{750:8.15,700:9.00,650:10.50,600:12.00},self:{750:9.00,700:10.00,650:11.50,600:null},nri:{750:9.00,700:10.00,650:null,600:null},pension:{750:9.00,700:10.00,650:11.00,600:null}},lap:{salaried:{750:9.50,700:10.25,650:11.50,600:13.00},self:{750:10.00,700:11.00,650:12.50,600:14.50},nri:{750:10.00,700:11.00,650:12.00,600:null},pension:{750:10.00,700:11.00,650:12.00,600:null}},business:{salaried:{750:10.00,700:11.50,650:13.00,600:null},self:{750:10.50,700:12.00,650:14.00,600:16.00},nri:{750:11.00,700:13.00,650:null,600:null},pension:{750:null,700:null,650:null,600:null}}};
+const eligBanks={home:[{n:'SBI',k:'SBI'},{n:'Bank of Baroda',k:'BOB'},{n:'HDFC Bank',k:'HDFC'},{n:'ICICI Bank',k:'ICICI'},{n:'Axis Bank',k:'AXIS'},{n:'LIC Housing',k:'LICHFL'},{n:'PNB Housing',k:'PNBHF'}],car:[{n:'SBI',k:'SBI'},{n:'HDFC Bank',k:'HDFC'},{n:'ICICI Bank',k:'ICICI'},{n:'Axis Bank',k:'AXIS'},{n:'Kotak Mahindra',k:'Kotak'}],personal:[{n:'SBI',k:'SBI'},{n:'HDFC Bank',k:'HDFC'},{n:'ICICI Bank',k:'ICICI'},{n:'Axis Bank',k:'AXIS'},{n:'IDFC FIRST',k:'IDFC'},{n:'Bajaj Finserv',k:'BFL'}],education:[{n:'SBI',k:'SBI'},{n:'Bank of Baroda',k:'BOB'},{n:'PNB',k:'PNB'},{n:'Canara Bank',k:'CB'},{n:'Axis Bank',k:'AXIS'}],lap:[{n:'SBI',k:'SBI'},{n:'HDFC Bank',k:'HDFC'},{n:'ICICI Bank',k:'ICICI'},{n:'Bajaj Finserv',k:'BFL'},{n:'Tata Capital',k:'TATA'}],business:[{n:'SBI',k:'SBI'},{n:'HDFC Bank',k:'HDFC'},{n:'Canara Bank',k:'CB'},{n:'ICICI Bank',k:'ICICI'},{n:'Tata Capital',k:'TATA'}]};
+
+function checkEligibility(){
+  const income=+document.getElementById('e-income').value||0;
+  const existEmi=+document.getElementById('e-emi').value||0;
+  const cibilRaw=document.getElementById('e-cibil').value;
+  const emp=document.getElementById('e-emp').value;
+  const ltype=document.getElementById('e-loantype').value;
+  const tenure=+document.getElementById('e-tenure').value||20;
+  if(!income||!cibilRaw||!emp){alert('Please fill in all required fields.');return;}
+  const cibil=+cibilRaw;
+  const rateMap=eligRates[ltype]?.[emp];
+  const rate=rateMap?.[cibil];
+  const availableEmi=income*0.5-existEmi;
+  if(availableEmi<=0){
+    document.getElementById('eligMaxLoan').textContent='₹0';
+    document.getElementById('eligNote').textContent='Existing EMIs exceed 50% FOIR limit.';
+    document.getElementById('eligBankList').innerHTML='';
+    document.getElementById('eligResults').classList.add('show');
+    return;
+  }
+  const r=(rate||9)/1200, n=tenure*12;
+  const maxLoan=rate?Math.round(availableEmi*(Math.pow(1+r,n)-1)/(r*Math.pow(1+r,n))):Math.round(availableEmi*n*0.5);
+  document.getElementById('eligMaxLoan').textContent=fmtCr(maxLoan);
+  document.getElementById('eligNote').textContent=`50% FOIR: ₹${Math.round(availableEmi).toLocaleString('en-IN')} available for EMI · ${rate||'~9'}% p.a. · ${tenure} yrs`;
+  const banksE=eligBanks[ltype]||eligBanks.home;
+  const rows=banksE.map(b=>{
+    const lg=LOGOS[b.k]||{bg:'#252a3a'};
+    let likelihood,lclass,lnote;
+    if(cibil>=750){likelihood='Likely Eligible';lclass='eb-likely';lnote='Strong profile — best rates available';}
+    else if(cibil>=700){likelihood='Possibly Eligible';lclass='eb-possible';lnote='Good profile — standard rates';}
+    else if(cibil>=650){likelihood='May Consider';lclass='eb-possible';lnote='Marginal — may need collateral';}
+    else{likelihood='Difficult';lclass='eb-hard';lnote='Low score — most banks likely to decline';}
+    if(emp==='self'&&cibil<700){lclass='eb-possible';likelihood='Verify Income';}
+    const logoHtml=`<div style="width:38px;height:38px;border-radius:9px;background:${lg.bg};overflow:hidden;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+      <img src="${lg.img||''}" width="30" height="30" style="object-fit:contain;"
+        onerror="this.parentElement.innerHTML='<span style=\\'font-family:JetBrains Mono,monospace;font-size:8px;color:#fff;font-weight:700;\\'>${b.k}</span>'">
+    </div>`;
+    return `<div class="elig-bank-row">
+      <div class="elig-bank-left">
+        ${logoHtml}
+        <div><div class="elig-bank-name">${b.n}</div><div class="elig-bank-note">${lnote}</div></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">
+        <span class="elig-rate">${rate?rate+'%':'—'}</span>
+        <span class="elig-badge ${lclass}">${likelihood}</span>
+      </div>
+    </div>`;
+  }).join('');
+  const cibilLabel={750:'750+ Excellent',700:'700–749 Good',650:'650–699 Average',600:'Below 650'};
+  document.getElementById('eligSubtitle').textContent=`${ltype.toUpperCase()} loan · CIBIL: ${cibilLabel[cibil]} · ${emp}`;
+  document.getElementById('eligBankList').innerHTML=rows;
+  document.getElementById('eligResults').classList.add('show');
+  document.getElementById('eligResults').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+// ═══════════════════════════════════════════════
+// COMPARE
+// ═══════════════════════════════════════════════
+const compareData={home:[{n:'SBI',k:'SBI',min:'8.25',max:'9.65',ltv:'75%',tenure:'30 yrs',fee:'0%',prepay:'Nil (float)'},{n:'Bank of Baroda',k:'BOB',min:'7.45',max:'9.95',ltv:'75%',tenure:'30 yrs',fee:'0.25–0.50%',prepay:'Nil (float)'},{n:'PNB',k:'PNB',min:'7.45',max:'9.75',ltv:'75%',tenure:'30 yrs',fee:'0.35%',prepay:'Nil (float)'},{n:'HDFC Bank',k:'HDFC',min:'7.90',max:'9.40',ltv:'75%',tenure:'30 yrs',fee:'0.50–1%',prepay:'Nil (float)'},{n:'ICICI Bank',k:'ICICI',min:'8.75',max:'9.85',ltv:'75%',tenure:'30 yrs',fee:'0.50–2%',prepay:'Nil (float)'},{n:'Axis Bank',k:'AXIS',min:'8.75',max:'9.65',ltv:'75%',tenure:'30 yrs',fee:'1%',prepay:'Nil (float)'},{n:'Kotak Bank',k:'Kotak',min:'8.50',max:'9.50',ltv:'75%',tenure:'20 yrs',fee:'0.50%',prepay:'Nil (float)'},{n:'LIC HFL',k:'LICHFL',min:'8.50',max:'10.75',ltv:'70%',tenure:'30 yrs',fee:'0.25–0.50%',prepay:'Nil (float)'},{n:'PNB Housing',k:'PNBHF',min:'8.50',max:'11.50',ltv:'75%',tenure:'30 yrs',fee:'0.25–0.50%',prepay:'Nil (float)'},{n:'Bajaj HFL',k:'BFL',min:'8.25',max:'14.00',ltv:'65%',tenure:'30 yrs',fee:'0–1%',prepay:'Nil (float)'}],car:[{n:'SBI',k:'SBI',min:'8.75',max:'14.75',ltv:'85%',tenure:'7 yrs',fee:'0.51%',prepay:'Nil'},{n:'Bank of Baroda',k:'BOB',min:'8.70',max:'12.95',ltv:'85%',tenure:'7 yrs',fee:'0.50%',prepay:'Nil'},{n:'HDFC Bank',k:'HDFC',min:'9.40',max:'13.90',ltv:'85%',tenure:'7 yrs',fee:'1%',prepay:'Nil'},{n:'ICICI Bank',k:'ICICI',min:'8.50',max:'13.50',ltv:'85%',tenure:'7 yrs',fee:'Up to 2%',prepay:'Nil'},{n:'Axis Bank',k:'AXIS',min:'9.00',max:'13.40',ltv:'85%',tenure:'7 yrs',fee:'1.5%',prepay:'Nil'},{n:'Kotak Bank',k:'Kotak',min:'8.90',max:'13.50',ltv:'85%',tenure:'5 yrs',fee:'1%',prepay:'Nil'},{n:'IndusInd',k:'IIB',min:'9.50',max:'14.50',ltv:'85%',tenure:'7 yrs',fee:'1.5%',prepay:'Nil'}],personal:[{n:'SBI',k:'SBI',min:'10.50',max:'13.00',ltv:'N/A',tenure:'6 yrs',fee:'1%+GST',prepay:'3%'},{n:'HDFC Bank',k:'HDFC',min:'10.75',max:'14.00',ltv:'N/A',tenure:'5 yrs',fee:'Up to 2.5%',prepay:'2–4%'},{n:'ICICI Bank',k:'ICICI',min:'10.85',max:'16.25',ltv:'N/A',tenure:'6 yrs',fee:'Up to 2.5%',prepay:'3–5%'},{n:'Axis Bank',k:'AXIS',min:'10.49',max:'15.00',ltv:'N/A',tenure:'5 yrs',fee:'Up to 2%',prepay:'Nil'},{n:'IDFC FIRST',k:'IDFC',min:'10.49',max:'15.00',ltv:'N/A',tenure:'5 yrs',fee:'Up to 2%',prepay:'Nil'},{n:'Kotak Bank',k:'Kotak',min:'10.99',max:'16.00',ltv:'N/A',tenure:'5 yrs',fee:'2.5%',prepay:'Nil'},{n:'Bajaj Finserv',k:'BFL',min:'11.00',max:'17.00',ltv:'N/A',tenure:'5 yrs',fee:'Up to 3.93%',prepay:'Nil'}],lap:[{n:'SBI',k:'SBI',min:'10.10',max:'11.65',ltv:'65%',tenure:'15 yrs',fee:'1%+GST',prepay:'Nil'},{n:'HDFC Bank',k:'HDFC',min:'9.50',max:'11.00',ltv:'65%',tenure:'15 yrs',fee:'1%',prepay:'Nil'},{n:'ICICI Bank',k:'ICICI',min:'10.60',max:'12.25',ltv:'65%',tenure:'15 yrs',fee:'1.5%',prepay:'Nil'},{n:'Axis Bank',k:'AXIS',min:'9.75',max:'12.00',ltv:'65%',tenure:'15 yrs',fee:'1%',prepay:'Nil'},{n:'Bajaj Finserv',k:'BFL',min:'9.00',max:'14.00',ltv:'65%',tenure:'15 yrs',fee:'1–2%',prepay:'Nil'},{n:'Tata Capital',k:'TATA',min:'10.00',max:'15.00',ltv:'60%',tenure:'15 yrs',fee:'Up to 2.75%',prepay:'Nil'}],business:[{n:'SBI',k:'SBI',min:'10.00',max:'14.00',ltv:'N/A',tenure:'5 yrs',fee:'0.50%+GST',prepay:'Nil'},{n:'HDFC Bank',k:'HDFC',min:'10.75',max:'22.50',ltv:'N/A',tenure:'4 yrs',fee:'Up to 2.5%',prepay:'4%'},{n:'ICICI Bank',k:'ICICI',min:'13.25',max:'19.25',ltv:'N/A',tenure:'5 yrs',fee:'2%',prepay:'3%'},{n:'IDFC FIRST',k:'IDFC',min:'10.50',max:'16.00',ltv:'N/A',tenure:'5 yrs',fee:'Up to 2%',prepay:'Nil'},{n:'Bajaj Finserv',k:'BFL',min:'14.00',max:'23.00',ltv:'N/A',tenure:'8 yrs',fee:'Up to 3.54%',prepay:'Nil'},{n:'Tata Capital',k:'TATA',min:'10.99',max:'18.00',ltv:'N/A',tenure:'5 yrs',fee:'Up to 2.75%',prepay:'Nil'}],usedcar:[{n:'SBI',k:'SBI',min:'11.25',max:'15.00',ltv:'70%',tenure:'5 yrs',fee:'0.51%',prepay:'Nil'},{n:'HDFC Bank',k:'HDFC',min:'12.00',max:'17.50',ltv:'80%',tenure:'5 yrs',fee:'1%',prepay:'Nil'},{n:'ICICI Bank',k:'ICICI',min:'11.25',max:'17.00',ltv:'80%',tenure:'5 yrs',fee:'Up to 2%',prepay:'Nil'},{n:'Axis Bank',k:'AXIS',min:'12.00',max:'17.50',ltv:'80%',tenure:'5 yrs',fee:'1.5%',prepay:'Nil'},{n:'Shriram Finance',k:'SFL',min:'12.00',max:'22.00',ltv:'75%',tenure:'5 yrs',fee:'1.5–2%',prepay:'2%'},{n:'Mahindra Finance',k:'MMFL',min:'13.00',max:'21.00',ltv:'75%',tenure:'5 yrs',fee:'1.5%',prepay:'2%'}]};
+
+function initCompareSelects(){
+  const lt=document.getElementById('cmp-loan').value||'home';
+  const data=compareData[lt]||compareData.home;
+  ['cmp-b1','cmp-b2','cmp-b3'].forEach((id,i)=>{
+    const sel=document.getElementById(id);
+    const cur=sel.value;
+    sel.innerHTML=`<option value="">— Bank ${i+1} —</option>`+data.map((b,j)=>`<option value="${j}"${cur==j?' selected':''}>${b.n}</option>`).join('');
+  });
+}
+function renderCompare(){
+  initCompareSelects();
+  const lt=document.getElementById('cmp-loan').value||'home';
+  const data=compareData[lt]||compareData.home;
+  const bs=['cmp-b1','cmp-b2','cmp-b3'].map(id=>document.getElementById(id).value).filter(v=>v!=='').map(v=>data[+v]).filter(Boolean);
+  if(!bs.length){document.getElementById('compareOutput').innerHTML='<div style="text-align:center;padding:60px;color:var(--dim);">Select at least one bank to compare.</div>';return;}
+  const fields=[{l:'Starting Rate',k:'min',b:'min'},{l:'Max Rate',k:'max',b:'min'},{l:'Max LTV',k:'ltv',b:'max'},{l:'Max Tenure',k:'tenure',b:'max'},{l:'Processing Fee',k:'fee',b:'min'},{l:'Prepayment',k:'prepay',b:'min'}];
+  const getLogoHtml=(b)=>{
+    const lg=LOGOS[b.k]||{bg:'#252a3a'};
+    return `<div class="cmp-logo-fb" style="background:${lg.bg}">
+      <img src="${lg.img||''}" width="34" height="34" style="object-fit:contain;"
+        onerror="this.parentElement.innerHTML='<span style=\\'font-family:JetBrains Mono,monospace;font-size:8px;color:#fff;font-weight:700;\\'>${b.k}</span>'">
+    </div>`;
+  };
+  const heads=`<tr><th>Parameter</th>${bs.map(b=>`<th class="bc"><div class="cmp-bank-head">${getLogoHtml(b)}<div class="cmp-bank-n">${b.n}</div></div></th>`).join('')}</tr>`;
+  const rows=fields.map(f=>{
+    const vals=bs.map(b=>b[f.k]);
+    let bestIdx=-1;
+    const nums=vals.map(v=>parseFloat(v)||( f.b==='min'?999:0 ));
+    if(f.b==='min'){const m=Math.min(...nums);bestIdx=nums.indexOf(m);}
+    else{const m=Math.max(...nums);bestIdx=nums.indexOf(m);}
+    const cells=vals.map((v,i)=>`<td class="vc${i===bestIdx?' best':''}">${v}${['min','max'].includes(f.k)?'%':''}</td>`).join('');
+    return `<tr><td class="rl">${f.l}</td>${cells}</tr>`;
+  }).join('');
+  document.getElementById('compareOutput').innerHTML=`
+    <div class="cmp-output-wrap">
+      <div style="padding:12px 18px;border-bottom:1px solid var(--line2);font-size:0.76rem;color:var(--dim2);">
+        <span style="color:var(--green);font-weight:700;">Green</span> = best value in that row. March 2026 data.
+      </div>
+      <div style="overflow-x:auto"><table class="cmp-table"><thead>${heads}</thead><tbody>${rows}</tbody></table></div>
+    </div>`;
+}
+document.getElementById('cmp-loan').addEventListener('change',()=>{initCompareSelects();renderCompare();});
+
+// ═══════════════════════════════════════════════
+// SHARE / WHATSAPP
+// ═══════════════════════════════════════════════
+function genRateMsg(){
+  const lt=document.getElementById('sh-loantype').value;
+  const data=ratesData[lt]; if(!data)return;
+  let msg=`🏦 *LoanVault — ${loanTypeLabel[lt]} Rates*\n📅 March 2026\n\n`;
+  data.slice(0,8).forEach(r=>{msg+=`• *${r.short}*: ${r.min} – ${r.max}\n`;});
+  msg+=`\n💡 Indicative rates. Verify with your bank.\n🔗 LoanVault — All loan portals, EMI calc & rates.`;
+  document.getElementById('rateSharePreview').textContent=msg;
+  document.getElementById('waRateBtn').href='https://wa.me/?text='+encodeURIComponent(msg);
+}
+function genEmiMsg(){
+  const P=+document.getElementById('sh-amt').value||1000000;
+  const rAnn=+document.getElementById('sh-rate').value||8.5;
+  const tYr=+document.getElementById('sh-yr').value||20;
+  const r=rAnn/(12*100),n=tYr*12;
+  const emi=P*(r*Math.pow(1+r,n))/(Math.pow(1+r,n)-1);
+  const total=emi*n,interest=total-P;
+  const fn=v=>'₹'+Math.round(v).toLocaleString('en-IN');
+  const msg=`🏦 *LoanVault — EMI Calculation*\n\n📌 Loan: ${fn(P)}\n📌 Rate: ${rAnn}% p.a.\n📌 Tenure: ${tYr} Years\n\n💰 *Monthly EMI: ${fn(emi)}*\n💸 Total Interest: ${fn(interest)}\n📊 Total Payment: ${fn(total)}\n\n💡 Calculated via LoanVault EMI Calculator.`;
+  document.getElementById('emiSharePreview').textContent=msg;
+  document.getElementById('waEmiBtn').href='https://wa.me/?text='+encodeURIComponent(msg);
+}
+function copyText(id){
+  navigator.clipboard.writeText(document.getElementById(id).textContent).then(()=>{
+    const btn=event.target; const orig=btn.textContent;
+    btn.textContent='✅ Copied!'; btn.style.color='var(--green)';
+    setTimeout(()=>{btn.textContent=orig;btn.style.color='';},2000);
+  });
+}
+document.getElementById('sh-loantype').addEventListener('change',genRateMsg);
+
+// ═══════════════════════════════════════════════
+// PWA
+// ═══════════════════════════════════════════════
+let deferredPrompt=null;
+window.addEventListener('beforeinstallprompt',e=>{
+  e.preventDefault(); deferredPrompt=e;
+  setTimeout(()=>document.getElementById('pwaBanner').classList.add('show'),4000);
+});
+function installPWA(){
+  document.getElementById('pwaBanner').classList.remove('show');
+  if(deferredPrompt){deferredPrompt.prompt();deferredPrompt.userChoice.then(()=>{deferredPrompt=null;});}
+}
+window.addEventListener('appinstalled',()=>document.getElementById('pwaBanner').classList.remove('show'));
+
+// ═══════════════════════════════════════════════
+// INIT — last, after all consts
+// ═══════════════════════════════════════════════
+renderCards(banks);
+renderRates();
+calcEMI();
+initCompareSelects();
+genRateMsg();
+genEmiMsg();
+</script>
+</body>
+</html>
