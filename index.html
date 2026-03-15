@@ -898,17 +898,215 @@ footer a { color:var(--gold); text-decoration:none; }
 .empty-state a { color:var(--gold); text-decoration:none; }
 
 /* ── RESPONSIVE ── */
-@media(max-width:640px){
-  nav { padding:0 1rem; }
-  .nav-badge { display:none; }
-  .nav-tab span { display:none; }
-  .banks-grid { grid-template-columns:repeat(auto-fill,minmax(165px,1fr)); gap:10px; }
-  .hero { padding:48px 1rem 36px; }
-  .hero h1 { letter-spacing:-1px; }
-  .doc-strip-inner { grid-template-columns:repeat(2,1fr); }
-  .rate-tabs { gap:5px; }
-  .rtab { padding:6px 12px; font-size:0.74rem; }
-  .rtable th,.rtable td { padding:10px 12px; font-size:0.78rem; }
+/* ═══════════════════════════════════════════════
+   MOBILE BOTTOM NAV BAR
+═══════════════════════════════════════════════ */
+.mobile-nav {
+  display: none;
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 250;
+  background: rgba(13,15,20,0.97);
+  backdrop-filter: blur(20px);
+  border-top: 1px solid var(--line2);
+  padding: 8px 0 max(8px, env(safe-area-inset-bottom));
+}
+.mobile-nav-inner {
+  display: flex; justify-content: space-around; align-items: center;
+}
+.mob-tab {
+  display: flex; flex-direction: column; align-items: center; gap: 3px;
+  padding: 6px 10px; border: none; background: transparent;
+  color: var(--dim); cursor: pointer; transition: color 0.2s;
+  min-width: 48px; border-radius: 10px;
+}
+.mob-tab.active { color: var(--gold); }
+.mob-tab.active .mob-icon { background: rgba(201,168,76,0.12); }
+.mob-icon {
+  font-size: 20px; width: 36px; height: 36px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 10px; transition: background 0.2s;
+}
+.mob-label { font-size: 0.58rem; font-weight: 600; letter-spacing: 0.3px; white-space: nowrap; }
+
+/* ── CONTACT PAGE ── */
+.contact-page { max-width: 680px; margin: 0 auto; padding: 52px 1.5rem 120px; }
+.contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }
+@media(max-width:560px){ .contact-grid { grid-template-columns: 1fr; } }
+.contact-card {
+  background: var(--ink2); border: 1px solid var(--line2);
+  border-radius: var(--r); padding: 22px;
+  display: flex; align-items: flex-start; gap: 14px;
+  transition: border-color 0.2s, transform 0.2s;
+  text-decoration: none; color: inherit;
+}
+.contact-card:hover { border-color: var(--gold); transform: translateY(-2px); }
+.contact-icon {
+  width: 44px; height: 44px; border-radius: 10px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center; font-size: 20px;
+}
+.ci-wa  { background: rgba(37,211,102,0.12); }
+.ci-mail{ background: rgba(79,142,220,0.12); }
+.ci-bug { background: rgba(224,92,92,0.12); }
+.ci-idea{ background: rgba(201,168,76,0.12); }
+.contact-label { font-size: 0.84rem; font-weight: 700; margin-bottom: 4px; }
+.contact-desc  { font-size: 0.74rem; color: var(--dim2); line-height: 1.5; }
+
+.contact-form-card {
+  background: var(--ink2); border: 1px solid var(--line2);
+  border-radius: var(--r); padding: 28px; margin-bottom: 20px;
+}
+.contact-form-title {
+  font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700;
+  margin-bottom: 6px;
+}
+.contact-form-sub { font-size: 0.82rem; color: var(--dim2); margin-bottom: 22px; line-height: 1.6; }
+.cf-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+@media(max-width:480px){ .cf-row { grid-template-columns: 1fr; } }
+.cf-field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 12px; }
+.cf-field label {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.62rem;
+  color: var(--dim2); font-weight: 600; text-transform: uppercase; letter-spacing: 0.7px;
+}
+.cf-field input, .cf-field select, .cf-field textarea {
+  background: var(--ink3); border: 1px solid var(--line2); border-radius: var(--rs);
+  padding: 11px 14px; color: var(--cream);
+  font-family: 'Plus Jakarta Sans', sans-serif; font-size: 0.85rem;
+  outline: none; transition: border-color 0.2s; resize: vertical;
+}
+.cf-field input:focus, .cf-field select:focus, .cf-field textarea:focus { border-color: var(--gold); }
+.cf-field input::placeholder, .cf-field textarea::placeholder { color: var(--dim); }
+.cf-field select option { background: var(--ink3); }
+.cf-field textarea { min-height: 110px; }
+.contact-submit {
+  background: linear-gradient(135deg, var(--gold), var(--gold2));
+  border: none; border-radius: var(--rs); padding: 13px 28px;
+  color: var(--ink); font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.88rem; font-weight: 700; cursor: pointer;
+  transition: opacity 0.2s; letter-spacing: 0.3px; width: 100%;
+}
+.contact-submit:hover { opacity: 0.88; }
+.contact-success {
+  display: none; margin-top: 14px;
+  background: rgba(58,184,122,0.08); border: 1px solid rgba(58,184,122,0.2);
+  border-radius: var(--rs); padding: 14px; text-align: center;
+  font-size: 0.86rem; color: var(--green);
+}
+.info-row {
+  background: var(--ink2); border: 1px solid var(--line2);
+  border-radius: var(--r); padding: 18px 22px;
+  display: flex; align-items: center; gap: 14px;
+  font-size: 0.82rem; color: var(--dim2);
+}
+.info-row strong { color: var(--cream); }
+
+/* ═══════════════════════════════════════════════
+   COMPREHENSIVE MOBILE STYLES
+═══════════════════════════════════════════════ */
+@media(max-width:768px){
+  /* NAV — hide desktop tabs, show only brand + actions */
+  .nav-tabs { display: none; }
+  nav { padding: 0 1rem; height: 56px; }
+  .nav-badge { display: none; }
+  .mobile-nav { display: block; }
+
+  /* Body padding for bottom nav */
+  body { padding-bottom: 70px; }
+
+  /* HERO */
+  .hero { padding: 36px 1rem 28px; }
+  .hero h1 { font-size: clamp(1.7rem, 7vw, 2.4rem); letter-spacing: -1px; }
+  .hero-sub { font-size: 0.9rem; margin-bottom: 28px; }
+  .hero-stats { margin-bottom: 0; }
+  .stat-item { padding: 14px 12px; }
+  .stat-n { font-size: 1.4rem; }
+  .stat-l { font-size: 0.65rem; }
+
+  /* CONTROLS */
+  .controls-wrap { padding: 0 1rem 24px; }
+  .search-input { font-size: 0.88rem; padding: 12px 14px 12px 44px; }
+  .pill { padding: 6px 12px; font-size: 0.74rem; }
+  .pill-label { font-size: 0.58rem; }
+
+  /* DOC STRIP */
+  .doc-strip { padding: 0 1rem; margin-bottom: 28px; }
+  .doc-strip-inner { grid-template-columns: repeat(3, 1fr); }
+  .doc-item { padding: 10px 10px; }
+  .doc-icon { font-size: 16px; }
+  .doc-name { font-size: 0.7rem; }
+  .doc-desc { display: none; }
+
+  /* BANK GRID — 2 columns on mobile */
+  .banks-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px; padding: 0 1rem 24px;
+  }
+  .bank-card { font-size: 0.85rem; }
+  .card-logo-area { height: 64px; }
+  .card-body { padding: 12px 12px 10px; }
+  .card-name { font-size: 0.82rem; }
+  .card-short { font-size: 0.67rem; }
+  .doc-chips { gap: 3px; }
+  .chip { font-size: 0.6rem; padding: 2px 5px; }
+  .card-footer { padding-top: 8px; }
+  .card-cta { font-size: 0.7rem; }
+
+  /* RATES PAGE */
+  .rates-page { padding: 32px 1rem 80px; }
+  .page-h1 { font-size: 1.7rem; letter-spacing: -0.5px; }
+  .rate-tabs { gap: 5px; }
+  .rtab { padding: 6px 10px; font-size: 0.72rem; }
+  .rtable th, .rtable td { padding: 10px 10px; font-size: 0.76rem; }
+  .bank-cn { font-size: 0.78rem; }
+  .rate-table-card-head h2 { font-size: 0.85rem; }
+
+  /* EMI PAGE */
+  .emi-page { padding: 32px 1rem 80px; }
+  .emi-layout { grid-template-columns: 1fr; gap: 16px; }
+  .panel { padding: 20px 16px; }
+  .emi-amount { font-size: 2.2rem; }
+
+  /* ELIGIBILITY PAGE */
+  .elig-page { padding: 32px 1rem 80px; }
+  .elig-form-card { padding: 20px 16px; }
+  .elig-grid { grid-template-columns: 1fr; gap: 10px; }
+
+  /* COMPARE PAGE */
+  .compare-page { padding: 32px 1rem 80px; }
+  .compare-selectors { flex-direction: column; }
+  .cmp-sel { min-width: unset; width: 100%; }
+  .cmp-table th, .cmp-table td { padding: 10px 10px; font-size: 0.78rem; }
+
+  /* SHARE PAGE */
+  .share-page { padding: 32px 1rem 80px; }
+  .share-inputs { grid-template-columns: 1fr; }
+
+  /* SUGGEST SECTION */
+  .suggest-section { padding: 0 1rem; margin-bottom: 24px; }
+  .suggest-card { padding: 20px 16px; }
+
+  /* MODAL */
+  .modal {
+    padding: 20px 18px;
+    border-radius: 16px 16px 0 0;
+    position: fixed; bottom: 0; left: 0; right: 0;
+    max-height: 85vh; margin: 0; max-width: 100%;
+    border-bottom: none;
+  }
+  .modal-overlay { align-items: flex-end; padding: 0; }
+
+  /* PAGE HEADERS */
+  .page-header { margin-bottom: 24px; }
+  .page-h1 { font-size: clamp(1.5rem, 5vw, 2rem); }
+  .page-sub { font-size: 0.84rem; }
+
+  /* FOOTER */
+  footer { padding: 20px 1rem 16px; font-size: 0.72rem; }
+}
+
+@media(max-width:400px){
+  .banks-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+  .doc-strip-inner { grid-template-columns: repeat(2, 1fr); }
+  .hero h1 { font-size: 1.6rem; }
+  .rtab { padding: 5px 8px; font-size: 0.68rem; }
 }
 
 /* ── ANIMATIONS ── */
@@ -935,6 +1133,7 @@ footer a { color:var(--gold); text-decoration:none; }
     <button class="nav-tab"        id="tab-eligibility" onclick="showPage('eligibility')">✅ <span>Eligibility</span></button>
     <button class="nav-tab"        id="tab-compare"     onclick="showPage('compare')">⚖️ <span>Compare</span></button>
     <button class="nav-tab"        id="tab-whatsapp"    onclick="showPage('whatsapp')">📤 <span>Share</span></button>
+    <button class="nav-tab"        id="tab-contact"     onclick="showPage('contact')">✉️ <span>Contact</span></button>
   </div>
   <div class="nav-actions">
     <button class="nav-ctrl" onclick="toggleTheme()" id="themeBtn" title="Toggle theme">🌙</button>
@@ -1312,6 +1511,147 @@ footer a { color:var(--gold); text-decoration:none; }
   </div>
 </div>
 
+<!-- ═══ PAGE: CONTACT ═══ -->
+<div class="page" id="page-contact">
+  <div class="contact-page">
+    <div class="page-header">
+      <div class="page-eyebrow">Get in Touch</div>
+      <h1 class="page-h1" id="contactH1">Contact <span class="hl">Us</span></h1>
+      <p class="page-sub">Have a suggestion, found a broken link, or want to report an issue? We'd love to hear from you. LoanVault is built for the community — your feedback makes it better.</p>
+    </div>
+
+    <!-- Quick contact cards -->
+    <div class="contact-grid">
+      <a class="contact-card" href="https://wa.me/919898989898?text=Hi%20LoanVault%20Team%2C%20I%20wanted%20to%20share%20a%20suggestion%3A%20" target="_blank" rel="noopener">
+        <div class="contact-icon ci-wa">💬</div>
+        <div>
+          <div class="contact-label">WhatsApp Us</div>
+          <div class="contact-desc">Fastest response. Message us directly on WhatsApp.</div>
+        </div>
+      </a>
+      <a class="contact-card" href="mailto:loanvaultindia@gmail.com?subject=LoanVault%20Feedback">
+        <div class="contact-icon ci-mail">✉️</div>
+        <div>
+          <div class="contact-label">Email Us</div>
+          <div class="contact-desc">loanvaultindia@gmail.com — we reply within 24 hrs.</div>
+        </div>
+      </a>
+      <div class="contact-card" style="cursor:default;" onclick="document.getElementById('cf-type').value='broken-link';document.getElementById('contactForm').scrollIntoView({behavior:'smooth'})">
+        <div class="contact-icon ci-bug">🔗</div>
+        <div>
+          <div class="contact-label">Report Broken Link</div>
+          <div class="contact-desc">Found a portal that's not working? Let us know.</div>
+        </div>
+      </div>
+      <div class="contact-card" style="cursor:default;" onclick="document.getElementById('cf-type').value='suggest-bank';document.getElementById('contactForm').scrollIntoView({behavior:'smooth'})">
+        <div class="contact-icon ci-idea">🏦</div>
+        <div>
+          <div class="contact-label">Suggest a Bank</div>
+          <div class="contact-desc">Missing a lender? We'll add it with verified links.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Contact Form -->
+    <div class="contact-form-card" id="contactForm">
+      <div class="contact-form-title">Send us a Message</div>
+      <div class="contact-form-sub">Fill in the form and we'll get back to you within 24 hours. All fields marked * are required.</div>
+
+      <div class="cf-row">
+        <div class="cf-field">
+          <label>Your Name *</label>
+          <input type="text" id="cf-name" placeholder="e.g. Rahul Sharma">
+        </div>
+        <div class="cf-field">
+          <label>Mobile / Email *</label>
+          <input type="text" id="cf-contact" placeholder="10-digit mobile or email">
+        </div>
+      </div>
+
+      <div class="cf-field">
+        <label>Type of Message *</label>
+        <select id="cf-type">
+          <option value="">Select a category</option>
+          <option value="broken-link">🔗 Broken or wrong portal link</option>
+          <option value="suggest-bank">🏦 Suggest a new bank / NBFC</option>
+          <option value="wrong-rate">📊 Wrong interest rate shown</option>
+          <option value="doc-issue">📄 Issue with document steps</option>
+          <option value="feature">💡 Feature suggestion</option>
+          <option value="complaint">⚠️ Complaint</option>
+          <option value="other">💬 Other / General feedback</option>
+        </select>
+      </div>
+
+      <div class="cf-field">
+        <label>Bank / Lender Name (if applicable)</label>
+        <input type="text" id="cf-bank" placeholder="e.g. HDFC Bank, Bajaj Finserv…">
+      </div>
+
+      <div class="cf-field">
+        <label>Your Message *</label>
+        <textarea id="cf-message" placeholder="Describe your issue or suggestion in detail. The more you tell us, the faster we can fix it…"></textarea>
+      </div>
+
+      <button class="contact-submit" onclick="submitContact()">Send Message →</button>
+      <div class="contact-success" id="contactSuccess">
+        ✅ Thank you! Your message has been received. We'll get back to you within 24 hours.
+      </div>
+    </div>
+
+    <!-- Info strip -->
+    <div class="info-row">
+      <span style="font-size:22px;">🔒</span>
+      <div><strong>Your privacy matters.</strong> We only use your contact details to respond to your message. We never share or sell your information. LoanVault does not store any login credentials.</div>
+    </div>
+  </div>
+</div>
+
+<!-- MOBILE BOTTOM NAV -->
+<nav class="mobile-nav">
+  <div class="mobile-nav-inner">
+    <button class="mob-tab active" id="mobtab-portals" onclick="showPage('portals')">
+      <div class="mob-icon">🏦</div>
+      <span class="mob-label">Portals</span>
+    </button>
+    <button class="mob-tab" id="mobtab-rates" onclick="showPage('rates')">
+      <div class="mob-icon">📊</div>
+      <span class="mob-label">Rates</span>
+    </button>
+    <button class="mob-tab" id="mobtab-emi" onclick="showPage('emi')">
+      <div class="mob-icon">🧮</div>
+      <span class="mob-label">EMI</span>
+    </button>
+    <button class="mob-tab" id="mobtab-eligibility" onclick="showPage('eligibility')">
+      <div class="mob-icon">✅</div>
+      <span class="mob-label">Eligibility</span>
+    </button>
+    <button class="mob-tab" id="mobtab-contact" onclick="showPage('contact')">
+      <div class="mob-icon">✉️</div>
+      <span class="mob-label">Contact</span>
+    </button>
+    <button class="mob-tab" id="mobtab-more" onclick="toggleMobileMore()">
+      <div class="mob-icon">⋯</div>
+      <span class="mob-label">More</span>
+    </button>
+  </div>
+</nav>
+
+<!-- MOBILE MORE MENU -->
+<div id="mobileMoreMenu" style="display:none;position:fixed;bottom:70px;left:0;right:0;z-index:249;background:var(--ink2);border-top:1px solid var(--line2);padding:12px 1rem;">
+  <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;">
+    <button onclick="showPage('compare');toggleMobileMore()" style="padding:10px 16px;background:var(--ink3);border:1px solid var(--line2);border-radius:10px;color:var(--cream);font-family:'Plus Jakarta Sans',sans-serif;font-size:0.82rem;font-weight:600;cursor:pointer;">⚖️ Compare</button>
+    <button onclick="showPage('whatsapp');toggleMobileMore()" style="padding:10px 16px;background:var(--ink3);border:1px solid var(--line2);border-radius:10px;color:var(--cream);font-family:'Plus Jakarta Sans',sans-serif;font-size:0.82rem;font-weight:600;cursor:pointer;">📤 Share</button>
+    <button onclick="toggleTheme();toggleMobileMore()" style="padding:10px 16px;background:var(--ink3);border:1px solid var(--line2);border-radius:10px;color:var(--cream);font-family:'Plus Jakarta Sans',sans-serif;font-size:0.82rem;font-weight:600;cursor:pointer;" id="mobThemeBtn">🌙 Theme</button>
+    <select onchange="setLang(this.value)" style="padding:10px 14px;background:var(--ink3);border:1px solid var(--line2);border-radius:10px;color:var(--cream);font-family:'Plus Jakarta Sans',sans-serif;font-size:0.82rem;outline:none;cursor:pointer;">
+      <option value="en">🇮🇳 EN</option>
+      <option value="hi">हिंदी</option>
+      <option value="gu">ગુજ</option>
+      <option value="mr">मराठी</option>
+      <option value="ta">தமிழ்</option>
+    </select>
+  </div>
+</div>
+
 <!-- MODAL -->
 <div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
   <div class="modal">
@@ -1437,9 +1777,33 @@ const ratesData={home:[{name:"State Bank of India",short:"SBI",logoKey:"SBI",typ
 function showPage(p){
   document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
   document.querySelectorAll('.nav-tab').forEach(x=>x.classList.remove('active'));
+  document.querySelectorAll('.mob-tab').forEach(x=>x.classList.remove('active'));
   document.getElementById('page-'+p).classList.add('active');
-  document.getElementById('tab-'+p).classList.add('active');
+  const dt=document.getElementById('tab-'+p); if(dt)dt.classList.add('active');
+  const mb=document.getElementById('mobtab-'+p); if(mb)mb.classList.add('active');
+  document.getElementById('mobileMoreMenu').style.display='none';
   window.scrollTo(0,0);
+}
+
+function toggleMobileMore(){
+  const m=document.getElementById('mobileMoreMenu');
+  m.style.display=m.style.display==='none'?'flex':'none';
+}
+
+function submitContact(){
+  const name=document.getElementById('cf-name').value.trim();
+  const contact=document.getElementById('cf-contact').value.trim();
+  const type=document.getElementById('cf-type').value;
+  const msg=document.getElementById('cf-message').value.trim();
+  if(!name||!contact||!type||!msg){alert('Please fill in all required fields.');return;}
+  const bank=document.getElementById('cf-bank').value.trim();
+  const tl={'broken-link':'Broken Link','suggest-bank':'Suggest Bank','wrong-rate':'Wrong Rate','doc-issue':'Doc Issue','feature':'Feature Request','complaint':'Complaint','other':'General Feedback'};
+  const waMsg=`*LoanVault Feedback*\n\n👤 Name: ${name}\n📱 Contact: ${contact}\n📌 Type: ${tl[type]||type}\n${bank?'🏦 Bank: '+bank+'\n':''}💬 Message:\n${msg}`;
+  window.open('https://wa.me/919898989898?text='+encodeURIComponent(waMsg),'_blank');
+  document.getElementById('contactSuccess').style.display='block';
+  ['cf-name','cf-contact','cf-bank','cf-message'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('cf-type').value='';
+  setTimeout(()=>{document.getElementById('contactSuccess').style.display='none';},6000);
 }
 
 // ═══════════════════════════════════════════════
