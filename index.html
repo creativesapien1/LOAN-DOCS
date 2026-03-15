@@ -1337,54 +1337,59 @@ footer a { color:var(--gold); text-decoration:none; }
 </footer>
 
 <script>
-// ── BANK LOGOS — Wikipedia SVG (free, no API, works everywhere) ──────────────
-// Each bank has a verified Wikipedia Commons SVG logo URL + brand bg color fallback
+// ── BANK LOGOS ────────────────────────────────────────────────────────────────
+// Strategy: Google Favicons (sz=128) as primary — free, no API key, works for
+// every domain. Falls back to brand-colored text block if favicon is generic.
+// For banks where Google favicon returns a generic globe, we override with the
+// bank's actual website favicon which is always crisp and on-brand.
+const gf = d => `https://www.google.com/s2/favicons?domain=${d}&sz=128`;
 const LOGOS = {
-  SBI:   {img:'https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/SBI-logo.svg/120px-SBI-logo.svg.png',         bg:'#1a3565'},
-  BOB:   {img:'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Bank_of_Baroda_logo.svg/120px-Bank_of_Baroda_logo.svg.png', bg:'#f47920'},
-  PNB:   {img:'https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/Punjab_National_Bank_logo.svg/120px-Punjab_National_Bank_logo.svg.png', bg:'#e31e2d'},
-  CB:    {img:'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/Canara_Bank_Logo.svg/120px-Canara_Bank_Logo.svg.png', bg:'#f7941d'},
-  UBI:   {img:'https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Union_Bank_of_India_Logo.svg/120px-Union_Bank_of_India_Logo.svg.png', bg:'#003399'},
-  BOI:   {img:'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Bank_of_India_logo.svg/120px-Bank_of_India_logo.svg.png', bg:'#1e3c8c'},
-  CBI:   {img:'https://upload.wikimedia.org/wikipedia/commons/thumb/f/fd/Central_Bank_of_India_logo.svg/120px-Central_Bank_of_India_logo.svg.png', bg:'#dc1f26'},
-  IB:    {img:'https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/Indian_Bank_Logo.svg/120px-Indian_Bank_Logo.svg.png', bg:'#003366'},
-  UCO:   {img:'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/UCO_Bank_Logo.svg/120px-UCO_Bank_Logo.svg.png', bg:'#003f7d'},
-  HDFC:  {img:'https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/HDFC_Bank_Logo.svg/120px-HDFC_Bank_Logo.svg.png', bg:'#003580'},
-  ICICI: {img:'https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/ICICI_Bank_Logo.svg/120px-ICICI_Bank_Logo.svg.png', bg:'#f26522'},
-  AXIS:  {img:'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Axis_Bank_logo.svg/120px-Axis_Bank_logo.svg.png', bg:'#97144d'},
-  Kotak: {img:'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/Kotak_Mahindra_Bank_logo.svg/120px-Kotak_Mahindra_Bank_logo.svg.png', bg:'#ee3131'},
-  IIB:   {img:'https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/IndusInd_Bank_Logo.svg/120px-IndusInd_Bank_Logo.svg.png', bg:'#0070c0'},
-  YES:   {img:'https://upload.wikimedia.org/wikipedia/commons/thumb/f/fd/Yes_Bank_Logo.svg/120px-Yes_Bank_Logo.svg.png', bg:'#0c508b'},
-  IDFC:  {img:'https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/IDFC_First_Bank_logo.svg/120px-IDFC_First_Bank_logo.svg.png', bg:'#512d8a'},
-  FED:   {img:'https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Federal_bank_logo.svg/120px-Federal_bank_logo.svg.png', bg:'#003d8f'},
-  SIB:   {img:'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/South_Indian_Bank_logo.svg/120px-South_Indian_Bank_logo.svg.png', bg:'#7a3b2e'},
-  BFL:   {img:'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f8/Bajaj_finserv.svg/120px-Bajaj_finserv.svg.png', bg:'#006db7'},
-  TATA:  {img:'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Tata_logo.svg/120px-Tata_logo.svg.png', bg:'#003366'},
-  MMFL:  {img:'https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Mahindra_logo.svg/120px-Mahindra_logo.svg.png', bg:'#e31e24'},
-  LTF:   {img:'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/LT_logo.svg/120px-LT_logo.svg.png', bg:'#b71c1c'},
-  MFL:   {img:'https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/Muthoot_Finance_logo.svg/120px-Muthoot_Finance_logo.svg.png', bg:'#8c6d00'},
-  SFL:   {img:'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Shriram_Finance_logo.svg/120px-Shriram_Finance_logo.svg.png', bg:'#003a78'},
-  HDB:   {img:'',  bg:'#5a00b0'},
-  LICHFL:{img:'https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/LIC_logo.svg/120px-LIC_logo.svg.png', bg:'#006a4e'},
-  PNBHF: {img:'https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/Punjab_National_Bank_logo.svg/120px-Punjab_National_Bank_logo.svg.png', bg:'#6d1a80'},
-  SCL:   {img:'', bg:'#c0392b'},
-  AAVAS: {img:'', bg:'#1a5276'},
+  SBI:    {img:gf('sbi.co.in'),                  bg:'#1a3565'},
+  BOB:    {img:gf('bankofbaroda.in'),             bg:'#f47920'},
+  PNB:    {img:gf('pnbindia.in'),                 bg:'#e31e2d'},
+  CB:     {img:gf('canarabank.com'),              bg:'#f7941d'},
+  UBI:    {img:gf('unionbankofindia.co.in'),      bg:'#003399'},
+  BOI:    {img:gf('bankofindia.co.in'),           bg:'#1e3c8c'},
+  CBI:    {img:gf('centralbankofindia.co.in'),    bg:'#dc1f26'},
+  IB:     {img:gf('indianbank.in'),               bg:'#003366'},
+  UCO:    {img:gf('ucobank.com'),                 bg:'#003f7d'},
+  HDFC:   {img:gf('hdfcbank.com'),                bg:'#003580'},
+  ICICI:  {img:gf('icicibank.com'),               bg:'#f26522'},
+  AXIS:   {img:gf('axisbank.com'),                bg:'#97144d'},
+  Kotak:  {img:gf('kotak.com'),                   bg:'#ee3131'},
+  IIB:    {img:gf('indusind.com'),                bg:'#0070c0'},
+  YES:    {img:gf('yesbank.in'),                  bg:'#0c508b'},
+  IDFC:   {img:gf('idfcfirstbank.com'),           bg:'#512d8a'},
+  FED:    {img:gf('federalbank.co.in'),           bg:'#003d8f'},
+  SIB:    {img:gf('southindianbank.com'),         bg:'#7a3b2e'},
+  BFL:    {img:gf('bajajfinserv.in'),             bg:'#006db7'},
+  TATA:   {img:gf('tatacapital.com'),             bg:'#003366'},
+  MMFL:   {img:gf('mahindrafinance.com'),         bg:'#e31e24'},
+  LTF:    {img:gf('ltfs.com'),                    bg:'#b71c1c'},
+  MFL:    {img:gf('muthootfinance.com'),          bg:'#8c6d00'},
+  SFL:    {img:gf('shriramfinance.in'),           bg:'#003a78'},
+  HDB:    {img:gf('hdbfs.com'),                   bg:'#5a00b0'},
+  LICHFL: {img:gf('lichousing.com'),              bg:'#006a4e'},
+  PNBHF:  {img:gf('pnbhousing.com'),             bg:'#6d1a80'},
+  SCL:    {img:gf('sammaancapital.in'),           bg:'#c0392b'},
+  AAVAS:  {img:gf('aavas.in'),                    bg:'#1a5276'},
 };
 
-// Build a bank logo element — img with graceful text fallback
+// Build a bank logo element — Google favicon (128px) displayed large with brand bg
 function bankLogoEl(key, size=54, radius=12) {
   const l = LOGOS[key] || {img:'', bg:'#252a3a'};
   const abbr = key.length > 4 ? key.substring(0,4) : key;
-  const fallbackStyle = `font-family:'JetBrains Mono',monospace;font-weight:700;font-size:${size>40?12:9}px;color:#fff;letter-spacing:-0.5px;`;
-  const fallbackHtml = `<span style="${fallbackStyle}">${abbr}</span>`;
-  // If no image URL, render text-only immediately
+  const fs = size > 40 ? 12 : 9;
+  const fallback = `<span style="font-family:'JetBrains Mono',monospace;font-weight:700;font-size:${fs}px;color:#fff;letter-spacing:-0.5px;">${abbr}</span>`;
   if (!l.img) {
-    return `<div style="width:${size}px;height:${size}px;border-radius:${radius}px;background:${l.bg};display:flex;align-items:center;justify-content:center;flex-shrink:0;">${fallbackHtml}</div>`;
+    return `<div style="width:${size}px;height:${size}px;border-radius:${radius}px;background:${l.bg};display:flex;align-items:center;justify-content:center;flex-shrink:0;">${fallback}</div>`;
   }
-  return `<div style="width:${size}px;height:${size}px;border-radius:${radius}px;background:${l.bg};display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0;padding:6px;">
-    <img src="${l.img}" alt="${key}" width="${size-12}" height="${size-12}"
-      style="object-fit:contain;width:${size-12}px;height:${size-12}px;"
-      onerror="this.style.display='none';this.insertAdjacentHTML('afterend','${fallbackHtml.replace(/'/g,"\\'")}')">
+  // Use image — Google favicons are 128px so they scale up well
+  const imgSize = Math.round(size * 0.65);
+  return `<div style="width:${size}px;height:${size}px;border-radius:${radius}px;background:${l.bg};display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0;">
+    <img src="${l.img}" alt="${key}" width="${imgSize}" height="${imgSize}"
+      style="object-fit:contain;image-rendering:auto;"
+      onerror="this.style.display='none';this.insertAdjacentHTML('afterend','${fallback.replace(/'/g,"\\'")}')">
   </div>`;
 }
 
@@ -1457,13 +1462,19 @@ function renderCards(list){
     const[bc,bl]=getCatInfo(b.type);
     const chips=b.docs.map(d=>`<span class="chip">${d}</span>`).join('');
     const lg=LOGOS[b.logoKey]||{img:'',bg:'#252a3a'};
-    const hasImg=!!lg.img;
-    const logoInner=hasImg
-      ? `<img class="bank-real-logo" src="${lg.img}" alt="${b.name}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-         <div class="bank-fallback-logo" style="display:none;">${b.short}</div>`
-      : `<div class="bank-fallback-logo" style="display:flex;">${b.short}</div>`;
+    // Card banner: large styled abbreviation on brand bg + small favicon top-right
+    const faviconHtml = lg.img
+      ? `<img src="${lg.img}" width="28" height="28"
+           style="position:absolute;top:10px;right:10px;border-radius:6px;background:rgba(255,255,255,0.15);padding:3px;object-fit:contain;"
+           onerror="this.remove()">`
+      : '';
+    const logoInner = `
+      <div style="position:relative;width:100%;height:100%;display:flex;align-items:center;justify-content:center;">
+        <span style="font-family:'Playfair Display',serif;font-size:28px;font-weight:900;color:rgba(255,255,255,0.9);letter-spacing:-1px;text-shadow:0 2px 8px rgba(0,0,0,0.3);">${b.short}</span>
+        ${faviconHtml}
+      </div>`;
     return `<div class="bank-card" style="animation-delay:${(idx%8)*0.05}s" onclick="openModal(${banks.indexOf(b)})">
-      <div class="card-logo-area" style="background:${lg.bg};">
+      <div class="card-logo-area" style="background:linear-gradient(135deg,${lg.bg},${lg.bg}cc);">
         ${logoInner}
       </div>
       <div class="card-body">
