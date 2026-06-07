@@ -331,6 +331,15 @@ body.light nav { background: rgba(250,250,248,0.92); }
   padding: 0 2rem 60px;
 }
 
+.card-logo-area {
+  height: 80px;
+  border-radius: var(--r) var(--r) 0 0;
+  overflow: hidden;
+  position: relative;
+  transition: filter 0.2s;
+}
+.bank-card:hover .card-logo-area { filter: brightness(1.08); }
+
 /* BANK CARD — the star of the show */
 .bank-card {
   background: var(--ink2);
@@ -487,63 +496,128 @@ body.light nav { background: rgba(250,250,248,0.92); }
   box-shadow: 0 24px 80px rgba(0,0,0,0.7);
 }
 .modal-close {
-  position:absolute; top:18px; right:18px;
-  background:var(--ink3); border:1px solid var(--line2);
-  color:var(--dim2); border-radius:8px; width:32px; height:32px;
+  position:absolute; top:12px; right:12px; z-index:10;
+  background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.15);
+  color:#fff; border-radius:8px; width:32px; height:32px;
   display:flex; align-items:center; justify-content:center;
   cursor:pointer; font-size:14px; transition:all 0.2s;
+  backdrop-filter:blur(4px);
 }
-.modal-close:hover { border-color:var(--gold); color:var(--gold); }
-.modal-header { display:flex; align-items:center; gap:18px; margin-bottom:24px; }
+.modal-close:hover { background:rgba(0,0,0,0.7); border-color:var(--gold); color:var(--gold); }
+/* ── MODAL HEADER ── */
+.modal-header {
+  display:flex; align-items:stretch; gap:0;
+  margin:-32px -32px 24px -32px;
+  border-radius:18px 18px 0 0; overflow:hidden;
+  border-bottom:1px solid var(--line2);
+}
 .modal-bank-logo-wrap {
   width:60px; height:60px; border-radius:12px;
   display:flex; align-items:center; justify-content:center;
   overflow:hidden; flex-shrink:0;
 }
 .modal-bank-logo-wrap img { width:100%; height:100%; object-fit:contain; padding:6px; }
+
+/* Logo banner — full width colored strip at top of modal */
+.modal-logo-banner {
+  width:100%; min-height:110px;
+  display:flex; align-items:center; justify-content:center;
+  position:relative; overflow:hidden; flex-shrink:0;
+}
+.modal-logo-banner::before {
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(255,255,255,0.1) 0%,transparent 50%,rgba(0,0,0,0.2) 100%);
+}
+.modal-logo-banner::after {
+  content:'';position:absolute;top:-40%;left:-10%;
+  width:50%;height:80%;
+  background:radial-gradient(ellipse,rgba(255,255,255,0.15),transparent 70%);
+  border-radius:50%;
+}
+.modal-logo-short {
+  font-family:'Playfair Display',serif;
+  font-size:2.4rem; font-weight:900;
+  color:rgba(255,255,255,0.95);
+  letter-spacing:-1px;
+  text-shadow:0 2px 16px rgba(0,0,0,0.5);
+  position:relative; z-index:1;
+}
+
+/* Info row below banner */
+.modal-info-row {
+  padding:18px 32px 0;
+  display:flex; align-items:flex-start;
+  justify-content:space-between; gap:12px;
+  margin-bottom:20px;
+}
+.modal-title {
+  font-family:'Playfair Display',serif;
+  font-size:1.25rem; font-weight:700; line-height:1.2;
+}
+.modal-sub {
+  font-size:0.76rem; color:var(--dim2); margin-top:6px;
+  display:flex; align-items:center; gap:8px; flex-wrap:wrap;
+}
 .modal-bank-fallback {
   width:60px; height:60px; border-radius:12px;
   display:flex; align-items:center; justify-content:center;
   font-family:'JetBrains Mono',monospace; font-weight:700; font-size:13px; color:#fff;
   flex-shrink:0;
 }
-.modal-title { font-family:'Playfair Display',serif; font-size:1.2rem; font-weight:700; }
-.modal-sub { font-size:0.76rem; color:var(--dim2); margin-top:5px; }
 
-.modal-section { margin-bottom:20px; }
-.modal-section-title {
-  font-family:'JetBrains Mono',monospace; font-size:0.65rem; font-weight:600;
-  color:var(--gold); text-transform:uppercase; letter-spacing:1.5px;
-  margin-bottom:12px;
+/* Sections */
+.modal-section {
+  margin:0 0 20px;
+  background:var(--ink3); border:1px solid var(--line);
+  border-radius:10px; padding:16px;
 }
-.doc-tag-list { display:flex; gap:7px; flex-wrap:wrap; }
+.modal-section-title {
+  font-family:'JetBrains Mono',monospace; font-size:0.63rem; font-weight:700;
+  color:var(--gold); text-transform:uppercase; letter-spacing:2px;
+  margin-bottom:12px; display:flex; align-items:center; gap:8px;
+}
+.modal-section-title::after {
+  content:''; flex:1; height:1px; background:var(--line2);
+}
+
+/* Doc tags */
+.doc-tag-list { display:flex; gap:6px; flex-wrap:wrap; }
 .doc-tag {
   padding:5px 12px; border-radius:6px; font-size:0.76rem; font-weight:600;
-  background:var(--ink3); border:1px solid var(--line2); color:var(--cream);
+  background:var(--ink2); border:1px solid var(--line2); color:var(--cream);
+  display:flex; align-items:center; gap:5px;
 }
 
-.step-list { display:flex; flex-direction:column; gap:10px; }
+/* Steps */
+.step-list { display:flex; flex-direction:column; gap:0; }
 .step {
   display:flex; align-items:flex-start; gap:12px;
+  padding:10px 0; border-bottom:1px solid var(--line);
+  position:relative;
 }
+.step:last-child { border-bottom:none; padding-bottom:0; }
 .step-n {
-  width:24px; height:24px; border-radius:50%; flex-shrink:0;
+  width:26px; height:26px; border-radius:50%; flex-shrink:0;
   background:linear-gradient(135deg,var(--gold),var(--gold2));
   color:var(--ink); font-size:0.7rem; font-weight:800;
-  display:flex; align-items:center; justify-content:center; margin-top:1px;
-  font-family:'JetBrains Mono',monospace;
+  display:flex; align-items:center; justify-content:center;
+  font-family:'JetBrains Mono',monospace; margin-top:1px;
+  box-shadow:0 0 0 3px rgba(201,168,76,0.15);
 }
-.step-t { font-size:0.82rem; color:var(--dim2); line-height:1.6; }
-.step-t strong { color:var(--cream); }
+.step-t { font-size:0.82rem; color:var(--dim2); line-height:1.65; }
+.step-t strong { color:var(--cream); display:block; margin-bottom:2px; }
 
+/* CTA button */
 .modal-cta-btn {
   display:flex; align-items:center; justify-content:center; gap:10px;
   background:linear-gradient(135deg,var(--gold),var(--gold2));
-  color:var(--ink); border-radius:10px; padding:14px 24px;
-  text-decoration:none; font-weight:700; font-size:0.9rem;
-  transition:opacity 0.2s; margin-top:8px;
+  color:var(--ink); border-radius:10px; padding:15px 24px;
+  text-decoration:none; font-weight:700; font-size:0.92rem;
+  transition:all 0.2s; margin-top:4px;
+  box-shadow:0 4px 20px rgba(201,168,76,0.25);
+  letter-spacing:0.3px;
 }
-.modal-cta-btn:hover { opacity:0.88; }
+.modal-cta-btn:hover { opacity:0.9; box-shadow:0 6px 28px rgba(201,168,76,0.35); transform:translateY(-1px); }
 
 /* ═══════════════════════════════════════════════
    INTEREST RATES PAGE
@@ -1058,7 +1132,7 @@ footer a { color:var(--gold); text-decoration:none; }
     gap: 10px; padding: 0 1rem 24px;
   }
   .bank-card { font-size: 0.85rem; }
-  .card-logo-area { height: 54px; }
+  .card-logo-area { height: 64px; }
   .card-logo-area span { font-size: 19px !important; }
   .card-body { padding: 10px 10px 9px; }
   .card-name { font-size: 0.8rem; }
@@ -1866,8 +1940,10 @@ function renderCards(list){
     const lg=LOGOS[b.logoKey]||{img:'',bg:'#252a3a'};
     // Clean banner: just the large abbreviation centered, no overlapping favicon
     const logoInner = `
-      <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;">
-        <span style="font-family:'Playfair Display',serif;font-size:26px;font-weight:900;color:rgba(255,255,255,0.92);letter-spacing:-0.5px;text-shadow:0 1px 6px rgba(0,0,0,0.4);">${b.short}</span>
+      <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;">
+        <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,0.12) 0%,transparent 50%,rgba(0,0,0,0.15) 100%);"></div>
+        <div style="position:absolute;top:-30%;left:-20%;width:60%;height:60%;background:radial-gradient(ellipse,rgba(255,255,255,0.18),transparent 70%);border-radius:50%;"></div>
+        <span style="font-family:'Playfair Display',serif;font-size:24px;font-weight:900;color:rgba(255,255,255,0.95);letter-spacing:-0.5px;text-shadow:0 2px 12px rgba(0,0,0,0.5);position:relative;z-index:1;">${b.short}</span>
       </div>`;
     return `<div class="bank-card" style="animation-delay:${(idx%8)*0.05}s;position:relative;" onclick="openModal(${banks.indexOf(b)})">
       <button class="copy-link-btn" onclick="event.stopPropagation();copyPortalLink(this,'${b.url}')" title="Copy portal link">🔗 Copy Link</button>
@@ -1920,28 +1996,38 @@ function openModal(idx){
   const b=banks[idx];
   const[bc,bl]=getCatInfo(b.type);
   const lg=LOGOS[b.logoKey]||{bg:'#252a3a'};
-  const logoHtml=`<div class="modal-bank-logo-wrap" style="background:${lg.bg}">
-    <img src="${lg.img||''}" alt="${b.name}" style="width:100%;height:100%;object-fit:contain;padding:6px;"
-      onerror="this.parentElement.innerHTML='<div class=\\"modal-bank-fallback\\" style=\\"background:${lg.bg}\\">${b.short}</div>'">
-  </div>`;
-  const steps=b.steps.map((s,i)=>`<div class="step"><div class="step-n">${i+1}</div><div class="step-t"><strong>${s.t}:</strong> ${s.d}</div></div>`).join('');
+  const docIcons={'Statement':'📊','Schedule':'📅','Sanction':'📄','NOC':'✅','Welcome':'👋','Int. Cert.':'🧾'};
+  const steps=b.steps.map((s,i)=>`
+    <div class="step">
+      <div class="step-n">${i+1}</div>
+      <div class="step-t"><strong>${s.t}</strong>${s.d}</div>
+    </div>`).join('');
   document.getElementById('modalContent').innerHTML=`
     <div class="modal-header">
-      ${logoHtml}
-      <div>
-        <div class="modal-title">${b.name}</div>
-        <div class="modal-sub"><span class="type-badge ${bc}">${bl}</span> &nbsp;Loan Account Portal</div>
+      <div class="modal-logo-banner" style="background:linear-gradient(135deg,${lg.bg},${lg.bg}cc);">
+        <span class="modal-logo-short">${b.short}</span>
       </div>
     </div>
-    <div class="modal-section">
-      <div class="modal-section-title">Available Documents</div>
-      <div class="doc-tag-list">${b.docs.map(d=>`<span class="doc-tag">${d}</span>`).join('')}</div>
+    <div class="modal-info-row">
+      <div>
+        <div class="modal-title">${b.name}</div>
+        <div class="modal-sub">
+          <span class="type-badge ${bc}">${bl}</span>
+          <span>Loan Account Portal</span>
+        </div>
+      </div>
     </div>
-    <div class="modal-section">
-      <div class="modal-section-title">Step-by-Step Guide</div>
-      <div class="step-list">${steps}</div>
-    </div>
-    <a class="modal-cta-btn" href="${b.url}" target="_blank" rel="noopener">🔐 Open ${b.short} Login Portal →</a>`;
+    <div style="padding:0 0 4px;">
+      <div class="modal-section">
+        <div class="modal-section-title">Available Documents</div>
+        <div class="doc-tag-list">${b.docs.map(d=>`<span class="doc-tag">${docIcons[d]||'📎'} ${d}</span>`).join('')}</div>
+      </div>
+      <div class="modal-section">
+        <div class="modal-section-title">Step-by-Step Guide</div>
+        <div class="step-list">${steps}</div>
+      </div>
+      <a class="modal-cta-btn" href="${b.url}" target="_blank" rel="noopener">🔐 Open ${b.short} Login Portal →</a>
+    </div>`;
   document.getElementById('modalOverlay').classList.add('open');
   document.body.style.overflow='hidden';
 }
