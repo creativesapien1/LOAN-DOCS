@@ -43,9 +43,11 @@
   "keywords": "loan documents, EMI calculator, interest rates India, bank loan portal"
 }
 </script>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>emailjs.init('O_mdVJXxGdHBOvHkm');</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="manifest" href="data:application/manifest+json,{%22name%22:%22LoanVault%22,%22short_name%22:%22LoanVault%22,%22start_url%22:%22/%22,%22display%22:%22standalone%22,%22background_color%22:%22%230d0f14%22,%22theme_color%22:%22%23c9a84c%22}">
+<link rel="manifest" href="/manifest.json">
 <meta name="theme-color" content="#c9a84c">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <style>
@@ -155,7 +157,7 @@ body.light nav { background: rgba(250,250,248,0.92); }
 .nav-ctrl {
   background:var(--ink3); border:1px solid var(--line2);
   border-radius: var(--rs); padding:6px 10px;
-  color:var(--dim2); cursor:pointer; font-size:13px;
+  color:var(--dim2); cursor:pointer;
   font-family:'Plus Jakarta Sans',sans-serif; font-size:0.75rem;
   transition:all 0.2s; outline:none;
 }
@@ -224,7 +226,6 @@ body.light nav { background: rgba(250,250,248,0.92); }
 /* STAT STRIP */
 .hero-stats {
   display: flex; justify-content:center; gap:0;
-  margin-bottom: 52px;
   border: 1px solid var(--line2);
   border-radius: var(--r);
   background: var(--ink2);
@@ -421,6 +422,19 @@ body.light nav { background: rgba(250,250,248,0.92); }
   background:var(--green);
   box-shadow:0 0 8px rgba(58,184,122,0.6);
 }
+
+.copy-link-btn {
+  position:absolute; top:8px; right:8px;
+  background:rgba(13,15,20,0.75); border:1px solid var(--line2);
+  border-radius:6px; padding:4px 8px;
+  color:var(--dim2); font-size:0.65rem; font-weight:600;
+  cursor:pointer; opacity:0; transition:all 0.2s;
+  font-family:'Plus Jakarta Sans',sans-serif;
+  backdrop-filter:blur(4px); z-index:2;
+  white-space:nowrap;
+}
+.bank-card:hover .copy-link-btn { opacity:1; }
+.copy-link-btn:hover { border-color:var(--gold); color:var(--gold); background:rgba(13,15,20,0.92); }
 
 /* ── SUGGEST SECTION ── */
 .suggest-section {
@@ -1123,6 +1137,22 @@ footer a { color:var(--gold); text-decoration:none; }
 </style>
 </head>
 <body>
+<noscript>
+  <div style="position:fixed;inset:0;z-index:9999;background:#0d0f14;display:flex;align-items:center;justify-content:center;padding:2rem;">
+    <div style="text-align:center;max-width:420px;font-family:system-ui,sans-serif;">
+      <div style="font-size:48px;margin-bottom:16px;">🏦</div>
+      <div style="font-family:Georgia,serif;font-size:1.6rem;font-weight:700;color:#c9a84c;margin-bottom:12px;">LoanVault India</div>
+      <div style="color:#8c94b0;font-size:0.95rem;line-height:1.7;margin-bottom:24px;">
+        LoanVault requires JavaScript to run.<br>
+        Please enable JavaScript in your browser settings and reload the page.
+      </div>
+      <a href="https://www.enable-javascript.com/" target="_blank"
+        style="display:inline-block;background:linear-gradient(135deg,#c9a84c,#e8c96a);color:#0d0f14;padding:12px 28px;border-radius:8px;font-weight:700;text-decoration:none;font-size:0.88rem;">
+        How to enable JavaScript →
+      </a>
+    </div>
+  </div>
+</noscript>
 <div style="position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse 900px 600px at 20% 0%,rgba(201,168,76,0.04) 0%,transparent 70%),radial-gradient(ellipse 700px 500px at 80% 100%,rgba(74,124,220,0.04) 0%,transparent 70%);"></div>
 
 <!-- ═══ NAV ═══ -->
@@ -1839,7 +1869,8 @@ function renderCards(list){
       <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;">
         <span style="font-family:'Playfair Display',serif;font-size:26px;font-weight:900;color:rgba(255,255,255,0.92);letter-spacing:-0.5px;text-shadow:0 1px 6px rgba(0,0,0,0.4);">${b.short}</span>
       </div>`;
-    return `<div class="bank-card" style="animation-delay:${(idx%8)*0.05}s" onclick="openModal(${banks.indexOf(b)})">
+    return `<div class="bank-card" style="animation-delay:${(idx%8)*0.05}s;position:relative;" onclick="openModal(${banks.indexOf(b)})">
+      <button class="copy-link-btn" onclick="event.stopPropagation();copyPortalLink(this,'${b.url}')" title="Copy portal link">🔗 Copy Link</button>
       <div class="card-logo-area" style="background:linear-gradient(135deg,${lg.bg},${lg.bg}cc);">
         ${logoInner}
       </div>
@@ -1869,11 +1900,6 @@ function applyFilters(){
     (!q||b.name.toLowerCase().includes(q)||b.short.toLowerCase().includes(q))
   ));
 }
-function setCat(c,el){currentCat=c;document.querySelectorAll('.pill').forEach(b=>b.classList.remove('active'));
-  // reactivate loan pills
-  document.querySelectorAll('.pill-row:last-child .pill.active').forEach(b=>b.classList.add('active'));
-  el.classList.add('active');applyFilters();}
-function setLoan(l,el){currentLoan=l;document.querySelectorAll('.pill-row:last-child .pill').forEach(b=>b.classList.remove('active'));el.classList.add('active');applyFilters();}
 
 // Reset pill active states properly
 function setCat(c,el){
@@ -1923,12 +1949,141 @@ function closeModal(e){if(e.target===document.getElementById('modalOverlay'))clo
 function closeModalDirect(){document.getElementById('modalOverlay').classList.remove('open');document.body.style.overflow='';}
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModalDirect();});
 
+function copyPortalLink(btn,url){
+  navigator.clipboard.writeText(url).then(()=>{
+    const orig=btn.textContent;
+    btn.textContent='✅ Copied!';
+    btn.style.color='var(--green)';
+    btn.style.borderColor='var(--green)';
+    setTimeout(()=>{
+      btn.textContent=orig;
+      btn.style.color='';
+      btn.style.borderColor='';
+    },2000);
+  }).catch(()=>{
+    alert('Could not copy. URL: '+url);
+  });
+}
+
 function submitSuggestion(){
-  if(!document.getElementById('sBank').value.trim()){document.getElementById('sBank').focus();return;}
-  document.getElementById('suggestSuccess').style.display='block';
-  ['sBank','sUrl'].forEach(id=>document.getElementById(id).value='');
-  document.getElementById('sType').value='';
-  setTimeout(()=>{document.getElementById('suggestSuccess').style.display='none';},5000);
+  const bank=document.getElementById('sBank').value.trim();
+  const type=document.getElementById('sType').value;
+  const url=document.getElementById('sUrl').value.trim();
+  if(!bank){document.getElementById('sBank').focus();return;}
+
+  const btn=document.querySelector('.gold-btn');
+  btn.textContent='Sending…';btn.disabled=true;
+
+  emailjs.send('service_ydimk13','template_bfj1suk',{
+    from_name:'LoanVault Suggestion',
+    from_contact:'suggestion@loanvault.in',
+    message_type:'suggest-bank',
+    bank_name:bank,
+    message:`Bank/NBFC: ${bank}\nCategory: ${type||'Not specified'}\nPortal URL: ${url||'Not provided'}`,
+    reply_to:'0siris.nebul4@gmail.com'
+  }).then(()=>{
+    document.getElementById('suggestSuccess').style.display='block';
+    ['sBank','sUrl'].forEach(id=>document.getElementById(id).value='');
+    document.getElementById('sType').value='';
+    btn.textContent='Submit Suggestion →';btn.disabled=false;
+    setTimeout(()=>{document.getElementById('suggestSuccess').style.display='none';},5000);
+  }).catch(err=>{
+    console.error('Suggestion send failed:',err);
+    btn.textContent='Submit Suggestion →';btn.disabled=false;
+    alert('Could not send suggestion. Please email us directly at 0siris.nebul4@gmail.com');
+  });
+}
+
+// ═══════════════════════════════════════════════
+// LANGUAGE
+// ═══════════════════════════════════════════════
+const translations={
+  en:{
+    heroH1:'Download Your <span class="hl">Loan Documents</span><br>Without the Hunt',
+    heroP:'Click any lender card to go directly to their official login portal. Get sanction letters, repayment schedules, statements, NOC or interest certificates in minutes.',
+    sl0:'Verified Portals',sl1:'Document Types',sl2:'Free to Use',
+    ratesH1:'Current Loan <span class="hl">Interest Rates</span>',
+    emiH1:'EMI <span class="hl">Calculator</span>',
+    eligH1:'Loan <span class="hl">Eligibility</span> Checker',
+    compareH1:'Compare <span class="hl">Banks</span>',
+    shareH1:'Share &amp; <span class="hl">WhatsApp</span>',
+    contactH1:'Contact <span class="hl">Us</span>',
+    tabPortals:'Portals',tabRates:'Rates',tabEmi:'EMI',
+    tabElig:'Eligibility',tabCompare:'Compare',tabShare:'Share',tabContact:'Contact',
+  },
+  hi:{
+    heroH1:'अपने <span class="hl">लोन दस्तावेज़</span><br>आसानी से डाउनलोड करें',
+    heroP:'किसी भी बैंक कार्ड पर क्लिक करें और सीधे उनके आधिकारिक लॉगिन पोर्टल पर जाएं। मंजूरी पत्र, पुनर्भुगतान अनुसूची, NOC या ब्याज प्रमाण पत्र मिनटों में पाएं।',
+    sl0:'सत्यापित पोर्टल',sl1:'दस्तावेज़ प्रकार',sl2:'मुफ़्त उपयोग',
+    ratesH1:'वर्तमान <span class="hl">ब्याज दरें</span>',
+    emiH1:'EMI <span class="hl">कैलकुलेटर</span>',
+    eligH1:'लोन <span class="hl">पात्रता</span> जांचें',
+    compareH1:'बैंक <span class="hl">तुलना</span>',
+    shareH1:'शेयर करें <span class="hl">WhatsApp</span>',
+    contactH1:'हमसे <span class="hl">संपर्क</span> करें',
+    tabPortals:'पोर्टल',tabRates:'दरें',tabEmi:'EMI',
+    tabElig:'पात्रता',tabCompare:'तुलना',tabShare:'शेयर',tabContact:'संपर्क',
+  },
+  gu:{
+    heroH1:'તમારા <span class="hl">લોન દસ્તાવેજો</span><br>સરળતાથી ડાઉનલોડ કરો',
+    heroP:'કોઈ પણ બેંક કાર્ડ પર ક્લિક કરો અને સીધા તેમના સત્તાવાર લૉગિન પોર્ટલ પર જાઓ. મંજૂરી પત્ર, EMI શેડ્યૂલ, NOC અથવા વ્યાજ પ્રમાણપત્ર મિનિટોમાં મેળવો.',
+    sl0:'ચકાસાયેલ પોર્ટલ',sl1:'દસ્તાવેજ પ્રકાર',sl2:'મફત ઉપયોગ',
+    ratesH1:'વર્તમાન <span class="hl">વ્યાજ દરો</span>',
+    emiH1:'EMI <span class="hl">કેલ્ક્યુલેટર</span>',
+    eligH1:'લોન <span class="hl">પાત્રતા</span> તપાસો',
+    compareH1:'બેંક <span class="hl">સરખામણી</span>',
+    shareH1:'શેર કરો <span class="hl">WhatsApp</span>',
+    contactH1:'અમારો <span class="hl">સંપર્ક</span> કરો',
+    tabPortals:'પોર્ટલ',tabRates:'દરો',tabEmi:'EMI',
+    tabElig:'પાત્રતા',tabCompare:'સરખામણી',tabShare:'શેર',tabContact:'સંપર્ક',
+  },
+  mr:{
+    heroH1:'तुमचे <span class="hl">कर्ज दस्तऐवज</span><br>सहज डाउनलोड करा',
+    heroP:'कोणत्याही बँक कार्डवर क्लिक करा आणि थेट त्यांच्या अधिकृत लॉगिन पोर्टलवर जा. मंजुरी पत्र, परतफेड वेळापत्रक, NOC किंवा व्याज प्रमाणपत्र मिनिटांत मिळवा.',
+    sl0:'सत्यापित पोर्टल',sl1:'दस्तऐवज प्रकार',sl2:'मोफत वापर',
+    ratesH1:'सध्याचे <span class="hl">व्याज दर</span>',
+    emiH1:'EMI <span class="hl">कॅल्क्युलेटर</span>',
+    eligH1:'कर्ज <span class="hl">पात्रता</span> तपासा',
+    compareH1:'बँक <span class="hl">तुलना</span>',
+    shareH1:'शेअर करा <span class="hl">WhatsApp</span>',
+    contactH1:'आमच्याशी <span class="hl">संपर्क</span> साधा',
+    tabPortals:'पोर्टल',tabRates:'दर',tabEmi:'EMI',
+    tabElig:'पात्रता',tabCompare:'तुलना',tabShare:'शेअर',tabContact:'संपर्क',
+  },
+  ta:{
+    heroH1:'உங்கள் <span class="hl">கடன் ஆவணங்களை</span><br>எளிதாக பதிவிறக்கம் செய்யுங்கள்',
+    heroP:'எந்த வங்கி அட்டையையும் கிளிக் செய்து நேரடியாக அவர்களின் உத்தியோகபூர்வ உள்நுழைவு போர்டலுக்கு செல்லுங்கள். அனுமதி கடிதம், மறுசீரமைப்பு அட்டவணை, NOC அல்லது வட்டி சான்றிதழ் நிமிடங்களில் பெறுங்கள்.',
+    sl0:'சரிபார்க்கப்பட்ட போர்டல்கள்',sl1:'ஆவண வகைகள்',sl2:'இலவச பயன்பாடு',
+    ratesH1:'தற்போதைய <span class="hl">வட்டி விகிதங்கள்</span>',
+    emiH1:'EMI <span class="hl">கணிப்பான்</span>',
+    eligH1:'கடன் <span class="hl">தகுதி</span> சரிபார்க்கவும்',
+    compareH1:'வங்கிகளை <span class="hl">ஒப்பிடுக</span>',
+    shareH1:'பகிர்க <span class="hl">WhatsApp</span>',
+    contactH1:'எங்களை <span class="hl">தொடர்பு</span> கொள்ளுங்கள்',
+    tabPortals:'போர்டல்',tabRates:'விகிதங்கள்',tabEmi:'EMI',
+    tabElig:'தகுதி',tabCompare:'ஒப்பிடு',tabShare:'பகிர்',tabContact:'தொடர்பு',
+  }
+};
+
+let currentLang='en';
+function setLang(lang){
+  currentLang=lang;
+  const t=translations[lang]||translations.en;
+  const s=(id,html)=>{const el=document.getElementById(id);if(el)el.innerHTML=html;};
+  s('heroH1',t.heroH1); s('heroP',t.heroP);
+  s('sl0',t.sl0); s('sl1',t.sl1); s('sl2',t.sl2);
+  s('ratesH1',t.ratesH1); s('emiH1',t.emiH1);
+  s('eligH1',t.eligH1); s('compareH1',t.compareH1);
+  s('shareH1',t.shareH1); s('contactH1',t.contactH1);
+  // Update nav tab labels
+  const tabs={portals:t.tabPortals,rates:t.tabRates,emi:t.tabEmi,
+    eligibility:t.tabElig,compare:t.tabCompare,whatsapp:t.tabShare,contact:t.tabContact};
+  Object.entries(tabs).forEach(([page,label])=>{
+    const tab=document.getElementById('tab-'+page);
+    if(tab){const span=tab.querySelector('span');if(span)span.textContent=label;}
+  });
+  // Sync both language selectors to same value
+  document.querySelectorAll('#langSel').forEach(sel=>sel.value=lang);
 }
 
 // ═══════════════════════════════════════════════
@@ -2026,6 +2181,7 @@ function calcEMI(){
 }
 function buildSchedule(P,r,n,emi){
   let bal=P; const rows=[];
+  const PREVIEW=5;
   for(let yr=1;yr*12<=n;yr++){
     let py=0,iy=0;
     for(let m=0;m<12&&(yr-1)*12+m<n;m++){
@@ -2033,7 +2189,20 @@ function buildSchedule(P,r,n,emi){
     }
     rows.push(`<tr><td>${yr}</td><td style="color:var(--green)">${fmt(py)}</td><td style="color:var(--red)">${fmt(iy)}</td><td style="color:var(--gold)">${fmt(Math.max(0,bal))}</td></tr>`);
   }
-  document.getElementById('scheduleBody').innerHTML=rows.join('');
+  const preview=rows.slice(0,PREVIEW);
+  const rest=rows.slice(PREVIEW);
+  let html=preview.join('');
+  if(rest.length){
+    html+=`<tr id="schedShowMoreRow"><td colspan="4" style="text-align:center;padding:10px;">
+      <button onclick="expandSchedule()" style="background:transparent;border:1px solid var(--line2);color:var(--gold);padding:7px 20px;border-radius:6px;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;font-size:0.78rem;font-weight:700;">▼ Show all ${n/12|0} years</button>
+      </td></tr>
+      <tr id="schedRestRows" style="display:none"><td colspan="4" style="padding:0"><table style="width:100%;border-collapse:collapse">${rest.join('')}</table></td></tr>`;
+  }
+  document.getElementById('scheduleBody').innerHTML=html;
+}
+function expandSchedule(){
+  document.getElementById('schedRestRows').style.display='';
+  document.getElementById('schedShowMoreRow').style.display='none';
 }
 let schedOpen=false;
 function toggleSchedule(){
@@ -2058,6 +2227,8 @@ function applyBankRate(){
 function toggleTheme(){
   const isLight=document.body.classList.toggle('light');
   document.getElementById('themeBtn').textContent=isLight?'☀️':'🌙';
+  const mb=document.getElementById('mobThemeBtn');
+  if(mb)mb.textContent=isLight?'☀️ Theme':'🌙 Theme';
   localStorage.setItem('lv-theme',isLight?'light':'dark');
 }
 if(localStorage.getItem('lv-theme')==='light'){document.body.classList.add('light');document.getElementById('themeBtn').textContent='☀️';}
@@ -2232,6 +2403,49 @@ function copyText(id){
 document.getElementById('sh-loantype').addEventListener('change',genRateMsg);
 
 // ═══════════════════════════════════════════════
+// CONTACT FORM SUBMISSION
+// ═══════════════════════════════════════════════
+function submitContact(){
+  const name=document.getElementById('cf-name').value.trim();
+  const contact=document.getElementById('cf-contact').value.trim();
+  const type=document.getElementById('cf-type').value;
+  const message=document.getElementById('cf-message').value.trim();
+  const bank=document.getElementById('cf-bank').value.trim();
+
+  if(!name){alert('Please enter your name.');document.getElementById('cf-name').focus();return;}
+  if(!contact){alert('Please enter your mobile or email.');document.getElementById('cf-contact').focus();return;}
+  if(!type){alert('Please select a message type.');document.getElementById('cf-type').focus();return;}
+  if(!message){alert('Please enter your message.');document.getElementById('cf-message').focus();return;}
+
+  const btn=document.querySelector('.contact-submit');
+  btn.textContent='Sending…';btn.disabled=true;
+
+  const templateParams={
+    from_name: name,
+    from_contact: contact,
+    message_type: type,
+    bank_name: bank||'N/A',
+    message: message,
+    reply_to: contact.includes('@')?contact:'noreply@loanvault.in'
+  };
+
+  emailjs.send('service_ydimk13','template_bfj1suk',templateParams)
+    .then(()=>{
+      document.getElementById('contactSuccess').style.display='block';
+      document.getElementById('contactSuccess').scrollIntoView({behavior:'smooth',block:'nearest'});
+      ['cf-name','cf-contact','cf-bank','cf-message'].forEach(id=>document.getElementById(id).value='');
+      document.getElementById('cf-type').value='';
+      btn.textContent='Send Message →';btn.disabled=false;
+      setTimeout(()=>{document.getElementById('contactSuccess').style.display='none';},6000);
+    })
+    .catch(err=>{
+      console.error('EmailJS error:',err);
+      btn.textContent='Send Message →';btn.disabled=false;
+      alert('Could not send message. Please email us directly at 0siris.nebul4@gmail.com');
+    });
+}
+
+// ═══════════════════════════════════════════════
 // PWA
 // ═══════════════════════════════════════════════
 let deferredPrompt=null;
@@ -2246,6 +2460,43 @@ function installPWA(){
 window.addEventListener('appinstalled',()=>document.getElementById('pwaBanner').classList.remove('show'));
 
 // ═══════════════════════════════════════════════
+// DYNAMIC DATE STRINGS
+// ═══════════════════════════════════════════════
+(function(){
+  const now=new Date();
+  const monthYear=now.toLocaleDateString('en-IN',{month:'long',year:'numeric'});
+  const monYrShort=now.toLocaleDateString('en-IN',{month:'short',year:'numeric'});
+
+  // Update all static date text nodes in the DOM
+  document.querySelectorAll('.updated-chip').forEach(el=>{
+    el.textContent='Updated '+monYrShort;
+  });
+  document.querySelectorAll('.page-eyebrow').forEach(el=>{
+    if(el.textContent.includes('2026')||el.textContent.includes('March')){
+      el.textContent=el.textContent.replace(/(?:January|February|March|April|May|June|July|August|September|October|November|December)\s+\d{4}/g,monthYear);
+    }
+  });
+
+  // Update nav badge
+  const badge=document.querySelector('.nav-badge');
+  if(badge)badge.textContent=`INDIA · ${now.getFullYear()}`;
+
+  // Update footer
+  const footer=document.querySelector('footer');
+  if(footer)footer.innerHTML=footer.innerHTML.replace(/Updated\s+(?:January|February|March|April|May|June|July|August|September|October|November|December)\s+\d{4}/g,'Updated '+monthYear);
+
+  // Update share message generator to use current month
+  const origGenRateMsg=window.genRateMsg;
+  window.genRateMsg=function(){
+    origGenRateMsg&&origGenRateMsg();
+    const prev=document.getElementById('rateSharePreview');
+    if(prev)prev.textContent=prev.textContent.replace(/(?:January|February|March|April|May|June|July|August|September|October|November|December)\s+\d{4}/g,monthYear);
+    const waBtn=document.getElementById('waRateBtn');
+    if(waBtn)waBtn.href=waBtn.href.replace(/(?:January|February|March|April|May|June|July|August|September|October|November|December)%20\d{4}/g,encodeURIComponent(monthYear));
+  };
+})();
+
+// ═══════════════════════════════════════════════
 // INIT — must be last, after all const declarations
 // ═══════════════════════════════════════════════
 renderCards(banks);
@@ -2257,10 +2508,11 @@ genEmiMsg();
 
 // Reveal email address properly on page load
 (function(){
+  const email='0siris.nebul4'+'@'+'gmail.com';
   const el=document.getElementById('emailDisplay');
-  if(el){const e='0siris.nebul4'+'@'+'gmail.com';el.textContent=e+' — reply within 24 hrs.';}
+  if(el){el.textContent=email+' — reply within 24 hrs.';}
   const card=document.getElementById('emailContactCard');
-  if(card){card.setAttribute('href','mailto:'+e+'?subject=LoanVault%20Feedback');}
+  if(card){card.setAttribute('href','mailto:'+email+'?subject=LoanVault%20Feedback');}
 })();
 </script>
 </body>
