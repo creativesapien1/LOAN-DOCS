@@ -21,7 +21,7 @@
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="LoanVault India — All Bank Loan Portals & Rates">
-<meta name="twitter:description" content="Download loan documents from 32+ Indian banks in one place. Free EMI calculator & interest rate comparison.">
+<meta name="twitter:description" content="Download loan documents from 35+ Indian banks in one place. Free EMI calculator & interest rate comparison.">
 <meta name="twitter:image" content="https://loan-docs.vercel.app/og-image.png">
 
 <!-- Robots & Indexing -->
@@ -1271,7 +1271,7 @@ footer a { color:var(--gold); text-decoration:none; }
       <p class="hero-sub" id="heroP">Click any lender card to go directly to their official login portal. Get sanction letters, repayment schedules, statements, NOC or interest certificates in minutes.</p>
       <div class="hero-stats">
         <div class="stat-item">
-          <span class="stat-n">32+</span>
+          <span class="stat-n">35+</span>
           <span class="stat-l" id="sl0">Verified Portals</span>
         </div>
         <div class="stat-item">
@@ -1787,7 +1787,7 @@ footer a { color:var(--gold); text-decoration:none; }
   <a href="#" onclick="document.getElementById('cf-type').value='broken-link';showPage('contact');return false">Report Broken Link</a> · Built for India 🇮🇳 · Updated March 2026
 </footer>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
 // ── BANK LOGOS ────────────────────────────────────────────────────────────────
 // Strategy: Google Favicons (sz=128) as primary — free, no API key, works for
 // every domain. Falls back to brand-colored text block if favicon is generic.
@@ -2043,7 +2043,7 @@ function openModal(idx){
         <div class="modal-section-title">Step-by-Step Guide</div>
         <div class="step-list">${steps}</div>
       </div>
-      <a class="modal-cta-btn" href="${b.url}" target="_blank" rel="noopener"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg> Open ${b.short} Login Portal →</a>
+      <a class="modal-cta-btn" href="${b.url}" target="_blank" rel="noopener"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg> Open `+b.short+` Login Portal →</a>
     </div>`;
   document.getElementById('modalOverlay').classList.add('open');
   document.body.style.overflow='hidden';
